@@ -22,7 +22,7 @@ Migrate all homelab public endpoints, Authelia single sign-on (SSO), Traefik rev
 
 ## 📋 Implementation Checklist
 
-- [ ] **Step 1: DNS Setup & Propagation Verification**
+- [x] **Step 1: DNS Setup & Propagation Verification**
   - Add domain to chosen DNS manager.
   - Create wildcard record: `*.roadtotech.me` ➔ Target WAN IP.
   - Verify DNS resolution via `dig roadtotech.me +short` and `dig test.roadtotech.me +short`.
