@@ -13,11 +13,15 @@ This section documents the architectural roadmaps, infrastructure designs, deplo
 2. [**Domain Migration (`roadtotech.me`)**](domain-migration-roadtotech.md)
    - Step-by-step strategy for cutting over from `arch-services.mywire.org` to `roadtotech.me`.
    - DNS delegation options (Dynu vs. Cloudflare), Traefik ACME wildcard SSL, and Authelia session cookie updates.
-3. [**Homelab Infrastructure & Appctl Architecture**](homelab-appctl-architecture.md)
+3. [**Core & Sites Cutover and Testing Plan**](core-sites-cutover-testing-plan.md)
+   - Zero-downtime, progressive testing and safe cutover guide from `~/Deployments` to `~/Core` and `~/Sites`.
+   - Complete pre-flight verification matrix, rollback commands, and post-validation cleanup.
+4. [**Homelab Infrastructure & Appctl Architecture**](homelab-appctl-architecture.md)
    - Making `appctl` a first-class homelab orchestrator.
    - Decoupling monolithic deployments into individual standalone Git repositories.
-4. [**CI/CD & Deployment Strategy**](deployment-and-cicd-strategy.md)
+5. [**CI/CD & Deployment Strategy**](deployment-and-cicd-strategy.md)
    - Automating image builds, GitOps updates, Gitea Actions/GitHub Actions, and production rollouts.
-5. [**Production Folder Structure Reorganization**](folder-structure-reorganization.md)
+6. [**Production Folder Structure Reorganization**](folder-structure-reorganization.md)
    - Establishing strict directory boundaries (`/home/kiskaadee/Production`, `/home/kiskaadee/Deployments`, `/home/kiskaadee/Projects`).
    - Removing development traces and non-production scratchpads from the server.
+
