@@ -36,6 +36,9 @@ This section documents the architectural roadmaps, infrastructure designs, deplo
 10. [**Real-Time Brain Synchronization & Gitea Push Mirroring**](brain-sync-and-gitea-mirroring.md)
     - Zero-overhead markdown synchronization architecture between laptop and server using Gitea push mirroring.
     - Systemd timer reconciliation, instant `doc2site` reflection, and GitHub offsite backup.
+11. [**LVM Storage Optimization & Partition Resizing Strategy**](lvm-storage-optimization-and-resizing.md)
+    - Storage topology analysis, desktop indexer cache reclamation, and zero-data-loss LVM resize runbook.
+
 
 
 
