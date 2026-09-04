@@ -23,16 +23,14 @@ Migrate all homelab public endpoints, Authelia single sign-on (SSO), Traefik rev
 ## 📋 Implementation Checklist
 
 - [x] **Step 1: DNS Setup & Propagation Verification**
-  - Add domain to chosen DNS manager.
-  - Create wildcard record: `*.roadtotech.me` ➔ Target WAN IP.
-  - Verify DNS resolution via `dig roadtotech.me +short` and `dig test.roadtotech.me +short`.
-- [ ] **Step 2: Update Declarative NixOS Configuration**
-  - `hosts/desktop/homeserver.nix`: Change `DOMAIN` to `"roadtotech.me"`.
-  - `hosts/desktop/traefik-deployments.nix`: Update `DOMAIN_SUFFIX` and subdomain variables (`DOCS_DOMAIN`, `GITEA_DOMAIN`, etc.).
-  - `hosts/desktop/secrets.yaml`: Update DDNS domain variable if stored in SOPS.
-- [ ] **Step 3: Traefik & SSL Validation**
-  - Trigger Traefik reload/restart.
-  - Inspect Traefik logs to confirm Let's Encrypt DNS-01 challenge completion for `roadtotech.me` and `*.roadtotech.me`.
-- [ ] **Step 4: Authelia & Cookie Verification**
-  - Authenticate against `https://auth.roadtotech.me`.
-  - Verify SSO forward-auth across subdomains (`gitea.roadtotech.me`, `jellyfin.roadtotech.me`, etc.).
+  - Hostinger nameservers delegated to Dynu (`ns1.dynu.com` - `ns6.dynu.com`).
+  - Wildcard dynamic DNS configured for `*.roadtotech.me` and apex `roadtotech.me`.
+- [x] **Step 2: Declarative NixOS Configuration Updated**
+  - `hosts/desktop/homeserver.nix`: Configured `DOMAIN = "roadtotech.me"`.
+  - `hosts/desktop/traefik-deployments.nix`: Configured `DOMAIN_SUFFIX = "roadtotech.me"` and `DOCS_PROJECT_PATH = "/home/kiskaadee/Brain"`.
+  - Secrets rendered to `/run/secrets/rendered/homeserver.env` and `/run/secrets/rendered/traefik-deployments.env`.
+- [x] **Step 3: Traefik & Wildcard SSL Validation**
+  - Let's Encrypt DNS-01 wildcard challenge successfully issued certificate for `roadtotech.me` and `*.roadtotech.me`.
+  - Validated SNI TLS handshake across all subdomains.
+- [x] **Step 4: Authelia & Cookie Verification**
+  - ForwardAuth configured and tested for `auth.roadtotech.me`.

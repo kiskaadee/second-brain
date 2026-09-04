@@ -17,6 +17,6 @@ Central repository for personal knowledge management, architecture plans, roadma
 ## 🎯 Active Strategic Goals
 
 1. **Host Roles Separation**: Transition the desktop workstation into a dedicated 24/7 headless NixOS production server, making the laptop the primary graphical workstation.
-2. **Domain Migration**: Move from Dynu's free subdomain (`arch-services.mywire.org`) to owned domain (`roadtotech.me`).
+2. **Domain Migration**: Completed cutover to custom domain (`roadtotech.me`) with wildcard Let's Encrypt TLS.
 3. **Repository Decoupling**: Extract monolithic deployments into standalone Git repositories with CI/CD and manage lifecycles using `appctl`.
 4. **Clean Production State**: Remove non-production and development artifacts from the server machine.

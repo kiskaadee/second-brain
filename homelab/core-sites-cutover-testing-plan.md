@@ -121,13 +121,13 @@ appctl up homelab-ollama
 #### Verification Matrix:
 | Endpoint | Expected Result | Verified |
 | :--- | :--- | :---: |
-| `https://roadtotech.me` | Custom Landing Page | [ ] |
-| `https://dashboard.roadtotech.me` | getHomepage + Learning Hub | [ ] |
-| `https://auth.roadtotech.me` | Authelia SSO portal & 2FA | [ ] |
-| `https://jellyfin.roadtotech.me` | Jellyfin Media library & streaming | [ ] |
-| `https://excalidraw.roadtotech.me` | Excalidraw whiteboarding app | [ ] |
-| `https://docs.roadtotech.me` | Doc2site documentation viewer | [ ] |
-| `https://traefik.roadtotech.me` | Traefik routers & middleware overview | [ ] |
+| `https://roadtotech.me` | Custom Landing Page | [x] |
+| `https://dashboard.roadtotech.me` | getHomepage + Learning Hub | [x] |
+| `https://auth.roadtotech.me` | Authelia SSO portal & 2FA | [x] |
+| `https://jellyfin.roadtotech.me` | Jellyfin Media library & streaming | [x] |
+| `https://excalidraw.roadtotech.me` | Excalidraw whiteboarding app | [x] |
+| `https://docs.roadtotech.me` | Doc2site documentation viewer (Brain) | [x] |
+| `https://traefik.roadtotech.me` | Traefik routers & middleware overview | [x] |
 
 ---
 
