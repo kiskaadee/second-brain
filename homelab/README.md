@@ -33,5 +33,9 @@ This section documents the architectural roadmaps, infrastructure designs, deplo
 9. [**Custom API Security Hardening & Threat Analysis**](custom-api-security-and-hardening.md)
    - Attack surface review and actionable hardening roadmap for custom endpoints (`learning-hub`, `minecraft-web-admin`).
    - Authelia ForwardAuth integration, rate limiting, and JWT fail-fast validation.
+10. [**Real-Time Brain Synchronization & Gitea Push Mirroring**](brain-sync-and-gitea-mirroring.md)
+    - Zero-overhead markdown synchronization architecture between laptop and server using Gitea push mirroring.
+    - Systemd timer reconciliation, instant `doc2site` reflection, and GitHub offsite backup.
+
 
 
