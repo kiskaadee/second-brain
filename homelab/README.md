@@ -27,4 +27,7 @@ This section documents the architectural roadmaps, infrastructure designs, deplo
 7. [**appctl Refactor & Decentralized `app.yaml` Metadata Architecture**](appctl-refactor-and-metadata-sync.md)
    - Decentralizing service configurations into individual app repositories.
    - Clean service aliases, enhanced status listing, and dynamic Homepage `services.yaml` generation.
+8. [**appctl Git Synchronization & Full-Stack Lifecycle Strategy**](appctl-git-sync-and-lifecycle.md)
+   - Real-time Git sync status in `appctl list` (`✓ Synced`, `⬆ Ahead`, `⬇ Behind`, `* Dirty`).
+   - Network fetch support (`--fetch`) and atomic stack upgrade workflow (`appctl update`).
 
