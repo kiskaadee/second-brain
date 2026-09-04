@@ -1,0 +1,10 @@
+(A) Initialize Python environment using uv +Milestone0 @env
+(A) Set up Ruff for linting and formatting +Milestone0 @env
+(A) Set up mypy for type checking +Milestone0 @env
+(A) Write docker-compose.yml defining a PostgreSQL service +Milestone0 @env
+(B) Learn path parameters and Pydantic validation +Milestone1 @research
+(B) Learn HTTP status codes and REST guidelines +Milestone1 @research
+(B) Implement registration endpoint POST /auth/register +Milestone1 @coding
+(B) Implement profile retrieval endpoint GET /users/me +Milestone1 @coding
+(B) Implement profile update endpoint PATCH /users/me +Milestone1 @coding
+(C) Write basic endpoints verification tests +Milestone1 @testing

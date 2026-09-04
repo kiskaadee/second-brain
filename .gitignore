@@ -1,1 +1,12 @@
-.obsidian/
+# Obsidian & OS
+.obsidian/workspace.json
+.obsidian/graph.json
+.DS_Store
+
+# Environments & Python
+.envrc
+.direnv/
+.venv/
+.local_config.json
+.agents/
+
