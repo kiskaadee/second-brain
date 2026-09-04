@@ -30,4 +30,8 @@ This section documents the architectural roadmaps, infrastructure designs, deplo
 8. [**appctl Git Synchronization & Full-Stack Lifecycle Strategy**](appctl-git-sync-and-lifecycle.md)
    - Real-time Git sync status in `appctl list` (`✓ Synced`, `⬆ Ahead`, `⬇ Behind`, `* Dirty`).
    - Network fetch support (`--fetch`) and atomic stack upgrade workflow (`appctl update`).
+9. [**Custom API Security Hardening & Threat Analysis**](custom-api-security-and-hardening.md)
+   - Attack surface review and actionable hardening roadmap for custom endpoints (`learning-hub`, `minecraft-web-admin`).
+   - Authelia ForwardAuth integration, rate limiting, and JWT fail-fast validation.
+
 
