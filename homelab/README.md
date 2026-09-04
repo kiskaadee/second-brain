@@ -24,4 +24,7 @@ This section documents the architectural roadmaps, infrastructure designs, deplo
 6. [**Production Folder Structure Reorganization**](folder-structure-reorganization.md)
    - Establishing strict directory boundaries (`/home/kiskaadee/Production`, `/home/kiskaadee/Deployments`, `/home/kiskaadee/Projects`).
    - Removing development traces and non-production scratchpads from the server.
+7. [**appctl Refactor & Decentralized `app.yaml` Metadata Architecture**](appctl-refactor-and-metadata-sync.md)
+   - Decentralizing service configurations into individual app repositories.
+   - Clean service aliases, enhanced status listing, and dynamic Homepage `services.yaml` generation.
 
