@@ -4,13 +4,13 @@
 Transform `appctl` into a modular, metadata-driven homelab orchestrator where each application repository in `~/Sites` is fully self-describing via a standardized `app.yaml` manifest.
 
 ### Key Goals:
-1. **Decentralized Application Manifests (`app.yaml`)**: Move service definitions, domain names, network requirements, environment defaults, and presentation metadata into each app's repository.
+1. **Decentralized Application Manifests (`app.yaml`)**: Move service definitions, domain names, network requirements, environment defaults, visibility toggles, and presentation metadata into each app's repository.
 2. **Seamless Service Aliasing**: Enable invoking commands using canonical names (e.g., `appctl up docs`, `appctl up jellyfin`), directory names (`appctl up homelab-jellyfin`), and custom short aliases (e.g., `appctl up dash`).
 3. **Enhanced Output & Inspection**:
    - `appctl list` displays `SERVICE`, `STATUS`, `DOMAIN`, and `DIRECTORY`.
    - `appctl list --core` (or `--all` / `-a`) displays core stack services from `~/Core`.
-   - `appctl info <service>` displays full metadata (description, domains, auth status, containers, environment, homepage cards).
-4. **Automated Homepage Integration**: An `appctl sync` command (and automated sync hooks) will scan all `Sites/*/app.yaml` files and generate `homelab-dashboard/config/services.yaml` dynamically.
+   - `appctl info <service>` displays full metadata (description, domains, auth status, containers, environment, visibility, homepage cards).
+4. **Automated Homepage Integration**: An `appctl sync` command (and automated sync hooks) will scan all `Sites/*/app.yaml` files and generate `homelab-dashboard/config/services.yaml` dynamically based on `visible: true`.
 
 ---
 
@@ -23,6 +23,7 @@ name: "jellyfin"                     # Canonical service name for appctl CLI
 aliases: ["media", "movies"]         # Optional CLI shortcut aliases
 domain: "jellyfin.roadtotech.me"     # Primary routed domain
 description: "Media Server & Streaming Platform"
+visible: true                        # Whether icon/card is displayed in dashboard
 auth: true                           # Protected by Authelia ForwardAuth
 networks:
   - proxy-net
@@ -32,9 +33,8 @@ env:
   MEDIA_PATH: "/media"
   RATE_LIMIT_AVG: "100"
 
-# Metadata for Homepage (dashboard) compilation
+# Presentation metadata for Homepage (dashboard) compilation
 homepage:
-  enabled: true                      # Whether to display on Homepage
   title: "Jellyfin"                  # Card title
   group: "Media & Productivity"      # Homepage section
   icon: "jellyfin.png"               # Icon in Homepage
@@ -47,25 +47,25 @@ homepage:
 ## 🏗️ Architecture & Changes
 
 ### 1. Applications (`Sites/*/app.yaml`)
-All 11 homelab applications will include an `app.yaml` defining their identity, domains, aliases, and Homepage presentation metadata:
+All 11 homelab applications will include an `app.yaml` defining their identity, domains, aliases, visibility, and Homepage presentation metadata:
 
-- `homelab-dashboard`: `name: "dashboard"`, `aliases: ["dash"]`
-- `homelab-doc2site`: `name: "docs"`, `aliases: ["doc2site", "notes"]`
-- `homelab-excalidraw`: `name: "excalidraw"`, `aliases: ["draw", "sketch"]`
-- `homelab-mermaid`: `name: "mermaid"`, `aliases: ["diagrams"]`
-- `homelab-jellyfin`: `name: "jellyfin"`, `aliases: ["media"]`
-- `homelab-landing`: `name: "landing"`, `aliases: ["root", "portal"]`
-- `homelab-gitea`: `name: "gitea"`, `aliases: ["git"]`
-- `homelab-minecraft`: `name: "minecraft"`, `aliases: ["mc", "server"]`
-- `homelab-ollama`: `name: "ollama"`, `aliases: ["ai", "llm"]`
-- `homelab-pgsql`: `name: "pgsql"`, `aliases: ["postgres", "db-sql"]`
-- `homelab-mongodb`: `name: "mongodb"`, `aliases: ["mongo", "db-nosql"]`
+- `homelab-dashboard`: `name: "dashboard"`, `aliases: ["dash"]`, `visible: false` (or self-link)
+- `homelab-doc2site`: `name: "docs"`, `aliases: ["doc2site", "notes"]`, `visible: true`
+- `homelab-excalidraw`: `name: "excalidraw"`, `aliases: ["draw", "sketch"]`, `visible: true`
+- `homelab-mermaid`: `name: "mermaid"`, `aliases: ["diagrams"]`, `visible: true`
+- `homelab-jellyfin`: `name: "jellyfin"`, `aliases: ["media"]`, `visible: true`
+- `homelab-landing`: `name: "landing"`, `aliases: ["root", "portal"]`, `visible: false`
+- `homelab-gitea`: `name: "gitea"`, `aliases: ["git"]`, `visible: true`
+- `homelab-minecraft`: `name: "minecraft"`, `aliases: ["mc", "server"]`, `visible: true`
+- `homelab-ollama`: `name: "ollama"`, `aliases: ["ai", "llm"]`, `visible: true`
+- `homelab-pgsql`: `name: "pgsql"`, `aliases: ["postgres", "db-sql"]`, `visible: false`
+- `homelab-mongodb`: `name: "mongodb"`, `aliases: ["mongo", "db-nosql"]`, `visible: false`
 
 ### 2. Orchestrator Engine (`Core/scripts/appctl`)
 - **Dynamic Resolver**: Match user input against `app.yaml -> name`, `aliases`, or directory basename.
 - **`appctl list [--core | --all | -a]`**: Clean tabular output with `SERVICE`, `STATUS`, `DOMAIN`, and `DIRECTORY`. Core services from `~/Core` inspected on `--core`.
 - **`appctl info <service>`**: Formatted overview of all service metadata, container statuses, and network attachments.
-- **`appctl sync`**: Compiles `Sites/*/app.yaml` into `homelab-dashboard/config/services.yaml`.
+- **`appctl sync`**: Scans `Sites/*/app.yaml`, filters for `visible: true`, and compiles `homelab-dashboard/config/services.yaml`.
 
 ---
 
