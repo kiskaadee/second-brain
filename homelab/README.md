@@ -38,6 +38,9 @@ This section documents the architectural roadmaps, infrastructure designs, deplo
     - Systemd timer reconciliation, instant `doc2site` reflection, and GitHub offsite backup.
 11. [**LVM Storage Optimization & Partition Resizing Strategy**](lvm-storage-optimization-and-resizing.md)
     - Storage topology analysis, desktop indexer cache reclamation, and zero-data-loss LVM resize runbook.
+12. [**WhatsApp & Telegram AI Assistant Backend Architecture**](chatbot-assistant-backend-architecture.md)
+    - Architecture, channel trade-offs (Telegram vs WhatsApp), APScheduler cron triggers, and Brain vault RAG integration.
+
 
 
 
