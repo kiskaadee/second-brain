@@ -8,7 +8,7 @@ Central repository for personal knowledge management, architecture plans, daily 
 
 | Area | Focus & Purpose | Key Documents |
 | :--- | :--- | :--- |
-| [**Knowledge Vault**](knowledge/README.md) | Structured backend engineering guides, tools, skills, Python, and DSA. | [SQL Deep Dive](knowledge/skills/sql.md)<br>[Auth & Security](knowledge/skills/auth.md)<br>[Testing & Pytest](knowledge/skills/testing.md)<br>[Pydantic](knowledge/python/pydantic.md)<br>[Docker Basics](knowledge/tools/docker.md) |
+| [**Knowledge Vault**](knowledge/README.md) | Structured backend engineering guides, tools, skills, Python, and DSA. | [SQL Deep Dive](knowledge/skills/sql.md)<br>[Auth & Security](knowledge/skills/auth.md)<br>[Testing & Pytest](knowledge/skills/testing.md)<br>[Pydantic](knowledge/python/pydantic.md)<br>[Docker Basics](knowledge/tools/docker.md)<br>[Tea (Gitea CLI)](knowledge/tools/tea.md) |
 | [**Practice & Coding**](practice/README.md) | Algorithm patterns, LeetCode solutions, and implementation drills. | [Practiced Patterns Index](practice/LeetCode/00-practiced-patterns.md) |
 | [**Journal & Logs**](journal/README.md) | Daily engineering retrospectives, interview logs, and reflections. | [Interview Logs](docs/interview/LOG.md)<br>[Mistakes Log](docs/mistakes/template.md) |
 | [**Homelab & Infrastructure**](homelab/README.md) | Systems architecture, NixOS migrations, DNS, CI/CD, and `appctl`. | [NixOS Server & Laptop Migration](homelab/nixos-server-laptop-migration.md)<br>[Domain Migration (`roadtotech.me`)](homelab/domain-migration-roadtotech.md)<br>[Appctl & Repositories Architecture](homelab/homelab-appctl-architecture.md)<br>[Brain Sync & Gitea Mirroring](homelab/brain-sync-and-gitea-mirroring.md) |
