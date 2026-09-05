@@ -16,12 +16,17 @@ tea login add
 ```
 
 **Prompts:**
-* **URL**: `https://gitea.roadtotech.me`
-* **Name**: `roadtotech` (or `main`)
+* **URL of Gitea instance**: `https://gitea.roadtotech.me`
+* **Name of new Login**: `roadtotech` (or your username / instance alias)
+* **Login with**: `token`
 * **Token**: Generate an access token via Gitea Web UI:
   - Navigate to **Settings** $\rightarrow$ **Applications** $\rightarrow$ **Generate New Token**.
   - Select scopes: `repo`, `issue`, `user`, `package`.
-* **Insecure**: `false` (valid HTTPS certificate via Traefik).
+* **Set Optional settings**: `true`
+* **SSH Key Path**: Leave empty for auto-discovery (e.g., `~/.ssh/id_ed25519`).
+* **Allow Insecure connections**: `false` (valid HTTPS certificate via Traefik).
+* **Add git helper**: `false` on NixOS (see gotcha below) or `true` if your Git config is mutable.
+* **Check version of Gitea instance**: `true`.
 
 ### 2. Verify Authentication
 ```bash
@@ -32,8 +37,43 @@ tea login list
 tea whoami
 
 # Set default instance if you manage multiple
-tea login default roadtotech
+tea login default <login-name>
 ```
+
+### 3. NixOS / Home Manager Gotcha: `exit status 255` (Read-only Git Config)
+
+#### The Error
+When setting `Add git helper: true` during `tea login add`, you may see:
+```text
+Login as <user> on https://<url> successful. Added this login as <user>
+Error: error adding login: git config --global credential.https://<url>.helper, error: exit status 255
+```
+
+#### Why It Happens
+`tea` attempts to register itself as a Git credential helper by executing:
+```bash
+git config --global credential.https://<url>.helper ...
+```
+On **NixOS** where Git is managed declaratively via Home Manager, `~/.config/git/config` is a symlink pointing to an immutable file in the `/nix/store`:
+```text
+~/.config/git/config -> /nix/store/...-home-manager-files/.config/git/config
+```
+Because the `/nix/store` is read-only, Git fails to acquire a write lock (`error: could not lock config file ... Read-only file system`) and exits with code `255`.
+
+#### Key Takeaways & Resolution
+1. **The login itself still succeeded:** `tea` stores its own configuration in `$XDG_CONFIG_HOME/tea/config.yml` (writable user space). You can verify this immediately with `tea login list`.
+2. **If you authenticate Git operations via SSH (Recommended):** You do not need the HTTPS Git credential helper. Select `Add git helper: false` during setup (or ignore the exit status 255 error).
+3. **If you want Git to use `tea` for HTTPS operations:** Declare the credential helper in your Home Manager configuration instead of letting `tea` mutate it at runtime:
+   ```nix
+   programs.git = {
+     enable = true;
+     extraConfig = {
+       "credential \"https://gitea.roadtotech.me\"" = {
+         helper = "tea login helper";
+       };
+     };
+   };
+   ```
 
 ---
 
