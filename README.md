@@ -1,28 +1,87 @@
-# 🧠 Second Brain
+# 🧠 Brain
 
-Central repository for personal knowledge management, architecture plans, daily journals, backend engineering knowledge, practice code, homelab infrastructure designs, and project tracking.
-
----
-
-## 🧭 Navigation & Core Areas
-
-| Area | Focus & Purpose | Key Documents |
-| :--- | :--- | :--- |
-| [**Knowledge Vault**](knowledge/README.md) | Structured backend engineering guides, tools, skills, Python, and DSA. | [SQL Deep Dive](knowledge/skills/sql.md)<br>[Auth & Security](knowledge/skills/auth.md)<br>[Testing & Pytest](knowledge/skills/testing.md)<br>[Pydantic](knowledge/python/pydantic.md)<br>[Docker Basics](knowledge/tools/docker.md)<br>[Tea (Gitea CLI)](knowledge/tools/tea.md)<br>[Printer Discovery & Setup](knowledge/tools/printer-setup-avahi-lpinfo.md) |
-| [**Practice & Coding**](practice/README.md) | Algorithm patterns, LeetCode solutions, and implementation drills. | [Practiced Patterns Index](practice/LeetCode/00-practiced-patterns.md) |
-| [**Journal & Logs**](journal/README.md) | Daily engineering retrospectives, interview logs, and reflections. | [Interview Logs](docs/interview/LOG.md)<br>[Mistakes Log](docs/mistakes/template.md) |
-| [**Homelab & Infrastructure**](homelab/README.md) | Systems architecture, NixOS migrations, DNS, CI/CD, and `appctl`. | [NixOS Server & Laptop Migration](homelab/nixos-server-laptop-migration.md)<br>[Domain Migration (`roadtotech.me`)](homelab/domain-migration-roadtotech.md)<br>[Appctl & Repositories Architecture](homelab/homelab-appctl-architecture.md)<br>[Brain Sync & Gitea Mirroring](homelab/brain-sync-and-gitea-mirroring.md) |
-| [**Learning & Growth**](learning/README.md) | Academic tracking, residency curriculum milestones, and notes. | [Backend Residency Roadmap](learning/backend-residency.md)<br>[CI/CD Fundamentals](learning/cicd-fundamentals-and-gitops.md) |
-| [**Projects**](projects/README.md) | Active software projects, architecture notes, and feature roadmaps. | [MagNetFlix](projects/magnetflix.md)<br>[Nekoweb](projects/nekoweb.md) |
+A personal knowledge graph organized by document type, not by subject.
 
 ---
 
-## 🎓 Backend Residency Core Documents
+## Structure
 
-- [**ROADMAP.md**](ROADMAP.md) — The strategic 90-day roadmap with phase exit gates.
-- [**SKILLS.md**](SKILLS.md) — Confidence and interview readiness matrix for core backend technologies.
-- [**AGENTS.md**](AGENTS.md) — The AI Coaching Manual and guidelines for the residency.
-- [**CURRENT.md**](CURRENT.md) — Current active milestone and sprint focus.
-- [**todo.md**](todo.md) — Master checklist of residency phases and tasks.
-- [**parking-lot.md**](knowledge/parking-lot.md) — Backlog of deferred topics to avoid scope creep.
+| Directory | What it contains |
+| :--- | :--- |
+| [`inbox/`](inbox/) | Zero-friction capture. Write here when you don't know where something belongs yet. |
+| [`knowledge/`](knowledge/) | Durable understanding — things you know and want to keep. |
+| [`projects/`](projects/) | Contextual documents that belong to a specific project. |
+| [`records/`](records/) | Historical artifacts — things that happened. |
+| [`practice/`](practice/) | Algorithm exercises and implementation drills. |
 
+---
+
+## Knowledge
+
+```
+knowledge/
+├── concepts/       ← Disciplinary ideas: algorithms, data structures
+├── technologies/   ← Tool and language knowledge: Python, Docker, Nix, tmux
+│   └── python/
+└── methods/        ← Backend practices: testing, auth, SQL, CI/CD, ADRs
+```
+
+**Key documents:**
+- [Binary Search](knowledge/concepts/binary-search.md)
+- [HashMap](knowledge/concepts/hashmap.md)
+- [Pydantic](knowledge/technologies/python/pydantic.md)
+- [Docker](knowledge/technologies/docker.md)
+- [Authentication & JWT](knowledge/methods/auth.md)
+- [SQL](knowledge/methods/sql.md)
+- [Testing](knowledge/methods/testing.md)
+- [CI/CD & GitOps](knowledge/methods/cicd-fundamentals-and-gitops.md)
+
+---
+
+## Projects
+
+```
+projects/
+├── homelab/        ← Infrastructure, NixOS, appctl, CI/CD, networking
+│   ├── plans/      ← Migration and strategy documents
+│   └── guides/     ← Architecture and how-to documents
+├── magnetflix/     ← Media application
+└── nekoweb/        ← Web project
+```
+
+**Key documents:**
+- [Homelab Overview](projects/homelab/overview.md)
+- [MagNetFlix Overview](projects/magnetflix/overview.md)
+
+---
+
+## Records
+
+```
+records/
+└── journal/        ← Dated engineering retrospectives
+```
+
+---
+
+## Practice
+
+```
+practice/
+└── LeetCode/
+    ├── 00-practiced-patterns.md   ← Pattern index
+    ├── 0001-two-sum.md
+    └── Solutions/                 ← Python solution files
+```
+
+---
+
+## Conventions
+
+Every document has a `type` field in its YAML frontmatter. See [AGENTS.md](AGENTS.md) for the full metadata convention, directory semantics, link standards, and git commit format.
+
+---
+
+## Inbox
+
+Documents that haven't been classified yet live in [`inbox/`](inbox/). See [`inbox/README.md`](inbox/README.md) for the capture rule.
