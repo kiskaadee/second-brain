@@ -185,7 +185,7 @@ for fruit, quantity in inventory.items():
 # Today we have 8 oranges	
 ```
 
-When looping through a sequence, the position index and corresponding value can be retrieved at the same time using the [`enumerate()`](../python/enumerate.md) function.
+When looping through a sequence, the position index and corresponding value can be retrieved at the same time using the [`enumerate()`](../technologies/python/enumerate.md) function.
 
 ```python
 for i, (fruit, quantity) in enumerate(inventory.items(), start=1):

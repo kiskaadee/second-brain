@@ -244,7 +244,7 @@ Each stored entry must contain two pieces of information:
 - the value
 - its index
 
-A [**HashMap**](../../knowledge/dsa/hashmap.md) is an excellent fit for this requirement because it stores data as key-value pairs and provides average-case constant-time $O(1)$ lookups.
+A [**HashMap**](../../knowledge/concepts/hashmap.md) is an excellent fit for this requirement because it stores data as key-value pairs and provides average-case constant-time $O(1)$ lookups.
 
 As we traverse the array, we store: `value --> index`
 

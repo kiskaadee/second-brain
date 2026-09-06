@@ -31,7 +31,7 @@ You must write an algorithm with `O(log n)` runtime complexity.
 - `-104 <= target <= 104`
 
 ## Intuition
-When I saw that an $O(\log N)$ solution is explicitly required, I immediately thought back to [#14](14-longest-common-prefix.md), where **[binary search](../../knowledge/dsa/binary-search.md)** was used to progressively discard parts of the search space that could not contain the answer.
+When I saw that an $O(\log N)$ solution is explicitly required, I immediately thought back to [#14](0014-longest-common-prefix.md), where **[binary search](../../knowledge/concepts/binary-search.md)** was used to progressively discard parts of the search space that could not contain the answer.
 
 Since the array is already sorted, we can use binary search instead of scanning every element. At each step, we compare the target with the middle element. If the target is larger, we know it cannot appear in the left half, so we discard it. Otherwise, we discard the right half. If the target is found, we return its index immediately. If the search space becomes empty, the `left` pointer indicates the position where the target should be inserted while preserving the sorted order.
 ## Algorithm

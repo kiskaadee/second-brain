@@ -1,47 +1,48 @@
 # 🌐 Homelab & Infrastructure Planning
 
-This section documents the architectural roadmaps, infrastructure designs, deployment automation, and system administration workflows for the homelab ecosystem.
+This project documents the architectural roadmaps, infrastructure designs, deployment automation, and system administration workflows for the homelab ecosystem.
 
 ---
 
-## 📑 Index of Plans
+## 📑 Plans
 
-1. [**NixOS Server & Laptop Migration**](nixos-server-laptop-migration.md)
+1. [**NixOS Server & Laptop Migration**](plans/nixos-server-laptop-migration.md)
    - Converting the desktop into a 24/7 headless production server.
    - Setting up the laptop as the primary graphical development workstation.
    - Decoupling visual configurations (Niri, Hyprland, Waybar, GUI apps) from the server.
-2. [**Domain Migration (`roadtotech.me`)**](domain-migration-roadtotech.md)
+2. [**Domain Migration (`roadtotech.me`)**](plans/domain-migration-roadtotech.md)
    - Step-by-step strategy for cutting over from `arch-services.mywire.org` to `roadtotech.me`.
    - DNS delegation options (Dynu vs. Cloudflare), Traefik ACME wildcard SSL, and Authelia session cookie updates.
-3. [**Core & Sites Cutover and Testing Plan**](core-sites-cutover-testing-plan.md)
+3. [**Core & Sites Cutover and Testing Plan**](plans/core-sites-cutover-testing-plan.md)
    - Zero-downtime, progressive testing and safe cutover guide from `~/Deployments` to `~/Core` and `~/Sites`.
    - Complete pre-flight verification matrix, rollback commands, and post-validation cleanup.
-4. [**Homelab Infrastructure & Appctl Architecture**](homelab-appctl-architecture.md)
+4. [**CI/CD & Deployment Strategy**](plans/deployment-and-cicd-strategy.md)
+   - Automating image builds, GitOps updates, Gitea Actions/GitHub Actions, and production rollouts.
+5. [**Production Folder Structure Reorganization**](plans/folder-structure-reorganization.md)
+   - Establishing strict directory boundaries (`~/Core`, `~/Sites`, `~/Projects`).
+   - Removing development traces and non-production scratchpads from the server.
+6. [**LVM Storage Optimization & Partition Resizing Strategy**](plans/lvm-storage-optimization-and-resizing.md)
+   - Storage topology analysis, desktop indexer cache reclamation, and zero-data-loss LVM resize runbook.
+
+---
+
+## 📑 Guides
+
+1. [**Homelab Infrastructure & Appctl Architecture**](guides/homelab-appctl-architecture.md)
    - Making `appctl` a first-class homelab orchestrator.
    - Decoupling monolithic deployments into individual standalone Git repositories.
-5. [**CI/CD & Deployment Strategy**](deployment-and-cicd-strategy.md)
-   - Automating image builds, GitOps updates, Gitea Actions/GitHub Actions, and production rollouts.
-6. [**Production Folder Structure Reorganization**](folder-structure-reorganization.md)
-   - Establishing strict directory boundaries (`/home/kiskaadee/Production`, `/home/kiskaadee/Deployments`, `/home/kiskaadee/Projects`).
-   - Removing development traces and non-production scratchpads from the server.
-7. [**appctl Refactor & Decentralized `app.yaml` Metadata Architecture**](appctl-refactor-and-metadata-sync.md)
+2. [**appctl Refactor & Decentralized `app.yaml` Metadata Architecture**](guides/appctl-refactor-and-metadata-sync.md)
    - Decentralizing service configurations into individual app repositories.
    - Clean service aliases, enhanced status listing, and dynamic Homepage `services.yaml` generation.
-8. [**appctl Git Synchronization & Full-Stack Lifecycle Strategy**](appctl-git-sync-and-lifecycle.md)
+3. [**appctl Git Synchronization & Full-Stack Lifecycle Strategy**](guides/appctl-git-sync-and-lifecycle.md)
    - Real-time Git sync status in `appctl list` (`✓ Synced`, `⬆ Ahead`, `⬇ Behind`, `* Dirty`).
    - Network fetch support (`--fetch`) and atomic stack upgrade workflow (`appctl update`).
-9. [**Custom API Security Hardening & Threat Analysis**](custom-api-security-and-hardening.md)
+4. [**Custom API Security Hardening & Threat Analysis**](guides/custom-api-security-and-hardening.md)
    - Attack surface review and actionable hardening roadmap for custom endpoints (`learning-hub`, `minecraft-web-admin`).
    - Authelia ForwardAuth integration, rate limiting, and JWT fail-fast validation.
-10. [**Real-Time Brain Synchronization & Gitea Push Mirroring**](brain-sync-and-gitea-mirroring.md)
-    - Zero-overhead markdown synchronization architecture between laptop and server using Gitea push mirroring.
-    - Systemd timer reconciliation, instant `doc2site` reflection, and GitHub offsite backup.
-11. [**LVM Storage Optimization & Partition Resizing Strategy**](lvm-storage-optimization-and-resizing.md)
-    - Storage topology analysis, desktop indexer cache reclamation, and zero-data-loss LVM resize runbook.
-12. [**WhatsApp & Telegram AI Assistant Backend Architecture**](chatbot-assistant-backend-architecture.md)
-    - Architecture, channel trade-offs (Telegram vs WhatsApp), APScheduler cron triggers, and Brain vault RAG integration.
-
-
-
-
+5. [**Real-Time Brain Synchronization & Gitea Push Mirroring**](guides/brain-sync-and-gitea-mirroring.md)
+   - Zero-overhead markdown synchronization architecture between laptop and server using Gitea push mirroring.
+   - Systemd timer reconciliation, instant `doc2site` reflection, and GitHub offsite backup.
+6. [**WhatsApp & Telegram AI Assistant Backend Architecture**](guides/chatbot-assistant-backend-architecture.md)
+   - Architecture, channel trade-offs (Telegram vs WhatsApp), APScheduler cron triggers, and Brain vault RAG integration.
 

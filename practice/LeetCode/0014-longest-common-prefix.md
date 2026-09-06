@@ -210,7 +210,7 @@ flowchart TD
 ```
 **Implementation**: 
 
-I have a [guide](../../knowledge/python/zip.md) on `zip()`'s behavior and use cases, but, in a nutshell, this function combines multiple lists or iterables (like tuples or strings) element-by-element, pairing items at the same index together into tuples. 
+I have a [guide](../../knowledge/technologies/python/zip.md) on `zip()`'s behavior and use cases, but, in a nutshell, this function combines multiple lists or iterables (like tuples or strings) element-by-element, pairing items at the same index together into tuples. 
 
 Consider the following list of strings:
 
@@ -262,7 +262,7 @@ class Solution:
         return "".join(prefix)        
 ```
 
-### [Binary Search](../../knowledge/dsa/binary-search.md)
+### [Binary Search](../../knowledge/concepts/binary-search.md)
 This is a classic Divide and Conquer approach. Rather than searching over the strings themselves, we search over the **possible prefix lengths**. The search space ranges from `0` to the length of the shortest string. For a candidate length `k`, we ask whether the first `k` characters are shared by every string.
 
 **Algorithm**:

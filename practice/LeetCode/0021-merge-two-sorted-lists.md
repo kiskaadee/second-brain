@@ -4,7 +4,7 @@ Status: Solved
 
 Difficulty: Easy
 
-**Relevant Guides:** [Linked List Guide](../../knowledge/dsa/linked-list.md)
+**Relevant Guides:** [Linked List Guide](../../knowledge/concepts/linked-list.md)
 
 ## Problem Statement 
 
