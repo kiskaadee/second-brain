@@ -1,3 +1,9 @@
+---
+type: knowledge
+status: draft
+topics: ['auth', 'jwt', 'security']
+---
+
 # Authentication & Authorization Notes
 
 ## JWT (JSON Web Tokens)

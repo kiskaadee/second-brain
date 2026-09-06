@@ -1,3 +1,8 @@
+---
+type: guide
+project: homelab
+---
+
 # 🤖 WhatsApp & Telegram AI Assistant Backend Architecture
 
 ## 🎯 Motivation & Objectives

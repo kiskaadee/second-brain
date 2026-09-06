@@ -1,3 +1,9 @@
+---
+type: knowledge
+status: stable
+topics: ['python', 'iteration']
+---
+
 # Quick guide to Python's `enumerate()`
 
 If you spend enough time writing Python, you will eventually find yourself needing to loop over a list while keeping track of where you are in that list.

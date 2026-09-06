@@ -1,3 +1,9 @@
+---
+type: plan
+status: active
+project: homelab
+---
+
 # 🚀 Deployment & CI/CD Strategy
 
 ## 🎯 Objective

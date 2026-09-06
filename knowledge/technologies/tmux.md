@@ -1,3 +1,9 @@
+---
+type: knowledge
+status: stable
+topics: ['linux', 'terminal']
+---
+
 # Tmux Cheat Sheet & Quick Reference
 From: https://tmuxcheatsheet.com/
 

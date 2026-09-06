@@ -1,3 +1,9 @@
+---
+type: practice
+status: completed
+topics: ['dsa', 'arrays', 'two-pointers']
+---
+
 # [27. Remove Element](https://leetcode.com/problems/remove-element/)
 
 Difficulty: Easy

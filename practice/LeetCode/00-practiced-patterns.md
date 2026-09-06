@@ -1,3 +1,8 @@
+---
+type: practice
+status: active
+---
+
 # Practiced Patterns
 
 This document tracks the algorithmic patterns encountered while solving LeetCode problems.

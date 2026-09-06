@@ -1,3 +1,9 @@
+---
+type: knowledge
+status: stable
+topics: ['python', 'iteration']
+---
+
 # Quick Guide to Python's `zip()`
 If you spend enough time writing Python, you will eventually find yourself needing to loop over two or more related lists at the same time. 
 

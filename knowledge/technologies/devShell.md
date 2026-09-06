@@ -1,3 +1,9 @@
+---
+type: knowledge
+status: stable
+topics: ['nix', 'devenv']
+---
+
 # The Anatomy of a devShell
 
 ## Motivation

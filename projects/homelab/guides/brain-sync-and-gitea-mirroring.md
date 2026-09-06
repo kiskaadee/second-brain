@@ -1,3 +1,8 @@
+---
+type: guide
+project: homelab
+---
+
 # 🧠 Real-Time Brain Synchronization & Gitea Push Mirroring
 
 ## 🎯 Motivation & Objectives

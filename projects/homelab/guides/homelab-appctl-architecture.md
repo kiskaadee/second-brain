@@ -1,3 +1,8 @@
+---
+type: guide
+project: homelab
+---
+
 # 📦 Homelab Architecture: Appctl & Decentralized Repositories
 
 ## 🎯 Architecture Model & Goals

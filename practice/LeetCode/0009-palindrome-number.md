@@ -1,3 +1,9 @@
+---
+type: practice
+status: completed
+topics: ['dsa', 'math']
+---
+
 # [9. Palindrome Number](https://leetcode.com/problems/palindrome-number/)
 
 **Status**: Solved

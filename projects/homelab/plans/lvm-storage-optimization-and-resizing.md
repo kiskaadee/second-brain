@@ -1,3 +1,9 @@
+---
+type: plan
+status: active
+project: homelab
+---
+
 # 💾 LVM Storage Optimization & Partition Resizing Strategy
 
 ## 🎯 Motivation & Objectives

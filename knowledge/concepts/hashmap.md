@@ -1,3 +1,9 @@
+---
+type: knowledge
+status: stable
+topics: ['dsa', 'data-structures', 'hashmap']
+---
+
 # What is a HashMap?
 
 Reference: [HashMaps in Python Tutorial - Data Structures for Coding Interviews](https://www.youtube.com/watch?v=RcZsTI5h0kg)

@@ -1,3 +1,9 @@
+---
+type: practice
+status: completed
+topics: ['dsa', 'hashmap']
+---
+
 # [13. Roman to Integer](https://leetcode.com/problems/roman-to-integer/)
 
 Status: Solved

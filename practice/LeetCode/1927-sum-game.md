@@ -1,3 +1,9 @@
+---
+type: practice
+status: completed
+topics: ['dsa', 'math', 'greedy']
+---
+
 
 # [1927. Sum Game](https://leetcode.com/problems/sum-game/)
 

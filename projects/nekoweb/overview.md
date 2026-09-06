@@ -1,3 +1,8 @@
+---
+type: project
+status: active
+---
+
 # 🐱 Nekoweb / Haruneko
 
 ## 📌 Project Overview

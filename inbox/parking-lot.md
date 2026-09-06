@@ -1,3 +1,8 @@
+---
+type: inbox
+created: 2026-09-05
+---
+
 # Parking Lot
 
 Topics worth studying after they become relevant.

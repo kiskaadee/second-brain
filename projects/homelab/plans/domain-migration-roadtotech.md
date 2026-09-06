@@ -1,3 +1,9 @@
+---
+type: plan
+status: active
+project: homelab
+---
+
 # 🌐 Domain Migration Plan: `arch-services.mywire.org` ➔ `roadtotech.me`
 
 ## 🎯 Objective

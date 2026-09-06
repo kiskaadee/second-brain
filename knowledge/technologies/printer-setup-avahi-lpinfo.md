@@ -1,3 +1,9 @@
+---
+type: knowledge
+status: stable
+topics: ['linux', 'networking', 'printing']
+---
+
 # Printer Discovery & Setup Guide (`avahi-browse` & `lpinfo`)
 
 This guide covers the architecture, tooling, options, and step-by-step procedures for discovering, diagnosing, and configuring printers on Linux, with specific focus on **CUPS**, **mDNS/Zeroconf**, and **NixOS**.

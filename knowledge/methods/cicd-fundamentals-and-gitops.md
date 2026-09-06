@@ -1,3 +1,9 @@
+---
+type: knowledge
+status: stable
+topics: ['cicd', 'gitops', 'devops']
+---
+
 # 🔄 CI/CD Fundamentals & GitOps Architecture
 
 ## 🎯 What is CI/CD?

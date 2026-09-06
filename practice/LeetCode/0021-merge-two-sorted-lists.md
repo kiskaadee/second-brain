@@ -1,3 +1,9 @@
+---
+type: practice
+status: completed
+topics: ['dsa', 'linked-list']
+---
+
 # [21. Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists/)
 
 Status: Solved

@@ -1,3 +1,9 @@
+---
+type: knowledge
+status: stable
+topics: ['nix', 'python', 'devenv']
+---
+
 # Environment Management: devShells, direnv, and uv
 
 Managing software dependencies spans multiple layers—from system-level shared libraries, to language-specific packages, to environment variables. Relying on a single tool to handle all layers inevitably leads to fragile environments, especially on a non-FHS distribution like NixOS. 

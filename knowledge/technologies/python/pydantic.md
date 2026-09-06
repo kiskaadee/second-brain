@@ -1,3 +1,9 @@
+---
+type: knowledge
+status: stable
+topics: ['python', 'validation', 'pydantic']
+---
+
 # Introduction to Pydantic
 
 ## Guiding Questions: 

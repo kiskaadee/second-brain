@@ -1,3 +1,8 @@
+---
+type: project
+status: active
+---
+
 # 🌐 Homelab & Infrastructure Planning
 
 This project documents the architectural roadmaps, infrastructure designs, deployment automation, and system administration workflows for the homelab ecosystem.

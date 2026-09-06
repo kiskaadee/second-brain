@@ -1,3 +1,9 @@
+---
+type: knowledge
+status: stable
+topics: ['dsa', 'algorithms', 'binary-search']
+---
+
 # Binary Search: The Geometry of Uncertainty
 
 ## Key Insights

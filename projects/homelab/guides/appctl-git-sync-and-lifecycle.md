@@ -1,3 +1,8 @@
+---
+type: guide
+project: homelab
+---
+
 # 🔄 appctl Git Synchronization & Full-Stack Lifecycle Strategy
 
 ## 🎯 Motivation & Rationale

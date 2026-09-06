@@ -1,3 +1,8 @@
+---
+type: project
+status: active
+---
+
 # 🎬 MagNetFlix
 
 ## 📌 Project Overview

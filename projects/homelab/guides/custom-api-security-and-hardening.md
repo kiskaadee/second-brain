@@ -1,3 +1,8 @@
+---
+type: guide
+project: homelab
+---
+
 # 🛡️ Custom API Security Hardening & Threat Analysis
 
 ## 🎯 Objective

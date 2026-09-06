@@ -1,3 +1,9 @@
+---
+type: knowledge
+status: draft
+topics: ['sql', 'postgresql']
+---
+
 # SQL & Relational Databases Notes
 
 ## ACID Properties

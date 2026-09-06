@@ -1,3 +1,9 @@
+---
+type: knowledge
+status: stable
+topics: ['architecture', 'documentation']
+---
+
 # Quick Guide to Architecture Decision Records (ADRs)
 
 Without the proper documentation, the critical reasons _why_ a system was built a certain way exist only in developers' heads, chat histories, or forgotten meeting notes. As a software project grows, a development team will eventually stare at a piece of code, a database schema, or an infrastructure choice and ask themselves: _"Why on earth did we build it this way?"_

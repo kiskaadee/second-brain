@@ -1,3 +1,9 @@
+---
+type: plan
+status: active
+project: homelab
+---
+
 # 📁 Server Folder Structure & Production Hygiene
 
 ## 🎯 Objective

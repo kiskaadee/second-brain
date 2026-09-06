@@ -1,3 +1,9 @@
+---
+type: knowledge
+status: stable
+topics: ['python', 'strings']
+---
+
 # Python String Methods Reference
 ## Core Mental Model
 

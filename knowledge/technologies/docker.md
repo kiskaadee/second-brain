@@ -1,3 +1,9 @@
+---
+type: knowledge
+status: stable
+topics: ['docker', 'containers']
+---
+
 # Docker & Containerization Notes
 
 ## Docker Core Concepts

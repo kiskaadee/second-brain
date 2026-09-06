@@ -1,3 +1,9 @@
+---
+type: knowledge
+status: stable
+topics: ['documentation', 'workflow']
+---
+
 # From Notes to Technical Documentation
 
 A lightweight workflow for transforming raw notes into clear technical documentation.

@@ -1,3 +1,9 @@
+---
+type: practice
+status: completed
+topics: ['dsa', 'hashmap']
+---
+
 # [1. Two Sum](https://leetcode.com/problems/two-sum/)
 
 **Status**: Solved

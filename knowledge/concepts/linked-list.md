@@ -1,3 +1,9 @@
+---
+type: knowledge
+status: stable
+topics: ['dsa', 'data-structures', 'linked-list']
+---
+
 # Linked Lists: Designing a Dynamic Task Queue
 
 Imagine you are implementing the scheduler of an operating system. New high-priority jobs can appear at any moment, completed jobs dissappear constantly, and the queue changes hundreds of times per second.

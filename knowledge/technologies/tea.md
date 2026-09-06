@@ -1,3 +1,9 @@
+---
+type: knowledge
+status: stable
+topics: ['gitea', 'cli']
+---
+
 # 🍵 Tea CLI (Gitea) Quick Reference & Fundamentals
 
 ## 📌 Overview

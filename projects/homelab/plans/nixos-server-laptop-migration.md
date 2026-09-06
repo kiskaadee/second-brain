@@ -1,3 +1,9 @@
+---
+type: plan
+status: active
+project: homelab
+---
+
 # 🖥️ NixOS Server & Laptop Workstation Migration
 
 ## 🎯 Executive Summary

@@ -1,3 +1,8 @@
+---
+type: guide
+project: homelab
+---
+
 # 🚀 appctl Refactor & Decentralized `app.yaml` Metadata Architecture
 
 ## 🎯 Overview & Objectives

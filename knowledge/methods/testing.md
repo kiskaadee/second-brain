@@ -1,3 +1,9 @@
+---
+type: knowledge
+status: draft
+topics: ['testing', 'pytest']
+---
+
 # Testing Notes
 
 ## Unit Testing vs. Integration Testing

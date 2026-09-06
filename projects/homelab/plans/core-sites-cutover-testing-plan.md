@@ -1,3 +1,9 @@
+---
+type: plan
+status: active
+project: homelab
+---
+
 # 🚀 Migration, Testing & Safe Cutover Plan: `~/Deployments` ➔ `~/Core` + `~/Sites`
 
 ## 🎯 Objective

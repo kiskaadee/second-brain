@@ -1,3 +1,9 @@
+---
+type: practice
+status: completed
+topics: ['dsa', 'math']
+---
+
 # [3622. Check Divisibility by Digit Sum and Product](https://leetcode.com/problems/check-divisibility-by-digit-sum-and-product/)
 
 **Difficulty**: Easy

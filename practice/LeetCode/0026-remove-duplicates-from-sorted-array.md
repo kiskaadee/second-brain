@@ -1,3 +1,9 @@
+---
+type: practice
+status: completed
+topics: ['dsa', 'arrays', 'two-pointers']
+---
+
 # [26. Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array/)
 
 **Difficulty**: Easy
