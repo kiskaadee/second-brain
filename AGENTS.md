@@ -54,7 +54,16 @@ Unchanged in structure. Contains LeetCode writeups and Python solution files wit
 
 ## Metadata Convention
 
-Every markdown document must have a YAML frontmatter block. `type` is the only universally required field. All other fields are type-specific.
+Every markdown document must have a YAML frontmatter block. `type` is the only universally required field. All other fields are type-specific or optional metadata extensions.
+
+### Core & Optional Fields
+
+- **`type`** *(Required)*: `knowledge`, `project`, `plan`, `guide`, `decision`, `journal`, `discussion`, `experiment`, `practice`, `inbox`, `reference`.
+- **`tags`** *(Optional)*: List of keyword tags (e.g., `tags: [homelab, ddns, networking]` or YAML list format) applicable to any document type for cross-cutting discovery.
+- **`project`** *(Optional)*: Project identifier (e.g., `project: homelab`, `project: dynu-monitor`, `project: bitetrack`) indicating context ownership.
+- **`status`** *(Conditional)*: Lifecycle status for plans (`draft`, `active`, `completed`, `abandoned`), decisions (`proposed`, `accepted`, `superseded`), projects (`planned`, `active`, `paused`, `completed`), knowledge (`draft`, `stable`), and practice (`active`, `completed`).
+
+### Frontmatter Templates
 
 ```yaml
 # knowledge
@@ -62,13 +71,16 @@ Every markdown document must have a YAML frontmatter block. `type` is the only u
 type: knowledge
 status: draft | stable
 topics: [list, of, topics]
+tags: [optional, tags]
 related: [optional, relative, paths]
+project: optional-project-name
 ---
 
-# project (overview files only)
+# project (overview files)
 ---
 type: project
 status: planned | active | paused | completed
+tags: [list, of, tags]
 ---
 
 # plan
@@ -76,12 +88,14 @@ status: planned | active | paused | completed
 type: plan
 status: draft | active | completed | abandoned
 project: project-name
+tags: [list, of, tags]
 ---
 
 # guide
 ---
 type: guide
 project: project-name
+tags: [list, of, tags]
 ---
 
 # decision
@@ -89,11 +103,31 @@ project: project-name
 type: decision
 status: proposed | accepted | superseded
 project: project-name
+tags: [list, of, tags]
 ---
 
-# journal (no status field — journals are historical by definition)
+# journal (historical record)
 ---
 type: journal
+date: YYYY-MM-DD
+tags: [list, of, tags]
+project: optional-project-name
+---
+
+# experiment (prototypes, investigations, runbooks)
+---
+type: experiment
+status: draft | active | completed
+project: project-name
+tags: [list, of, tags]
+date: YYYY-MM-DD
+---
+
+# discussion (conversations, architectural evaluations)
+---
+type: discussion
+project: project-name
+tags: [list, of, tags]
 date: YYYY-MM-DD
 ---
 
@@ -102,16 +136,17 @@ date: YYYY-MM-DD
 type: practice
 status: completed | active
 topics: [list, of, topics]
+tags: [optional, tags]
 ---
 
-# inbox (no status — classification happens during processing)
+# inbox (unprocessed captures)
 ---
 type: inbox
 created: YYYY-MM-DD
+tags: [optional, tags]
+project: optional-project-name
 ---
 ```
-
-Valid `type` values: `knowledge`, `project`, `plan`, `guide`, `decision`, `journal`, `discussion`, `experiment`, `practice`, `inbox`, `reference`.
 
 **Important:** Folder location does not automatically determine every metadata field. A document inside `projects/homelab/plans/` is a `plan`, not a `project`. The folder establishes context. The `type` field establishes semantic role.
 
