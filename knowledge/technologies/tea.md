@@ -85,24 +85,24 @@ Because the `/nix/store` is read-only, Git fails to acquire a write lock (`error
 
 ## 🔄 `gh` vs `tea` Rosetta Stone
 
-| Action | GitHub CLI (`gh`) | Gitea CLI (`tea`) |
-| :--- | :--- | :--- |
-| **Authentication** | `gh auth login` | `tea login add` |
-| **Session Status** | `gh auth status` | `tea whoami` / `tea login list` |
-| **Clone Repository** | `gh repo clone <owner>/<repo>` | `tea clone <owner>/<repo>` |
-| **Create Remote Repo** | `gh repo create <name> --private` | `tea repo create --name <name> --private` |
-| **Open in Web Browser** | `gh repo view --web` / `gh browse` | `tea open` |
-| **List Issues** | `gh issue list` | `tea issues` *(or `tea issue ls`)* |
-| **Create Issue** | `gh issue create` | `tea issue create` |
-| **View Issue** | `gh issue view <id>` | `tea issue <id>` |
-| **Close Issue** | `gh issue close <id>` | `tea issue close <id>` |
-| **List Pull Requests** | `gh pr list` | `tea pulls` *(or `tea pr ls`)* |
-| **Create Pull Request** | `gh pr create` | `tea pull create` |
-| **Checkout PR Branch** | `gh pr checkout <id>` | `tea pull checkout <id>` |
-| **View Pull Request** | `gh pr view <id>` | `tea pull <id>` |
-| **Merge Pull Request** | `gh pr merge <id>` | `tea pull merge <id>` |
-| **List Releases** | `gh release list` | `tea releases` |
-| **Create Release** | `gh release create <tag>` | `tea release create --tag <tag>` |
+| Action                  | GitHub CLI (`gh`)                  | Gitea CLI (`tea`)                         |
+| :---------------------- | :--------------------------------- | :---------------------------------------- |
+| **Authentication**      | `gh auth login`                    | `tea login add`                           |
+| **Session Status**      | `gh auth status`                   | `tea whoami` / `tea login list`           |
+| **Clone Repository**    | `gh repo clone <owner>/<repo>`     | `tea clone <owner>/<repo>`                |
+| **Create Remote Repo**  | `gh repo create <name> --private`  | `tea repo create --name <name> --private` |
+| **Open in Web Browser** | `gh repo view --web` / `gh browse` | `tea open`                                |
+| **List Issues**         | `gh issue list`                    | `tea issues` *(or `tea issue ls`)*        |
+| **Create Issue**        | `gh issue create`                  | `tea issue create`                        |
+| **View Issue**          | `gh issue view <id>`               | `tea issue <id>`                          |
+| **Close Issue**         | `gh issue close <id>`              | `tea issue close <id>`                    |
+| **List Pull Requests**  | `gh pr list`                       | `tea pulls` *(or `tea pr ls`)*            |
+| **Create Pull Request** | `gh pr create`                     | `tea pull create`                         |
+| **Checkout PR Branch**  | `gh pr checkout <id>`              | `tea pull checkout <id>`                  |
+| **View Pull Request**   | `gh pr view <id>`                  | `tea pull <id>`                           |
+| **Merge Pull Request**  | `gh pr merge <id>`                 | `tea pull merge <id>`                     |
+| **List Releases**       | `gh release list`                  | `tea releases`                            |
+| **Create Release**      | `gh release create <tag>`          | `tea release create --tag <tag>`          |
 
 ---
 
