@@ -2,6 +2,11 @@
 type: plan
 status: active
 project: homelab
+tags:
+  - appctl
+  - homelab
+  - cutover
+  - migration
 ---
 
 # 🚀 Migration, Testing & Safe Cutover Plan: `~/Deployments` ➔ `~/Core` + `~/Sites`

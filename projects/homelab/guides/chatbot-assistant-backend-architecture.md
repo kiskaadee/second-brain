@@ -1,6 +1,11 @@
 ---
 type: guide
 project: homelab
+tags:
+  - homelab
+  - ai
+  - chatbot
+  - telegram
 ---
 
 # 🤖 WhatsApp & Telegram AI Assistant Backend Architecture

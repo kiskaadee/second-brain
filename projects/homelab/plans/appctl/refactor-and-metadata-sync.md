@@ -1,6 +1,10 @@
 ---
 type: guide
 project: homelab
+tags:
+  - homelab
+  - appctl
+  - metadata
 ---
 
 # 🚀 appctl Refactor & Decentralized `app.yaml` Metadata Architecture

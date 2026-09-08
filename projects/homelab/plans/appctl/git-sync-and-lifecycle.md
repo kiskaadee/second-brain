@@ -1,6 +1,11 @@
 ---
 type: guide
 project: homelab
+tags:
+  - homelab
+  - appctl
+  - git
+  - devops
 ---
 
 # 🔄 appctl Git Synchronization & Full-Stack Lifecycle Strategy

@@ -1,7 +1,12 @@
 ---
 type: plan
-status: active
+status: completed
 project: homelab
+tags:
+  - homelab
+  - server
+  - ddns
+  - domain
 ---
 
 # 🌐 Domain Migration Plan: `arch-services.mywire.org` ➔ `roadtotech.me`

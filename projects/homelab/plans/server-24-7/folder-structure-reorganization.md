@@ -2,6 +2,11 @@
 type: plan
 status: active
 project: homelab
+tags:
+  - homelab
+  - server
+  - storage
+  - hygiene
 ---
 
 # 📁 Server Folder Structure & Production Hygiene

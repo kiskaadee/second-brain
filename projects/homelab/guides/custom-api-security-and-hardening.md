@@ -1,6 +1,11 @@
 ---
 type: guide
 project: homelab
+tags:
+  - homelab
+  - security
+  - hardening
+  - api
 ---
 
 # 🛡️ Custom API Security Hardening & Threat Analysis

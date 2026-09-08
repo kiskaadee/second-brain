@@ -2,6 +2,11 @@
 type: plan
 status: active
 project: homelab
+tags:
+  - gitea
+  - cicd
+  - gitops
+  - homelab
 ---
 
 # 🚀 Deployment & CI/CD Strategy

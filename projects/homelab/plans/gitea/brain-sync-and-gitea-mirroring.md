@@ -1,8 +1,13 @@
 ---
 type: guide
 project: homelab
+tags:
+  - gitea
+  - brain
+  - sync
+  - gitops
+  - homelab
 ---
-
 # 🧠 Real-Time Brain Synchronization & Gitea Push Mirroring
 
 ## 🎯 Motivation & Objectives

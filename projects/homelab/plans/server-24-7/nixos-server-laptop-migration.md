@@ -2,6 +2,12 @@
 type: plan
 status: active
 project: homelab
+tags:
+  - homelab
+  - nixos
+  - migration
+  - server
+  - laptop
 ---
 
 # 🖥️ NixOS Server & Laptop Workstation Migration

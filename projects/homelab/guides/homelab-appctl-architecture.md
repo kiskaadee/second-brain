@@ -1,6 +1,10 @@
 ---
 type: guide
 project: homelab
+tags:
+  - homelab
+  - appctl
+  - architecture
 ---
 
 # 📦 Homelab Architecture: Appctl & Decentralized Repositories

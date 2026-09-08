@@ -2,6 +2,11 @@
 type: plan
 status: active
 project: homelab
+tags:
+  - homelab
+  - lvm
+  - storage
+  - server
 ---
 
 # 💾 LVM Storage Optimization & Partition Resizing Strategy
