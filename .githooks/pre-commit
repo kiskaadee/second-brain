@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -u
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd "$REPO_ROOT"
+
+echo "🔍 [pre-commit] Validating Brain structure..."
+
+if python3 scripts/validate-brain.py; then
+    echo "✅ [pre-commit] Brain structure valid."
+else
+    echo "❌ [pre-commit] Brain validation failed. Commit aborted."
+    echo "💡 [pre-commit] Fix structural issues or move uncurated drafts into inbox/."
+    exit 1
+fi

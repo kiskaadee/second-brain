@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -u
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd "$REPO_ROOT"
+
+BRANCH="$(git branch --show-current)"
+
+if [ -z "$BRANCH" ]; then
+    echo "⚠️  [post-commit] Detached HEAD detected; skipping auto-push."
+    exit 0
+fi
+
+echo "🚀 [post-commit] Syncing '${BRANCH}' to origin..."
+
+if git push origin "$BRANCH"; then
+    echo "✨ [post-commit] Brain synchronized successfully."
+else
+    echo "⚠️  [post-commit] Push failed (network or remote unreachable)."
+    echo "ℹ️  [post-commit] Commit remains saved locally. Run 'git push' when online to synchronize."
+fi
