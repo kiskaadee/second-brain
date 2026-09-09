@@ -32,6 +32,7 @@ REQUIRED_ROOT_FILES = ["README.md", "AGENTS.md", "LICENSE"]
 
 EXEMPT_PATTERNS = [
     ".obsidian",
+    "inbox",
     "practice/LeetCode/Solutions",
     "scripts",
     ".git",

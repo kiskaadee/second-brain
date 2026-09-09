@@ -10,3 +10,8 @@
 .local_config.json
 .agents/
 
+# Uncommitted Capture & Drafts (Staging Area)
+inbox/*
+!inbox/README.md
+
+
