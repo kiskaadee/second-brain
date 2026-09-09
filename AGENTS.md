@@ -21,7 +21,7 @@ The Brain stores five fundamentally different kinds of information:
 ## Semantic Contracts
 
 ### `inbox/`
-Zero-friction capture zone. If the type or destination of a document is not immediately obvious, it belongs here. No metadata required. No naming perfection required. Documents are processed from inbox → knowledge / projects / records / plans during maintenance.
+Local, uncommitted zero-friction capture zone. If the type or destination of a document is not immediately obvious, or while drafting/capturing raw thoughts, it belongs here. No metadata or classification is required at capture time. Documents in `inbox/` sit outside the committed knowledge graph until curated and moved into `knowledge/`, `projects/`, `records/`, or `practice/`.
 
 ### `knowledge/`
 Documents that answer: *"If I read this six months from now, will this help me understand something?"*
@@ -54,7 +54,7 @@ Unchanged in structure. Contains LeetCode writeups and Python solution files wit
 
 ## Metadata Convention
 
-Every markdown document must have a YAML frontmatter block. `type` is the only universally required field. All other fields are type-specific or optional metadata extensions.
+Every committed markdown document in the knowledge graph must have a YAML frontmatter block. `type` is the only universally required field. All other fields are type-specific or optional metadata extensions. (Documents in `inbox/` are uncommitted staging drafts and are exempt from metadata enforcement until curated).
 
 ### Core & Optional Fields
 
@@ -194,3 +194,22 @@ python scripts/validate-brain.py
 ```
 
 Checks: frontmatter presence, valid `type` fields, relative link resolution, no deprecated directories, required root files.
+
+---
+
+## AI Agent Artifact & Inbox Capture Protocol
+
+To avoid draft fragmentation, shadow duplication, and excessive inbox maintenance:
+
+1. **Skip Inbox Capture for Canonical Brain Documents**:
+   If an agent is creating or modifying a document that already has a designated home in `knowledge/`, `projects/`, `records/`, or `practice/`, **DO NOT** write a shadow copy or duplicate draft to `inbox/`. The document in the repository tree is the canonical source of truth.
+
+2. **One Topic, One Draft (In-Place Evolution)**:
+   When generating artifacts for research, plans, or session summaries that belong in `inbox/`:
+   - Search `inbox/` for an existing file covering the current topic or session (e.g., `inbox/<topic>-notes.md`).
+   - If one exists, **update/overwrite that single file in-place** rather than creating new fragmented files (e.g., evolve the plan into the finalized walkthrough/summary).
+   - Never create parallel variations (such as `topic-plan.md`, `topic_plan.md`, `topic-walkthrough.md`, `walkthrough.md`).
+
+3. **Session Consolidation**:
+   At the conclusion of any agentic workflow or task, ensure there is at most **one** comprehensive capture document in `inbox/` representing the session.
+
