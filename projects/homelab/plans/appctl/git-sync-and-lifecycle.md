@@ -6,6 +6,7 @@ tags:
   - appctl
   - git
   - devops
+status: stable
 ---
 
 # 🔄 appctl Git Synchronization & Full-Stack Lifecycle Strategy
