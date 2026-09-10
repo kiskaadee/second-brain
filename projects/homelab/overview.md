@@ -61,4 +61,8 @@ This project documents the architectural roadmaps, infrastructure designs, deplo
    - Authelia ForwardAuth integration, rate limiting, and JWT fail-fast validation.
 4. [**WhatsApp & Telegram AI Assistant Backend Architecture**](guides/chatbot-assistant-backend-architecture.md)
    - Architecture, channel trade-offs (Telegram vs WhatsApp), APScheduler cron triggers, and Brain vault RAG integration.
+5. [**Dynamic Decentralized GitOps Dispatcher Architecture**](guides/homelab-gitops-dispatcher-architecture.md)
+   - Zero-Core-restart webhook architecture, dynamic `app.yaml` discovery, and self-describing deployment primitives.
+6. [**Brain GitOps & Auto-Sync Deployment Pipeline**](guides/brain-gitops-deployment-pipeline.md)
+   - Zero-delay knowledge graph synchronization, 9-phase pre-commit validation, Gitea Actions CI, and live `doc2site` reflection.
 
