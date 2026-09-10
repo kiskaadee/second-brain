@@ -13,10 +13,9 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Set up Python & Quality Tools
+      - name: Set up Quality Tools
         run: |
-          apt-get update -qq && apt-get install -y -qq python3 python3-pip
-          pip3 install --break-system-packages ruff || pip3 install ruff
+          pip install ruff
           npm install -g pyright
 
       - name: Run Brain Validator
