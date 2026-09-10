@@ -8,6 +8,7 @@ tags:
   - gitops
   - cicd
   - homelab
+status: active
 ---
 
 # 🧠 Real-Time Brain Synchronization, CI/CD & Gitea Push Mirroring
