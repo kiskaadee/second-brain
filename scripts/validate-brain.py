@@ -123,6 +123,82 @@ for md in ROOT.rglob("*.md"):
 print(f"  {'✓' if link_errors == 0 else '✗'} Done ({link_errors} broken links).\n")
 
 
+# ── Check 6: Code fence balance ───────────────────────────────────────────────
+print("Checking markdown code fences...")
+fence_errors = 0
+for md in ROOT.rglob("*.md"):
+    if is_exempt(md):
+        continue
+    content = md.read_text(errors="replace")
+    rel = md.relative_to(ROOT)
+    fences = [line for line in content.splitlines() if line.strip().startswith("```")]
+    if len(fences) % 2 != 0:
+        errors.append(f"Unclosed code fence in {rel} (found {len(fences)} fence delimiters)")
+        fence_errors += 1
+print(f"  {'✓' if fence_errors == 0 else '✗'} Done ({fence_errors} issues).\n")
+
+
+# ── Check 7: Mermaid diagram validation ───────────────────────────────────────
+print("Checking Mermaid diagrams...")
+mermaid_errors = 0
+MERMAID_TYPES = {
+    "flowchart", "graph", "sequencediagram", "erdiagram", "classdiagram",
+    "statediagram", "gantt", "pie", "gitgraph", "mindmap", "timeline",
+    "quadrantchart", "c4context", "zenuml", "sankey-beta", "kanban",
+    "block-beta", "packet-beta", "architecture-beta"
+}
+
+for md in ROOT.rglob("*.md"):
+    if is_exempt(md):
+        continue
+    content = md.read_text(errors="replace")
+    rel = md.relative_to(ROOT)
+
+    # Find all ```mermaid ... ``` blocks
+    for m in re.finditer(r'```mermaid\s*\n(.*?)\n```', content, re.DOTALL):
+        block = m.group(1).strip()
+        if not block:
+            errors.append(f"Empty Mermaid diagram block in {rel}")
+            mermaid_errors += 1
+            continue
+
+        lines = [line.strip() for line in block.splitlines() if line.strip() and not line.strip().startswith("%%")]
+        if not lines:
+            continue
+
+        # Check valid diagram header
+        header = lines[0].split()[0].lower()
+        if header not in MERMAID_TYPES:
+            errors.append(f"Invalid Mermaid diagram type '{header}' in {rel}")
+            mermaid_errors += 1
+            continue
+
+        # Check subgraph / block balance depending on diagram type
+        if header in ["flowchart", "graph"]:
+            subgraphs = sum(1 for line in lines if line.startswith("subgraph"))
+            ends = sum(1 for line in lines if line == "end" or line.startswith("end "))
+            if subgraphs != ends:
+                errors.append(f"Unbalanced subgraph in Mermaid diagram in {rel} ({subgraphs} subgraph vs {ends} end)")
+                mermaid_errors += 1
+        elif header == "sequencediagram":
+            block_openers = sum(1 for line in lines if re.match(r'^(alt|opt|loop|par|critical|break|rect)\b', line))
+            ends = sum(1 for line in lines if re.match(r'^end\b', line))
+            if block_openers != ends:
+                errors.append(f"Unbalanced control blocks in Mermaid sequenceDiagram in {rel} ({block_openers} block openers vs {ends} end)")
+                mermaid_errors += 1
+
+        # Check for unquoted special characters in transition labels: e.g. -->|label|
+        for line in lines:
+            for label_match in re.finditer(r'-->\|([^|]+)\|', line):
+                label = label_match.group(1).strip()
+                # If label contains special characters like *, /, or unescaped parens but isn't quoted
+                if any(ch in label for ch in ['*', '/']) and not (label.startswith('"') and label.endswith('"')):
+                    errors.append(f"Unquoted special character in Mermaid edge label '|{label}|' in {rel} (wrap in \"...\")")
+                    mermaid_errors += 1
+
+print(f"  {'✓' if mermaid_errors == 0 else '✗'} Done ({mermaid_errors} issues).\n")
+
+
 # ── Summary ───────────────────────────────────────────────────────────────────
 if errors:
     print(f"❌ Validation failed — {len(errors)} error(s):\n")
@@ -131,3 +207,4 @@ if errors:
     sys.exit(1)
 else:
     print("✅ All checks passed. Brain structure is valid.")
+
