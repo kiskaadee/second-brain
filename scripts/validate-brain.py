@@ -11,9 +11,11 @@ Checks:
   5. Every relative markdown link resolves to an existing file.
 """
 
-import re
-import sys
 import pathlib
+import re
+import shutil
+import subprocess
+import sys
 
 ROOT = pathlib.Path(__file__).parent.parent.resolve()
 
@@ -113,7 +115,7 @@ for md in ROOT.rglob("*.md"):
     content = md.read_text(errors="replace")
     for m in re.finditer(r'\[([^\]]*)\]\(([^)]+)\)', content):
         target = m.group(2).split('#')[0].strip()
-        if not target or target.startswith('http') or target.startswith('file:') or target.startswith('mailto:'):
+        if not target or target.startswith(('http', 'file:', 'mailto:')):
             continue
         resolved = (md.parent / target).resolve()
         if not resolved.exists():
@@ -199,6 +201,32 @@ for md in ROOT.rglob("*.md"):
 print(f"  {'✓' if mermaid_errors == 0 else '✗'} Done ({mermaid_errors} issues).\n")
 
 
+# ── Check 8: Python Linting (Ruff) ────────────────────────────────────────────
+print("Checking Python code quality (Ruff)...")
+if shutil.which("ruff"):
+    res = subprocess.run(["ruff", "check", str(ROOT)], capture_output=True, text=True, check=False)
+    if res.returncode != 0:
+        errors.append(f"Ruff linting failed:\n{res.stdout.strip()}")
+        print("  ✗ Done (Ruff errors found).\n")
+    else:
+        print("  ✓ Done (0 lint issues).\n")
+else:
+    print("  ℹ Skipped (ruff not in PATH).\n")
+
+
+# ── Check 9: Python Type Checking (Pyright) ───────────────────────────────────
+print("Checking Python type consistency (Pyright)...")
+if shutil.which("pyright"):
+    res = subprocess.run(["pyright", str(ROOT / "scripts"), str(ROOT / "practice")], capture_output=True, text=True, check=False)
+    if res.returncode != 0:
+        errors.append(f"Pyright type checks failed:\n{res.stdout.strip()}")
+        print("  ✗ Done (Pyright errors found).\n")
+    else:
+        print("  ✓ Done (0 type errors).\n")
+else:
+    print("  ℹ Skipped (pyright not in PATH).\n")
+
+
 # ── Summary ───────────────────────────────────────────────────────────────────
 if errors:
     print(f"❌ Validation failed — {len(errors)} error(s):\n")
@@ -207,4 +235,5 @@ if errors:
     sys.exit(1)
 else:
     print("✅ All checks passed. Brain structure is valid.")
+
 
