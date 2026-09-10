@@ -7,9 +7,8 @@ class Solution:
         N = len(needle)
 
         for i in range(L - N + 1):
-            if haystack[i] == needle[0]:
-                if haystack[i:i+N] == needle:
-                    return i
+            if haystack[i] == needle[0] and haystack[i:i+N] == needle:
+                return i
 
         return -1
 

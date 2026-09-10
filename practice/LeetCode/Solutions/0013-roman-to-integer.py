@@ -1,5 +1,8 @@
+from typing import ClassVar
+
+
 class Solution:
-    SYMBOLS = {
+    SYMBOLS: ClassVar[dict[str, int]] = {
         "I": 1,
         "V": 5,
         "X": 10,

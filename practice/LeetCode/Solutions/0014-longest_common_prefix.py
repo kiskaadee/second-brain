@@ -1,13 +1,12 @@
-from typing import List
 
 
 class Solution:
-    def longestCommonPrefix(self, strs: List[str]) -> str:
+    def longestCommonPrefix(self, strs: list[str]) -> str:
         if len(strs) == 0:
             return ""
         return self.horizontal_scanning(strs)
 
-    def vertical_scanning(self, strs: List[str]) -> str:
+    def vertical_scanning(self, strs: list[str]) -> str:
         prefix = []
         ref_string = strs[0]
 
@@ -19,7 +18,7 @@ class Solution:
 
         return "".join(prefix)
 
-    def horizontal_scanning(self, strs: List[str]) -> str:
+    def horizontal_scanning(self, strs: list[str]) -> str:
         prefix = strs[0]
 
         for string in strs[1:]:
@@ -28,18 +27,18 @@ class Solution:
 
         return prefix
 
-    def transpose_matrix(self, strs: List[str]) -> str:
+    def transpose_matrix(self, strs: list[str]) -> str:
         prefix = []
         transposed = list(zip(*strs))
 
         for i, row in enumerate(transposed):
             if not len(set(row)) <= 1:
                 return "".join(prefix)
-            prefix.append(transposed[i][0])
+            prefix.append(row[0])
 
         return "".join(prefix)
 
-    def binary_search(self, strs: List[str]) -> str:
+    def binary_search(self, strs: list[str]) -> str:
         def is_common_prefix(strs, k):
             prefix = strs[0][:k]
             for string in strs[1:]:

@@ -14,10 +14,9 @@ class Solution:
             if start is None and char != " ":
                 # found start
                 start = i
-            if start is not None:
-                if char == " ":
-                    # found end
-                    return i - start
+            if start is not None and char == " ":
+                # found end
+                return i - start
         return len(s) - start if start is not None else 0
 
 
