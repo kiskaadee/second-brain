@@ -81,7 +81,7 @@ flowchart TD
 The webhook listener is declared immutably via NixOS in [`Config/hosts/server/homeserver.nix`](file:///home/kiskaadee/Config/hosts/server/homeserver.nix):
 - **Port**: `9000` (Internal LAN / Tailscale only).
 - **Service Name**: `homelab-gitops.service`.
-- **Payload Handling**: Configured with `pass-stdin-to-command: true`, streaming the complete Gitea JSON event payload directly into the standard input of the Python dispatcher.
+- **Payload Handling**: Configured with `pass-arguments-to-command = [ { source = "entire-payload"; } ]`, passing the complete Gitea JSON event payload directly into the Python dispatcher arguments.
 
 ### 2. The Dynamic Dispatcher Engine ([`gitops_dispatcher.py`](file:///home/kiskaadee/Projects/active/homelab/homelab-core/scripts/gitops_dispatcher.py))
 A zero-dependency Python 3 engine executing on the server host:
