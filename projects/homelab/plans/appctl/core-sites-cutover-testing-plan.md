@@ -1,6 +1,6 @@
 ---
 type: plan
-status: active
+status: completed
 project: homelab
 tags:
   - appctl
