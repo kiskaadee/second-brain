@@ -44,7 +44,7 @@ This project documents the architectural roadmaps, infrastructure designs, deplo
 2. [**Real-Time Brain Synchronization & Gitea Push Mirroring**](plans/gitea/brain-sync-and-gitea-mirroring.md)
    - Zero-overhead markdown synchronization architecture between laptop and server using Gitea push mirroring.
    - Systemd timer reconciliation, instant `doc2site` reflection, and GitHub offsite backup.
-3. [**Discussion: Gitea Git Credential Helper & Hybrid Backup Architecture**](plans/gitea/gitea-git-helper-and-backup-strategy.md)
+3. [**Discussion: Gitea Git Credential Helper & Hybrid Backup Architecture**](../../records/discussions/2026-09-gitea-git-helper-and-backup-strategy.md)
    - Trade-offs between `tea`, `gh`, SSH transport, and Gitea-to-GitHub push mirroring.
 4. [**GitHub to Gitea Automated Batch Migration Plan**](plans/gitea/github-to-gitea-migration-plan.md)
    - Automated batch repository onboarding (~35 repositories) via `gh` and `tea` API, visibility preservation, and stuck migration recovery runbook.

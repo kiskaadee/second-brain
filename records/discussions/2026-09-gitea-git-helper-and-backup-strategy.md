@@ -6,13 +6,14 @@ tags:
   - git
   - backup
   - homelab
+date: 2026-09-10
 ---
 
 # Discussion: Gitea Git Credential Helper, Protocol Trade-Offs, and Hybrid Backup Architecture
 
 ## 1. Context & Motivation
 
-While expanding `knowledge/tools/tea.md`, an evaluation arose regarding whether to configure Gitea (via the `tea` CLI) as a Git credential helper, and how local Git workflows should adapt to a hybrid topology:
+While evaluating tooling configurations, an analysis arose regarding whether to configure Gitea (via the `tea` CLI) as a Git credential helper, and how local Git workflows should adapt to a hybrid topology:
 - **Primary Forge**: Self-hosted Gitea instance (`gitea.roadtotech.me`) running Gitea Actions for automated CI/CD pipelines.
 - **Secondary / Backup Forge**: GitHub (`github.com`) as a public cloud warm backup.
 - **Questions addressed**:
