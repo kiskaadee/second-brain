@@ -34,7 +34,9 @@ Sub-directories:
 Knowledge documents do not become the canonical location for project-specific information. A knowledge document describes *what something is*; a project document describes *how this project uses it*.
 
 ### `projects/`
-Each project lives in its own sub-folder (e.g., `projects/homelab/`, `projects/magnetflix/`). Projects may have their own `plans/`, `guides/`, `decisions/`, or `research/` sub-directories.
+Each project lives in its own sub-folder (e.g., `projects/homelab/`, `projects/magnetflix/`). The canonical entrypoint and landing page for any project must always be named `README.md` (e.g., `projects/homelab/README.md`) so that documentation renderers (such as `doc2site`) automatically compile it as the directory's index/landing page. Do not use `overview.md`.
+
+Projects may have their own `plans/`, `guides/`, `decisions/`, or `research/` sub-directories.
 
 The folder establishes context (ownership/locality). The document's `type` field establishes its semantic role.
 
@@ -76,7 +78,7 @@ related: [optional, relative, paths]
 project: optional-project-name
 ---
 
-# project (overview files)
+# project (README.md landing pages)
 ---
 type: project
 status: planned | active | paused | completed

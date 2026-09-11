@@ -50,8 +50,8 @@ projects/
 ```
 
 **Key documents:**
-- [Homelab Overview](projects/homelab/overview.md)
-- [MagNetFlix Overview](projects/magnetflix/overview.md)
+- [Homelab Overview](projects/homelab/README.md)
+- [MagNetFlix Overview](projects/magnetflix/README.md)
 
 ---
 
