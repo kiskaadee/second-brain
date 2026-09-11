@@ -1,6 +1,11 @@
 ---
 type: project
 status: active
+tags:
+  - media
+  - streaming
+  - torrent
+  - web
 ---
 
 # 🎬 MagNetFlix

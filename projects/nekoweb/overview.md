@@ -1,6 +1,11 @@
 ---
 type: project
 status: active
+tags:
+  - nekoweb
+  - frontend
+  - static-site
+  - homelab
 ---
 
 # 🐱 Nekoweb / Haruneko
