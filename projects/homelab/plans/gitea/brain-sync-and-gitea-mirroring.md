@@ -8,7 +8,7 @@ tags:
   - gitops
   - cicd
   - homelab
-status: active
+status: completed
 ---
 
 # 🧠 Real-Time Brain Synchronization, CI/CD & Gitea Push Mirroring
@@ -146,3 +146,9 @@ Configured under repository **Settings** $\rightarrow$ **Repository** $\rightarr
 * 🛡️ **Guaranteed Knowledge Integrity**: Commits are validated before being finalized.
 * 🚀 **Zero-Delay Auto-Sync**: Commits push instantly to Gitea and mirror to GitHub.
 * 🔍 **Continuous Observability**: Server-side CI validates the entire knowledge graph on push.
+
+---
+
+## 🔗 Related Production Guides
+* [Brain GitOps & Auto-Sync Deployment Pipeline](../../guides/brain-gitops-deployment-pipeline.md)
+* [Dynamic Decentralized GitOps Dispatcher Architecture](../../guides/homelab-gitops-dispatcher-architecture.md)
