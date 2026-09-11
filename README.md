@@ -42,16 +42,24 @@ knowledge/
 
 ```
 projects/
-├── homelab/        ← Infrastructure, NixOS, appctl, CI/CD, networking
+├── nixos/          ← Declarative multi-machine OS fleet & flake architecture
+│   └── plans/      ← Migration and optimization roadmaps
+├── homelab/        ← Infrastructure, Docker services, appctl, GitOps, networking
 │   ├── plans/      ← Migration and strategy documents
-│   └── guides/     ← Architecture and how-to documents
-├── magnetflix/     ← Media application
-└── nekoweb/        ← Web project
+│   └── guides/     ← Architecture and runbook documents
+├── dynu-monitor/   ← Smart DDNS change detection daemon (Python/Rust)
+├── new-repo/       ← Automated repository provisioning CLI
+├── magnetflix/     ← Media indexing and streaming application
+└── nekoweb/        ← Web showcase and static site generation
 ```
 
 **Key documents:**
+- [NixOS Fleet Overview](projects/nixos/README.md)
 - [Homelab Overview](projects/homelab/README.md)
+- [Dynu Monitor Overview](projects/dynu-monitor/README.md)
+- [New-Repo CLI Overview](projects/new-repo/README.md)
 - [MagNetFlix Overview](projects/magnetflix/README.md)
+- [Nekoweb Overview](projects/nekoweb/README.md)
 
 ---
 

@@ -1,0 +1,62 @@
+---
+type: project
+status: active
+tags:
+  - nixos
+  - infrastructure
+  - flake
+  - linux
+---
+
+# ❄️ NixOS Fleet & Declarative System Configuration
+
+## 🎯 Project Overview
+This project documents the architecture, flake hierarchy, host specializations, module designs, and operational maintenance for the multi-machine NixOS fleet managed in [`/home/kiskaadee/Config`](file:///home/kiskaadee/Config).
+
+The fleet operates under a unified Nix Flake repository supporting declarative system rebuilds, user-space management via Home Manager, and encrypted secrets via SOPS-nix.
+
+---
+
+## 🏛️ System Topology & Host Matrix
+
+```mermaid
+graph TD
+    Flake["Config Flake (flake.nix)"] --> Hosts["hosts/"]
+    Flake --> Modules["modules/"]
+
+    Hosts --> Server["hosts/server (Headless 24/7 Server)"]
+    Hosts --> Laptop["hosts/laptop (Mobile Dev Workstation)"]
+
+    Modules --> CoreMod["Core System Modules (nix, security, locale)"]
+    Modules --> UserMod["Home Manager Modules (shell, git, neovim)"]
+    Modules --> DesktopMod["Desktop Modules (niri, wayland, audio)"]
+
+    Server -.->|"headless, docker, sops"| CoreMod
+    Laptop -.->|"graphical, devtools"| DesktopMod
+    Laptop -.-> UserMod
+```
+
+| Host | Role | Environment | Key Subsystems |
+| :--- | :--- | :--- | :--- |
+| **`server`** | 24/7 Homelab Host | Headless Server | Docker daemon, Traefik, Socket-Proxy, `homelab-gitops`, SOPS Age secrets, Dynu DDNS |
+| **`laptop`** | Primary Workstation | Graphical Wayland | Niri / Hyprland, Waybar, Alacritty, DevShells, Git/SSH keys, local LLM/GUI clients |
+
+---
+
+## 📑 Plans & Execution Roadmaps
+
+1. 🟡 [**Adopting Official channels.nixos.org Tarballs**](plans/channel-tarball-migration-plan.md) `[Active]`
+   - Transitioning from GitHub-hosted Nixpkgs flake inputs to official `channels.nixos.org` zstd-compressed archives.
+   - Flake registry pinning and evaluation speedup analysis.
+
+---
+
+## 📑 Guides & Reference Documentation
+
+*(Guides and deep-dive technical specifications for NixOS fleet management will be curated here as documentation expands).*
+
+---
+
+## 🔗 Related Projects & Locations
+* **Local Flake Repository**: [`/home/kiskaadee/Config`](file:///home/kiskaadee/Config)
+* **Homelab Services Project**: [Homelab & Infrastructure Planning](../homelab/README.md)
