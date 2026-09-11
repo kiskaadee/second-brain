@@ -1,6 +1,6 @@
 ---
 type: plan
-status: active
+status: completed
 project: homelab
 tags:
   - homelab
@@ -16,33 +16,41 @@ Establish clear, unambiguous directory boundaries across both the Server and Lap
 
 ---
 
-## 🗺️ Standardized Directory Layout
+## 🗺️ Realized Production Layout
 
-### 🖥️ Production Server Layout
+> [!NOTE]
+> The initial proposal for a monolithic `~/Deployments` directory was superseded by the decoupled `~/Core` and `~/Sites` architecture documented in [Homelab Architecture: Appctl & Decentralized Repositories](../../guides/homelab-appctl-architecture.md) and executed in [Core & Sites Cutover and Testing Plan](../appctl/core-sites-cutover-testing-plan.md).
+
+### 🖥️ Production Server Layout (`/home/kiskaadee/`)
 ```text
 /home/kiskaadee/
-├── Config/                # NixOS declarative configuration for this host
-├── Deployments/           # Or Production/ - Live Docker compose services (Git tracked)
-│   ├── core/              # Ingress (Traefik, Authelia, Socket-Proxy)
-│   ├── apps/              # Individual standalone services
-│   └── data/              # Persistent volumes or bind-mount configs
-├── Media/                 # Jellyfin media libraries, recordings, storage
-└── second-brain/          # Synced knowledge base & operational docs
+├── Core/                      # Hardened Ingress & Gateway (Traefik, Authelia, Socket-Proxy)
+├── Sites/                     # Decentralized micro-repositories for each container stack
+├── Brain/                     # Synced personal knowledge base & operational docs
+├── Config/                    # NixOS declarative configuration (hosts/server)
+└── Media/                     # High-capacity media storage for Jellyfin (/media)
 ```
 
-*Rule for Server*:
-- **No** active development trees, compiler build caches (`target/`, `node_modules/` in home), or transient scratchpads.
-- All running services run as containers or declarative systemd units.
+*Rules for Server*:
+- **No** active development trees, compiler build caches (`target/`, `node_modules/` in home root), or transient scratchpads.
+- All running services run as containers orchestrated via `appctl` or declarative systemd units.
 
 ---
 
-### 💻 Laptop Workstation Layout
+### 💻 Laptop Workstation Layout (`/home/kiskaadee/`)
 ```text
 /home/kiskaadee/
-├── Config/                # Shared NixOS repository (laptop configuration)
-├── Projects/              # Active source code repositories
-├── Learn/                 # Backend residency and study coursework
-├── Experiments/           # Prototypes, spike tests, scratchpads
-├── second-brain/          # Personal notes & architecture plans
-└── Downloads/ / Pictures/ # Standard user directories
+├── Projects/                  # Active source code repositories
+│   └── active/                # Current work trees (e.g. homelab micro-repos, new-repo, dynu-monitor)
+├── Learn/                     # Backend residency and study coursework
+├── Experiments/               # Prototypes, spike tests, scratchpads
+├── Brain/                     # Local canonical knowledge graph vault
+├── Config/                    # NixOS configuration repository (hosts/laptop)
+└── Downloads/ / Pictures/     # Standard user directories
 ```
+
+---
+
+## 🔗 Related Documents
+* [Homelab Architecture: Appctl & Decentralized Repositories](../../guides/homelab-appctl-architecture.md)
+* [Core & Sites Cutover and Testing Plan](../appctl/core-sites-cutover-testing-plan.md)

@@ -1,5 +1,5 @@
 ---
-type: guide
+type: plan
 project: homelab
 tags:
   - gitea

@@ -1,6 +1,6 @@
 ---
 type: plan
-status: active
+status: completed
 project: homelab
 tags:
   - gitea
@@ -38,30 +38,23 @@ sequenceDiagram
 
 ---
 
-## 🛠️ Implementation Approaches
+## 🛠️ Realized Architecture: Dynamic Webhook GitOps & Gitea Runner
 
-### 1. Webhooks & Watchtower / Diun (Pull Model - Recommended)
-- **Approach**: CI pushes tagged images to GHCR. Watchtower/Diun running on the server detects new digest and automatically updates containers.
-- **Pros**: Zero inbound SSH keys or open firewall ports needed from CI into homelab.
-- **Cons**: Less granular control over immediate rollbacks.
+Rather than relying on continuous image polling via Watchtower, the homelab adopted a **push-driven, event-based GitOps architecture**:
 
-### 2. GitOps with Gitea Actions / GitHub Actions Runner
-- **Approach**: Run a self-hosted lightweight Gitea runner on the server. On release/push to `main`, the runner executes `appctl pull <service> && appctl restart <service>`.
-- **Pros**: Full visibility, reproducible deployments, direct log output in CI UI.
+1. **Self-Hosted CI Runner (`act_runner`)**:
+   - Runs as a container inside `homelab-gitea` using `catthehacker/ubuntu:act-latest`.
+   - Executes linting, type-checking, and test validation in 15 seconds.
+2. **Decentralized Host Dispatcher (`homelab-gitops.service`)**:
+   - Lightweight webhook daemon running on the server host at port 9000.
+   - Dispatches payloads dynamically to `~/Core/scripts/gitops_dispatcher.py`.
+   - Inspects `app.yaml` deployment declarations (`git_pull`, `compose_up`, `appctl_sync`) and applies updates with zero delay.
+3. **Knowledge Base Pilot**:
+   - Successfully deployed on `~/Brain` with pre-commit gates, Gitea Actions CI, and instant `doc2site` reflection on `docs.roadtotech.me`.
 
 ---
 
-## 🎯 Candidate Pilot Services for CI/CD
-
-The following micro-repos are selected as prioritized pilot targets for automated CI/CD pipelines:
-
-1. **`homelab-landing`** (`~/Sites/homelab-landing`):
-   - Pure static/nginx web portal (`roadtotech.me`).
-   - Fast, low-risk playground to test multi-stage Docker build, GHCR push, and automated deployment.
-2. **`homelab-dashboard`** (`~/Sites/homelab-dashboard`):
-   - Fast-evolving Learning Hub API backend & Homepage customization.
-   - Ideal for testing pytest/linting pipelines before publishing.
-3. **`homelab-minecraft`** (`~/Sites/homelab-minecraft`):
-   - Custom FastAPI Identity Manager Web Admin.
-   - Ideal for testing Python security linters, JWT validation, and container packaging.
-
+## 🔗 Production Guides & Specifications
+* [Dynamic Decentralized GitOps Dispatcher Architecture](../../guides/homelab-gitops-dispatcher-architecture.md)
+* [Brain GitOps & Auto-Sync Deployment Pipeline](../../guides/brain-gitops-deployment-pipeline.md)
+* [GitHub to Gitea Automated Batch Migration Plan](github-to-gitea-migration-plan.md)
