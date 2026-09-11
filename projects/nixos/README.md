@@ -48,15 +48,31 @@ graph TD
 1. 🟡 [**Adopting Official channels.nixos.org Tarballs**](plans/channel-tarball-migration-plan.md) `[Active]`
    - Transitioning from GitHub-hosted Nixpkgs flake inputs to official `channels.nixos.org` zstd-compressed archives.
    - Flake registry pinning and evaluation speedup analysis.
+2. 🟢 [**Decommission Legacy Desktop Derivation**](plans/decommission-desktop-derivation.md) `[Completed]`
+   - Pruned `hosts/desktop/` and `nixosConfigurations.desktop` to standardize on a 2-host fleet (`server` and `laptop`).
+3. 🟢 [**SOPS Secrets Restructuring & Multi-User Authelia Support**](plans/sops-restructuring-plan.md) `[Completed]`
+   - Migrated flat SOPS secrets to service-scoped namespaces and added declarative Nix user database rendering.
 
 ---
 
 ## 📑 Guides & Reference Documentation
 
-*(Guides and deep-dive technical specifications for NixOS fleet management will be curated here as documentation expands).*
+1. [**Transitioning to Official channels.nixos.org Tarballs Walkthrough**](guides/channel-tarball-migration-walkthrough.md)
+   - Flake input migration, base registry pinning, and dry-build verification.
+2. [**Decommissioning the Legacy Desktop Derivation Walkthrough**](guides/desktop-decommission-walkthrough.md)
+   - Host removal validation, architecture doc sync, and dry builds.
+3. [**SOPS Secrets Restructuring & Multi-User Authelia Walkthrough**](guides/sops-restructuring-walkthrough.md)
+   - Secret hierarchy re-encryption, template generation, and host dry-build verification.
+
+---
+
+## 🏛️ Architectural Discussions & Records
+
+* [Discussion: NixOS Monorepo vs. Multi-Repo Architecture for Homelab & Workstations](../../records/discussions/2026-09-nixos-monorepo-vs-multirepo-architecture.md)
 
 ---
 
 ## 🔗 Related Projects & Locations
 * **Local Flake Repository**: [`/home/kiskaadee/Config`](file:///home/kiskaadee/Config)
 * **Homelab Services Project**: [Homelab & Infrastructure Planning](../homelab/README.md)
+
