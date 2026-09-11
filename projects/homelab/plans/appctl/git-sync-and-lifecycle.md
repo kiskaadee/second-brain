@@ -1,12 +1,12 @@
 ---
-type: guide
+type: plan
+status: completed
 project: homelab
 tags:
   - homelab
   - appctl
   - git
   - devops
-status: stable
 ---
 
 # 🔄 appctl Git Synchronization & Full-Stack Lifecycle Strategy
@@ -89,3 +89,8 @@ appctl update --all
 ## 🔒 Safety & Error Handling Rules
 1. **Safety First on Pulls**: `appctl update` uses `git pull --ff-only`. If merge conflicts or diverging histories exist, execution halts immediately with a clear error prompt rather than corrupting repository state.
 2. **Dirty Tree Protection**: If uncommitted local edits are present in an app repo, `appctl update` warns the user and aborts unless `--force` is explicitly provided.
+
+---
+
+## 🔗 Production Guide
+* [Homelab Architecture: Appctl & Decentralized Repositories](../../guides/homelab-appctl-architecture.md)

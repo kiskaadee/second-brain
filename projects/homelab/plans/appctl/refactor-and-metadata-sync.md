@@ -1,5 +1,6 @@
 ---
-type: guide
+type: plan
+status: completed
 project: homelab
 tags:
   - homelab
@@ -83,3 +84,8 @@ All 11 homelab applications will include an `app.yaml` defining their identity, 
 - Validate `appctl list` and `appctl list --core`.
 - Validate `appctl info <service>`.
 - Validate dynamic `services.yaml` generation via `appctl sync`.
+
+---
+
+## 🔗 Production Guide
+* [Homelab Architecture: Appctl & Decentralized Repositories](../../guides/homelab-appctl-architecture.md)
