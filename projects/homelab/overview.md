@@ -46,6 +46,8 @@ This project documents the architectural roadmaps, infrastructure designs, deplo
    - Systemd timer reconciliation, instant `doc2site` reflection, and GitHub offsite backup.
 3. [**Discussion: Gitea Git Credential Helper & Hybrid Backup Architecture**](plans/gitea/gitea-git-helper-and-backup-strategy.md)
    - Trade-offs between `tea`, `gh`, SSH transport, and Gitea-to-GitHub push mirroring.
+4. [**GitHub to Gitea Automated Batch Migration Plan**](plans/gitea/github-to-gitea-migration-plan.md)
+   - Automated batch repository onboarding (~35 repositories) via `gh` and `tea` API, visibility preservation, and stuck migration recovery runbook.
 
 ---
 
