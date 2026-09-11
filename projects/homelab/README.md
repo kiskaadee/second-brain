@@ -32,6 +32,8 @@ This project documents the architectural roadmaps, infrastructure designs, deplo
    - Decentralized service manifests, canonical aliasing, and Homepage `services.yaml` compilation.
 3. 🟢 [**appctl Git Synchronization & Full-Stack Lifecycle Strategy**](plans/appctl/git-sync-and-lifecycle.md) `[Completed]`
    - Real-time Git tracking status (`✓ Synced`, `⬆ Ahead`, `⬇ Behind`, `* Dirty`), `--fetch`, and atomic `appctl update`.
+4. 🟡 [**Smart Selective Deployment Pipeline for Homelab Core**](plans/appctl/smart-deployment-pipeline.md) `[Active]`
+   - Change-aware Gitea GitOps & CLI deployment, selective container restarts, and bash autocompletion sync.
 
 ### 🍵 Gitea & GitOps
 1. 🟢 [**CI/CD & Deployment Strategy**](plans/gitea/deployment-and-cicd-strategy.md) `[Completed]`
@@ -62,3 +64,4 @@ This project documents the architectural roadmaps, infrastructure designs, deplo
 
 ## 🏛️ Architectural Discussions & Records
 * [Discussion: Gitea Git Credential Helper, Protocol Trade-Offs & Hybrid Backup Architecture](../../records/discussions/2026-09-gitea-git-helper-and-backup-strategy.md)
+* [Discussion: NixOS Monorepo vs. Multi-Repo Architecture for Homelab & Workstations](../../records/discussions/2026-09-nixos-monorepo-vs-multirepo-architecture.md)
