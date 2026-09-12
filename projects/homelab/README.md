@@ -58,6 +58,7 @@ Implementation roadmaps currently in progress (`status: active`) that are active
 
 1. 🟡 [**Architecture Consolidation & Hardening Roadmap v2**](plans/architecture-consolidation-roadmap-v2.md) `[Active]`
    - Formalizing the three-layer architectural model, closing the GitOps trust boundary, codifying `app.yaml` v1 schema contracts, and establishing machine-enforced invariants.
+   - 📋 *Execution Guide*: [**Architecture Consolidation Implementation Guide**](plans/architecture-consolidation-implementation-guide.md)
 2. 🟡 [**Rust Daemon Migration Plan: Standalone `dynu-monitor`**](plans/dynu-monitor-rust-daemon.md) `[Active]`
    - Implementing a standalone Rust daemon with 30-second polling and round-robin public DNS resolution across 5 independent providers (Cloudflare, Quad9, Google, OpenDNS, Dynu).
 3. 🟡 [**Custom API Security Hardening & Threat Analysis**](plans/api-security-hardening.md) `[Active]`
@@ -96,13 +97,13 @@ Archived and foundational documentation for completed milestones:
 * [**Dynu DDNS Polling Frequency and Rust Migration**](discussions/dynu-monitor-polling-and-language-tradeoffs.md) — Investigated polling intervals and language trade-offs; resolved via `dynu-monitor-rust-daemon.md` plan.
 
 ### Completed Plans
-* 🟢 [**Architecture Consolidation & Hardening Roadmap v1**](plans/architecture-consolidation-roadmap.md) (Superseded by v2)
-* 🟢 [**Turn `homelab-core` into a Declarative NixOS Appliance**](plans/nixos-appliance-migration.md)
-* 🟢 [**Core & Sites Cutover and Testing Plan**](plans/appctl/core-sites-cutover-testing-plan.md)
-* 🟢 [**appctl Refactor & Decentralized `app.yaml` Metadata Architecture**](plans/appctl/refactor-and-metadata-sync.md)
-* 🟢 [**appctl Git Synchronization & Full-Stack Lifecycle Strategy**](plans/appctl/git-sync-and-lifecycle.md)
+* 🟢 [**Architecture Consolidation & Hardening Roadmap v1**](archive/architecture-consolidation-roadmap.md) (Superseded by v2)
+* 🟢 [**Turn `homelab-core` into a Declarative NixOS Appliance**](archive/nixos-appliance-migration.md)
+* 🟢 [**Core & Sites Cutover and Testing Plan**](archive/core-sites-cutover-testing-plan.md)
+* 🟢 [**appctl Refactor & Decentralized `app.yaml` Metadata Architecture**](archive/refactor-and-metadata-sync.md)
+* 🟢 [**appctl Git Synchronization & Full-Stack Lifecycle Strategy**](archive/git-sync-and-lifecycle.md)
 * 🟢 [**CI/CD & Deployment Strategy**](plans/gitea/deployment-and-cicd-strategy.md)
-* 🟢 [**Real-Time Brain Synchronization & Gitea Push Mirroring**](plans/gitea/brain-sync-and-gitea-mirroring.md)
-* 🟢 [**NixOS Server & Laptop Migration**](plans/server-24-7/nixos-server-laptop-migration.md)
-* 🟢 [**Domain Migration (`roadtotech.me`)**](plans/server-24-7/domain-migration-roadtotech.md)
+* 🟢 [**Real-Time Brain Synchronization & Gitea Push Mirroring**](archive/brain-sync-and-gitea-mirroring.md)
+* 🟢 [**NixOS Server & Laptop Migration**](archive/nixos-server-laptop-migration.md)
+* 🟢 [**Domain Migration (`roadtotech.me`)**](archive/domain-migration-roadtotech.md)
 * 🟢 [**Production Folder Structure Reorganization**](plans/server-24-7/folder-structure-reorganization.md)

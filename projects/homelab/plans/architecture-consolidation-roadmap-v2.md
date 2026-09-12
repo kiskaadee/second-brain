@@ -13,10 +13,12 @@ tags:
 
 # Architecture Consolidation & Hardening Roadmap v2
 
-> Supersedes the [original phased implementation plan](architecture-consolidation-roadmap.md).
+> Supersedes the [original phased implementation plan](../archive/architecture-consolidation-roadmap.md).
 > Integrates reviewer feedback across fourteen areas: trust model, manifest
 > contracts, privilege separation, protocol versioning, invariant testing, and
 > deployment observability.
+>
+> 📋 **Companion Execution Guide**: [Architecture Consolidation & Hardening Implementation Guide](architecture-consolidation-implementation-guide.md)
 
 ---
 
@@ -44,7 +46,7 @@ repository:
 2. What does **Core** own?
 3. What does an **application repository** own?
 4. What can **GitOps** execute?
-5. What happens **when deployment fails**?
+5. What happens when deployment fails?
 
 Right now those answers exist, but they're scattered across code, conventions,
 comments, and historical documentation. This plan turns them into explicit

@@ -88,4 +88,4 @@ All 11 homelab applications will include an `app.yaml` defining their identity, 
 ---
 
 ## 🔗 Production Guide
-* [Homelab Architecture: Appctl & Decentralized Repositories](../../guides/appctl-operations-and-manifest-guide.md)
+* [Homelab Architecture: Appctl & Decentralized Repositories](../guides/appctl-operations-and-manifest-guide.md)

@@ -19,7 +19,7 @@ Establish clear, unambiguous directory boundaries across both the Server and Lap
 ## 🗺️ Realized Production Layout
 
 > [!NOTE]
-> The initial proposal for a monolithic `~/Deployments` directory was superseded by the decoupled `~/Core` and `~/Sites` architecture documented in [Homelab Architecture: Appctl & Decentralized Repositories](../../guides/appctl-operations-and-manifest-guide.md) and executed in [Core & Sites Cutover and Testing Plan](../appctl/core-sites-cutover-testing-plan.md).
+> The initial proposal for a monolithic `~/Deployments` directory was superseded by the decoupled `~/Core` and `~/Sites` architecture documented in [Homelab Architecture: Appctl & Decentralized Repositories](../../guides/appctl-operations-and-manifest-guide.md) and executed in [Core & Sites Cutover and Testing Plan](../../archive/core-sites-cutover-testing-plan.md).
 
 ### 🖥️ Production Server Layout (`/home/kiskaadee/`)
 ```text
@@ -53,4 +53,4 @@ Establish clear, unambiguous directory boundaries across both the Server and Lap
 
 ## 🔗 Related Documents
 * [Homelab Architecture: Appctl & Decentralized Repositories](../../guides/appctl-operations-and-manifest-guide.md)
-* [Core & Sites Cutover and Testing Plan](../appctl/core-sites-cutover-testing-plan.md)
+* [Core & Sites Cutover and Testing Plan](../../archive/core-sites-cutover-testing-plan.md)

@@ -13,7 +13,7 @@ tags:
 # Architectural Discussion & Phased Implementation Plan: Homelab Core Appliance
 
 > [!NOTE]
-> Superseded by [Architecture Consolidation & Hardening Roadmap v2](architecture-consolidation-roadmap-v2.md).
+> Superseded by [Architecture Consolidation & Hardening Roadmap v2](../plans/architecture-consolidation-roadmap-v2.md).
 
 ## Executive Summary
 

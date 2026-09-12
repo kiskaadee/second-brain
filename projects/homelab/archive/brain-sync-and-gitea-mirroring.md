@@ -18,7 +18,7 @@ The **Brain** repository (`~/Brain`) is an actively edited, durable personal kno
 
 ### Core Pipeline Invariants:
 1. **The Curation Boundary**: Raw thoughts and scratch captures stay in `inbox/` (uncommitted, unvalidated, zero-friction). Once moved to their semantic home (`knowledge/`, `projects/`, `records/`, `practice/`), they join the committed graph.
-2. **Local Schema Integrity Gate**: Every commit is verified locally by [`scripts/validate-brain.py`](../../../../scripts/validate-brain.py) via a `pre-commit` hook to ensure valid metadata and prevent broken relative links.
+2. **Local Schema Integrity Gate**: Every commit is verified locally by [`scripts/validate-brain.py`](../../../scripts/validate-brain.py) via a `pre-commit` hook to ensure valid metadata and prevent broken relative links.
 3. **Instant Zero-Delay Auto-Push**: A resilient `post-commit` hook automatically pushes commits to the primary self-hosted Gitea forge (`gitea.roadtotech.me`), falling back gracefully if offline.
 4. **Automated Cloud Replication**: Gitea natively push-mirrors every commit to GitHub (`github.com/kiskaadee/second-brain`) immediately on receive.
 5. **Server-Side CI & Observability**: Gitea Actions validates graph health on every push asynchronously without blocking editing or live rendering.
@@ -150,5 +150,5 @@ Configured under repository **Settings** $\rightarrow$ **Repository** $\rightarr
 ---
 
 ## 🔗 Related Production Guides
-* [Brain GitOps & Auto-Sync Deployment Pipeline](../../guides/brain-gitops-deployment-pipeline.md)
-* [Dynamic Decentralized GitOps Dispatcher Architecture](../../discussions/gitops-dispatcher-architecture.md)
+* [Brain GitOps & Auto-Sync Deployment Pipeline](../guides/brain-gitops-deployment-pipeline.md)
+* [Dynamic Decentralized GitOps Dispatcher Architecture](../discussions/gitops-dispatcher-architecture.md)
