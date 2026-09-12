@@ -36,13 +36,24 @@ Knowledge documents do not become the canonical location for project-specific in
 ### `projects/`
 Each project lives in its own sub-folder (e.g., `projects/homelab/`, `projects/nixos/`, `projects/magnetflix/`). The canonical entrypoint and landing page for any project must always be named `README.md` (e.g., `projects/homelab/README.md`) so that documentation renderers (such as `doc2site`) automatically compile it as the directory's index/landing page. Do not use `overview.md`.
 
+#### Project Landing Page (`README.md`) Invariant
+A project `README.md` is the user-facing entrypoint for that specific engineering project.
+- **Never describe Brain conventions in a project README**: Do not explain vault taxonomies, frontmatter rules, or note-taking philosophies.
+- **Required Sections**:
+  1. **Overview & System Topology**: Broad architectural explanation of the system, its layers, and core capabilities.
+  2. **Source Code & Locations**: Direct URLs to Git forge repositories (Gitea/GitHub), clone URLs, local workspace paths, and deployment targets.
+  3. **💬 Open Discussions**: Links *strictly* to unresolved discussions that have not yet produced an active implementation plan.
+  4. **🚧 Work in Progress (Active Plans)**: Links *strictly* to active plans (`status: active`) currently in progress or scheduled for execution.
+  5. **🛠️ Canonical Guides & Runbooks**: Operational procedures and step-by-step SOPs.
+  6. **🏛️ Completed Milestones & Resolved Discussions**: Historical reference section keeping completed roadmaps and foundational discussions organized without cluttering active WIP.
+
 #### Standard Project Directory Structure
 Every project follows a three-part lifecycle structure under its folder:
 
 1. **`discussions/` — "Why & What If?"**
    - Architectural inquiries, problem statements, exploratory trade-off analyses, and evaluation of alternative paths (Model A vs. Model B).
    - *Format*: Problem Statement → Context & Analysis → Options Evaluation (Pros & Cons) → Consensus / Resolution / Open Questions.
-   - *Role*: The foundation from which actionable plans originate.
+   - *Lifecycle*: Open discussions remain active until consensus is reached, at which point they produce an actionable implementation plan.
    - *Frontmatter*: `type: discussion`, `project: <name>`, `date: YYYY-MM-DD`.
 
 2. **`plans/` — "How & When?"**
