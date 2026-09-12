@@ -50,7 +50,8 @@ projects/
 ├── dynu-monitor/   ← Smart DDNS change detection daemon (Python/Rust)
 ├── new-repo/       ← Automated repository provisioning CLI
 ├── magnetflix/     ← Media indexing and streaming application
-└── nekoweb/        ← Web showcase and static site generation
+├── nekoweb/        ← Web showcase and static site generation
+└── supervisor/     ← Personal engineering progress tracking & supervisory system
 ```
 
 **Key documents:**
@@ -60,6 +61,7 @@ projects/
 - [New-Repo CLI Overview](projects/nixos/new-repo/README.md)
 - [MagNetFlix Overview](projects/magnetflix/README.md)
 - [Nekoweb Overview](projects/nekoweb/README.md)
+- [Supervisor Overview](projects/supervisor/README.md)
 
 ---
 
