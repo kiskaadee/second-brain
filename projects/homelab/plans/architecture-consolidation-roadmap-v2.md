@@ -61,25 +61,33 @@ Plane → Data Plane" model. In practice, the system operates across three
 execution layers, with orchestration acting as a **cross-cutting control
 mechanism** — not a fourth layer.
 
-```
-                     ┌───────────────────────────────────┐
-                     │         ORCHESTRATION             │
-                     │   appctl / GitOps / deployment    │
-                     └──────────────┬────────────────────┘
-                                    │
-         ┌──────────────────────────┼───────────────────────────┐
-         │                          │                           │
-         ▼                          ▼                           ▼
-    Edge Gateway             Control Services            Workloads
-      Traefik                Authelia / proxy            ~/Sites/*
-                               Portainer
-                               Dozzle
-         │
-         └────────────────────────────────────────────────────────┐
-                                                                  │
-                               Host Foundation                     │
-                        NixOS / systemd / Docker                    │
-                        secrets / firewall / DDNS                   │
+```mermaid
+flowchart TB
+    subgraph ORCH["ORCHESTRATION — cross-cutting"]
+        O["appctl / GitOps / Deployment Lifecycle"]
+    end
+
+    subgraph SERVICES["OPERATIONAL PLANES"]
+        direction LR
+
+        E["EDGE GATEWAY<br/>Traefik"]
+
+        C["CONTROL SERVICES<br/>Authelia<br/>Socket Proxy<br/>Portainer / Dozzle<br/>Watchtower / Diun"]
+
+        W["WORKLOAD PLANE<br/>~/Sites/*<br/>app.yaml + Compose"]
+    end
+
+    subgraph HOST["HOST FOUNDATION"]
+        H["NixOS<br/>systemd<br/>Docker<br/>Secrets / Firewall / DDNS"]
+    end
+
+    O --> E
+    O --> C
+    O --> W
+
+    H --> E
+    H --> C
+    H --> W
 ```
 
 **Why orchestration is not a layer:** `appctl` and GitOps are controllers acting
