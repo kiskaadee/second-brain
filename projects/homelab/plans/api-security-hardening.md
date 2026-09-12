@@ -1,5 +1,6 @@
 ---
-type: guide
+type: plan
+status: active
 project: homelab
 tags:
   - homelab

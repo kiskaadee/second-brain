@@ -56,8 +56,8 @@ projects/
 **Key documents:**
 - [NixOS Fleet Overview](projects/nixos/README.md)
 - [Homelab Overview](projects/homelab/README.md)
-- [Dynu Monitor Overview](projects/dynu-monitor/README.md)
-- [New-Repo CLI Overview](projects/new-repo/README.md)
+- [Dynu Monitor Overview](projects/homelab/plans/dynu-monitor/README.md)
+- [New-Repo CLI Overview](projects/nixos/new-repo/README.md)
 - [MagNetFlix Overview](projects/magnetflix/README.md)
 - [Nekoweb Overview](projects/nekoweb/README.md)
 

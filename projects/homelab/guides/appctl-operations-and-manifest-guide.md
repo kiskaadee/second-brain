@@ -9,12 +9,20 @@ tags:
   - git
 ---
 
-# 📦 Homelab Architecture: Appctl & Decentralized Repositories
+# 📦 Appctl & Application Manifests (`app.yaml`) User Guide
 
-## 🎯 Architecture Model & Goals
-1. **Decoupled Application Repositories (`~/Sites`)**: Each application lives in an isolated, independently version-controlled Git repository containing its own Docker Compose stack and self-describing `app.yaml` manifest.
-2. **Hardened Control Plane (`~/Core`)**: Core reverse proxy (Traefik v3.6), authentication gateway (Authelia), container isolation (`socket-proxy`), management GUI (Portainer), and real-time logs (Dozzle).
-3. **Decentralized Metadata & Orchestration (`appctl`)**: Unified CLI tool powered by Python/Bash that dynamically parses `app.yaml` manifests, manages aliases, injects environment configurations, monitors Git repository synchronization, and auto-compiles the Homepage dashboard (`services.yaml`).
+This guide covers everyday operations for managing containerized applications in `~/Sites` using the `appctl` CLI and authoring self-describing `app.yaml` service manifests.
+
+---
+
+## 🎯 What `appctl` Does
+
+`appctl` is the central orchestration CLI on the server. It:
+1. Discovers stacks in `~/Sites/` dynamically by scanning for `app.yaml`.
+2. Resolves service aliases (`appctl up docs` or `appctl up doc2site`).
+3. Injects shared environment variables and decrypted secrets from `/run/secrets/rendered/traefik-deployments.env`.
+4. Tracks real-time Git synchronization status (`ahead`, `behind`, `dirty`).
+5. Auto-compiles active services into the Homepage dashboard configuration (`homelab-dashboard/config/services.yaml`).
 
 ---
 

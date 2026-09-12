@@ -1,6 +1,7 @@
 ---
-type: guide
+type: discussion
 project: homelab
+date: 2026-09-08
 tags:
   - homelab
   - gitops

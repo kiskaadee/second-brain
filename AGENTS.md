@@ -34,11 +34,28 @@ Sub-directories:
 Knowledge documents do not become the canonical location for project-specific information. A knowledge document describes *what something is*; a project document describes *how this project uses it*.
 
 ### `projects/`
-Each project lives in its own sub-folder (e.g., `projects/homelab/`, `projects/magnetflix/`). The canonical entrypoint and landing page for any project must always be named `README.md` (e.g., `projects/homelab/README.md`) so that documentation renderers (such as `doc2site`) automatically compile it as the directory's index/landing page. Do not use `overview.md`.
+Each project lives in its own sub-folder (e.g., `projects/homelab/`, `projects/nixos/`, `projects/magnetflix/`). The canonical entrypoint and landing page for any project must always be named `README.md` (e.g., `projects/homelab/README.md`) so that documentation renderers (such as `doc2site`) automatically compile it as the directory's index/landing page. Do not use `overview.md`.
 
-Projects may have their own `plans/`, `guides/`, `decisions/`, or `research/` sub-directories.
+#### Standard Project Directory Structure
+Every project follows a three-part lifecycle structure under its folder:
 
-The folder establishes context (ownership/locality). The document's `type` field establishes its semantic role.
+1. **`discussions/` — "Why & What If?"**
+   - Architectural inquiries, problem statements, exploratory trade-off analyses, and evaluation of alternative paths (Model A vs. Model B).
+   - *Format*: Problem Statement → Context & Analysis → Options Evaluation (Pros & Cons) → Consensus / Resolution / Open Questions.
+   - *Role*: The foundation from which actionable plans originate.
+   - *Frontmatter*: `type: discussion`, `project: <name>`, `date: YYYY-MM-DD`.
+
+2. **`plans/` — "How & When?"**
+   - Actionable implementation roadmaps, milestone breakdowns, and phased technical executions.
+   - *Prerequisite*: A plan should ideally be the concrete output of a resolved discussion.
+   - *Frontmatter*: `type: plan`, `status: draft | active | completed | abandoned`, `project: <name>`.
+
+3. **`guides/` — "How to Use & Operate?"**
+   - Practical, operational runbooks and user-facing standard operating procedures (SOPs).
+   - *Content*: Answers concrete operational questions: *How to deploy a new service*, *How to rotate secrets*, *How to troubleshoot WAN rotation*. A guide explains how to **use and maintain** existing capabilities, not how to architect or implement new ones.
+   - *Frontmatter*: `type: guide`, `project: <name>`.
+
+The folder establishes context (ownership/locality). The document's `type` field establishes its semantic role. Projects may reference documents in other projects via relative links.
 
 ### `records/`
 Historical artifacts. The original messy thinking is worth preserving — often what you want to recover later is not just the conclusion, but *why* you reached it.

@@ -151,4 +151,4 @@ Configured under repository **Settings** $\rightarrow$ **Repository** $\rightarr
 
 ## 🔗 Related Production Guides
 * [Brain GitOps & Auto-Sync Deployment Pipeline](../../guides/brain-gitops-deployment-pipeline.md)
-* [Dynamic Decentralized GitOps Dispatcher Architecture](../../guides/homelab-gitops-dispatcher-architecture.md)
+* [Dynamic Decentralized GitOps Dispatcher Architecture](../../discussions/gitops-dispatcher-architecture.md)

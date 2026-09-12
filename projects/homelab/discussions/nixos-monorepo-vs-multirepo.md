@@ -1,6 +1,6 @@
 ---
 type: discussion
-project: nixos
+project: homelab
 tags:
   - nixos
   - architecture

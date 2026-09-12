@@ -174,37 +174,28 @@ creation_rules:
 # Store the server's private age key (-t allows interactive sudo password prompt)
 ssh -t server-local "sudo nix run nixpkgs#ssh-to-age -- -private-key -i /etc/ssh/ssh_host_ed25519_key"
 
-SOPS_AGE_KEY=<previous output> sops updatekeys hosts/server/secrets.yaml
+SOPS_AGE_KEY=<previous output> sops updatekeys nixos/secrets.yaml
 ```
 
 **4. Edit Encrypted Secrets**:
    ```shell
-   sops hosts/server/secrets.yaml
+   sops nixos/secrets.yaml
    ```
-   Set `dynu_domain` to:
+   Ensure `dynu` credentials match your account:
    ```yaml
-   dynu_domain: roadtotech.me
+   dynu:
+     domain: roadtotech.me
+     user: "your_username"
+     password: "your_password"
    ```
 
-**5. Deploy and Rebuild to Server**: 
-   
-   A CI/CD pipeline has not been established yet. To apply the configuration, we'll trigger the upstream fetch via ssh and then rebuild the system.
+**5. Deploy and Rebuild Server Appliance**: 
+   To apply the configuration updates to the running server appliance:
 
 ```shell
-# Review flake status
-nix flake check
-
-# Once local changes are synced with upstream
-ssh -t server-local \
-"cd Config && \
-git fetch && \
-git pull"
-
-# rebuild the NixOS system
-ssh -t server-local \
-"cd Config && \
-sudo nixos-rebuild switch --flake .#server"
-
+# Switch to the new generation on the server
+sudo nixos-rebuild switch --flake ~/Core#server
+# (or use the built-in alias: nix-switch)
 ```
 
 **6. Force One-Off DDNS Update**:
