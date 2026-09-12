@@ -40,11 +40,11 @@ contracts — without adding unnecessary abstraction.
 A successful end state means that anyone can answer five questions by reading the
 repository:
 
-1. What does NixOS own?
-2. What does Core own?
-3. What does an application repository own?
-4. What can GitOps execute?
-5. What happens when deployment fails?
+1. What does **NixOS** own?
+2. What does **Core** own?
+3. What does an **application repository** own?
+4. What can **GitOps** execute?
+5. What happens **when deployment fails**?
 
 Right now those answers exist, but they're scattered across code, conventions,
 comments, and historical documentation. This plan turns them into explicit
