@@ -56,8 +56,8 @@ Architectural inquiries and problem statements currently under evaluation that h
 
 Implementation roadmaps currently in progress (`status: active`) that are actively being executed or scheduled for deployment:
 
-1. 🟡 [**Architecture Consolidation & Hardening Roadmap**](plans/architecture-consolidation-roadmap.md) `[Active]`
-   - Formalizing the four-tier architectural boundaries, hardening the dynamic GitOps dispatcher with closed action enums, and codifying the `app.yaml` schema contract.
+1. 🟡 [**Architecture Consolidation & Hardening Roadmap v2**](plans/architecture-consolidation-roadmap-v2.md) `[Active]`
+   - Formalizing the three-layer architectural model, closing the GitOps trust boundary, codifying `app.yaml` v1 schema contracts, and establishing machine-enforced invariants.
 2. 🟡 [**Rust Daemon Migration Plan: Standalone `dynu-monitor`**](plans/dynu-monitor-rust-daemon.md) `[Active]`
    - Implementing a standalone Rust daemon with 30-second polling and round-robin public DNS resolution across 5 independent providers (Cloudflare, Quad9, Google, OpenDNS, Dynu).
 3. 🟡 [**Custom API Security Hardening & Threat Analysis**](plans/api-security-hardening.md) `[Active]`
@@ -96,6 +96,7 @@ Archived and foundational documentation for completed milestones:
 * [**Dynu DDNS Polling Frequency and Rust Migration**](discussions/dynu-monitor-polling-and-language-tradeoffs.md) — Investigated polling intervals and language trade-offs; resolved via `dynu-monitor-rust-daemon.md` plan.
 
 ### Completed Plans
+* 🟢 [**Architecture Consolidation & Hardening Roadmap v1**](plans/architecture-consolidation-roadmap.md) (Superseded by v2)
 * 🟢 [**Turn `homelab-core` into a Declarative NixOS Appliance**](plans/nixos-appliance-migration.md)
 * 🟢 [**Core & Sites Cutover and Testing Plan**](plans/appctl/core-sites-cutover-testing-plan.md)
 * 🟢 [**appctl Refactor & Decentralized `app.yaml` Metadata Architecture**](plans/appctl/refactor-and-metadata-sync.md)

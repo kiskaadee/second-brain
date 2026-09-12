@@ -1,11 +1,19 @@
 ---
 type: plan
-status: active
+status: completed
 project: homelab
-tags: [homelab, architecture, gitops, security, roadmap]
+tags:
+  - homelab
+  - architecture
+  - gitops
+  - security
+  - roadmap
 ---
 
 # Architectural Discussion & Phased Implementation Plan: Homelab Core Appliance
+
+> [!NOTE]
+> Superseded by [Architecture Consolidation & Hardening Roadmap v2](architecture-consolidation-roadmap-v2.md).
 
 ## Executive Summary
 
