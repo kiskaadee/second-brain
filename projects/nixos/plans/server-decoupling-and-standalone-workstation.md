@@ -1,6 +1,6 @@
 ---
 type: plan
-status: active
+status: completed
 project: nixos
 tags:
   - nixos
@@ -187,12 +187,13 @@ Phase 2: Workstation Architectural Consolidation
 
 ---
 
-### Phase 2: Workstation Architectural Consolidation (Future Scope)
+### Phase 2: Workstation Architectural Consolidation (Completed)
 
-Once the server removal has stabilized:
-1. Flatten `hosts/laptop/` into a unified system profile (`system/`).
-2. Dissolve the 3 Home Manager tiers (`Tier 1 / Tier 2 / Tier 3`) into clean functional domains (`desktop`, `dev`, `shell`).
-3. Consolidate package lists by domain, eliminating duplicated definitions.
+1. Flattened `hosts/laptop/` into a unified system profile (`system/`).
+2. Dissolved the 3 Home Manager tiers (`Tier 1 / Tier 2 / Tier 3`) into clean functional domains (`desktop`, `dev`, `shell`).
+3. Consolidated package lists by domain, eliminating duplicated definitions.
+4. Refined boundaries and secrets architecture per [`secrets-architecture-and-workstation-cleanup.md`](secrets-architecture-and-workstation-cleanup.md).
+5. Comprehensive execution walkthrough documented in [`standalone-workstation-walkthrough.md`](../guides/standalone-workstation-walkthrough.md).
 
 ---
 
