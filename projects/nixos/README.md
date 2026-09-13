@@ -66,6 +66,8 @@ graph TD
    - Host removal validation, architecture doc sync, and dry builds.
 4. [**SOPS Secrets Restructuring & Multi-User Authelia Walkthrough**](guides/sops-restructuring-walkthrough.md)
    - Secret hierarchy re-encryption, template generation, and host dry-build verification.
+5. [**DMS Desktop Bootstrap & Container Reproducibility Validation**](guides/dms-bootstrap-and-reproducibility-validation.md)
+   - Containerized flake check, one-time bootstrap behavior, and runtime mutation model verification.
 
 ---
 
