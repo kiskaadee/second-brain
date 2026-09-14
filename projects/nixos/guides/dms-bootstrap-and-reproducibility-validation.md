@@ -78,12 +78,18 @@ echo "1" | DMS_PRIVESC=sudo HOME=/tmp/fresh-user dms setup binds
 
 ## 3. The Declarative vs. Runtime Mutation Proof
 
-| Configuration | Behavior Under Store Symlink (`home.file`) | Behavior Under Seeded Bootstrap (`dms setup binds`) |
+| Configuration | Behavior Under Store Symlink (`home.file`) | Behavior Under Bootstrap-Owned File (`dms setup binds`) |
 | :--- | :--- | :--- |
 | **Monitor Re-arrangement** | Fails or gets overwritten on `nixos-rebuild switch`. | Persisted by DMS to `outputs.kdl` cleanly. |
 | **Wallpaper Theming** | Matugen cannot write dynamic palettes to read-only store. | Matugen updates `colors.kdl` dynamically at runtime. |
 | **GUI Keybinding Tweaks** | Fails with `EACCES` when editing in DMS Settings. | Modifies `binds.kdl` directly with user permissions. |
 | **First-Boot State** | Zero shortcuts if empty file touched. | **Complete functional desktop instantly seeded.** |
+
+> [!IMPORTANT]
+> **Repository Architectural Principle**
+> Reproducibility means **reproducible declared system state**, not necessarily byte-for-byte reproducible runtime/user state. The workstation is **declaratively reproducible, with an explicitly documented desktop bootstrap state**.
+>
+> `binds.kdl` is not part of the declarative workstation configuration. It is a bootstrap-owned artifact established by `dms setup binds`, providing the DMS-managed Niri IPC integration bindings. Subsequent edits via the DMS GUI or CLI mutate this file directly.
 
 ---
 
