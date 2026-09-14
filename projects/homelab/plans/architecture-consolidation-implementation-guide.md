@@ -18,6 +18,21 @@ The objective is not to introduce new infrastructure. It is to make the existing
 
 ---
 
+## 🚦 Implementation Status & Execution Progress
+
+| Phase / Milestone | Status | Deliverables Completed / Commits | Immediate Next Action |
+| :--- | :--- | :--- | :--- |
+| **P0: GitOps Trust Boundary** | **🔒 100% SEALED & FROZEN** | Deliverables 1.1–1.5 ([`29dd186`](file:///home/kiskaadee/Projects/homelab/Core), [`01acdb4`](file:///home/kiskaadee/Projects/homelab/Core), [`fa8054a`](file:///home/kiskaadee/Projects/homelab/Core), [`c265c3e`](file:///home/kiskaadee/Projects/homelab/Core), [`5aae4ef`](file:///home/kiskaadee/Projects/homelab/Core), [`f8cbe08`](file:///home/kiskaadee/Projects/homelab/Core), [`4c9e7a4`](file:///home/kiskaadee/Projects/homelab/Core)) | Full admission pipeline, revision-consistent manifest validation, status tracking, and superseding async execution locked in. |
+| **Architecture Invariants & CI** | **✅ ESTABLISHED** | Deliverables 3.1, 3.2, 3.6 ([`142697a`](file:///home/kiskaadee/Projects/homelab/Core), [`f4b676b`](file:///home/kiskaadee/Projects/homelab/Core), [`3351466`](file:///home/kiskaadee/Projects/homelab/Core)) | 35 automated tests passing, `./scripts/test`, pure Nix `flake check`, Gitea Actions CI. |
+| **P1: Manifest Contract v1** | **🎯 UP NEXT** | Pending Deliverables 2.1–2.5 | Author `docs/architecture/manifest-specification.md` and JSON schema. Address repository identity authority & alias collision rejection. |
+| **P1: Privilege Boundary** | **⏳ PENDING** | Deliverables 4.1–4.4 | Dedicated `gitops` user & systemd confinement. |
+| **P2: Architecture Docs** | **⏳ PENDING** | Deliverables 5.1–5.9 | Architecture topologies, ownership matrix, and historical archive. |
+| **P3/P4: Reliability & Lifecycle** | **⏳ PENDING** | Deliverables 6.1–7.4 | Preflight checks, container health verification, deployment history, and systemd-supervised durable worker lifecycle. |
+
+> **Current Repository State**: `main` branch at commit [`4c9e7a4`](file:///home/kiskaadee/Projects/homelab/Core). All 35 automated tests pass via `./scripts/test` and `nix flake check`. Gitea Actions CI enforces zero architectural regressions. P0 is functionally closed and frozen.
+
+---
+
 # 0. Working Rules
 
 Before starting the implementation, establish four rules for the entire refactor.
@@ -666,6 +681,15 @@ deployment.strategy:
   compose
 ```
 
+### Repository Identity Authority & Collision Policies
+
+Define authoritative vs presentation metadata to resolve the identity authority boundary:
+- Determine whether Core's central registry is authoritative or if application manifests register identities.
+- Enforce strict collision rejection:
+  - `duplicate canonical names` → validation error / rejected.
+  - `duplicate aliases` across applications → validation error / rejected.
+  - `alias / canonical name collisions` → validation error / rejected.
+
 ### Cross-field constraints
 
 Examples:
@@ -1251,18 +1275,18 @@ After all deliverables are implemented, confirm the five acceptance questions fr
 The consolidation is complete when:
 
 ```text
-[ ] GitOps cannot execute arbitrary repository-supplied shell
-[ ] webhook requests are authenticated
-[ ] repositories are resolved through trusted identity
-[ ] branch/event policy is enforced
-[ ] deployment execution is asynchronous and serialized
+[x] GitOps cannot execute arbitrary repository-supplied shell
+[x] webhook requests are authenticated
+[x] repositories are resolved through trusted identity
+[x] branch/event policy is enforced
+[x] deployment execution is asynchronous and serialized
 [ ] app.yaml v1 is formally specified
 [ ] JSON Schema is normative
 [ ] runtime validation is typed
 [ ] all manifests use schemaVersion
 [ ] deployment configuration expresses intent
-[ ] architectural invariants are tested automatically
-[ ] CI enforces those invariants
+[x] architectural invariants are tested automatically
+[x] CI enforces those invariants
 [ ] GitOps runs under a restricted identity
 [ ] systemd limits GitOps filesystem authority
 [ ] current architecture is documented
