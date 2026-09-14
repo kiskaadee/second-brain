@@ -82,6 +82,7 @@ Operational runbooks and procedures for daily administration:
 * [**Appctl & Application Manifests (`app.yaml`) User Guide**](guides/appctl-operations-and-manifest-guide.md) — Comprehensive reference for the `appctl` CLI tool and `app.yaml` schema.
 * [**Brain GitOps & Auto-Sync Deployment Pipeline**](guides/brain-gitops-deployment-pipeline.md) — Technical runbook on how Brain commits automatically validate and publish to `docs.roadtotech.me`.
 * [**Dynu DDNS Domain Configuration Troubleshooting Runbook**](guides/dynu-ddns-troubleshooting.md) — Diagnostic and recovery steps for WAN address synchronization issues.
+* [**Diagnosing Unexpected Server Shutdowns Runbook**](guides/server-unexpected-shutdown-diagnosis.md) — Diagnostic procedure and checklist for investigating hardware thermal trips, power loss, and unexpected crashes.
 
 ---
 
