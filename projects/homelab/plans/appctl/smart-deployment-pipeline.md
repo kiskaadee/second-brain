@@ -3,6 +3,8 @@ type: plan
 status: active
 project: homelab
 tags:
+  - operations
+  - architecture
   - homelab
   - cicd
   - gitops

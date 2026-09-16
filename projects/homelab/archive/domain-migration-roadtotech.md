@@ -3,6 +3,8 @@ type: plan
 status: completed
 project: homelab
 tags:
+  - operations
+  - architecture
   - homelab
   - server
   - ddns
@@ -38,7 +40,7 @@ Migrate all homelab public endpoints, Authelia single sign-on (SSO), Traefik rev
   - Wildcard dynamic DNS configured for `*.roadtotech.me` and apex `roadtotech.me`.
 - [x] **Step 2: Declarative NixOS Configuration Updated**
   - `hosts/desktop/homeserver.nix`: Configured `DOMAIN = "roadtotech.me"`.
-  - `hosts/desktop/traefik-deployments.nix`: Configured `DOMAIN_SUFFIX = "roadtotech.me"` and `DOCS_PROJECT_PATH = "/home/kiskaadee/Brain"`.
+  - `hosts/desktop/traefik-deployments.nix`: Configured `DOMAIN_SUFFIX = "roadtotech.me"` and `DOCS_PROJECT_PATH = "~/Brain"`.
   - Secrets rendered to `/run/secrets/rendered/homeserver.env` and `/run/secrets/rendered/traefik-deployments.env`.
 - [x] **Step 3: Traefik & Wildcard SSL Validation**
   - Let's Encrypt DNS-01 wildcard challenge successfully issued certificate for `roadtotech.me` and `*.roadtotech.me`.

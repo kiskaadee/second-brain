@@ -81,7 +81,7 @@ We evaluated, designed, and implemented the **Terminal Workspace Subsystem** for
 - Passed with **0 errors, 0 warnings**.
 
 ### 2. Flake Validation (`nix flake check`)
-- Ran `nix flake check` on `/home/kiskaadee/Config`.
+- Ran `nix flake check` on `~/Config`.
 - All checks (`check-ruff-lint`, `check-ruff-format`, `check-pyright`, `check-shellcheck`) passed cleanly.
 
 ### 3. Laptop Host Dry Build

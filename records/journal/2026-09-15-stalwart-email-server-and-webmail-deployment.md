@@ -2,7 +2,19 @@
 type: journal
 project: homelab
 date: 2026-09-15
-tags: [homelab, email, stalwart, snappymail, lldap, authelia, brevo, dns, deliverability]
+tags:
+  - architecture
+  - security
+  - operations
+  - homelab
+  - email
+  - stalwart
+  - snappymail
+  - lldap
+  - authelia
+  - brevo
+  - dns
+  - deliverability
 ---
 
 # Complete Self-Hosted Email Infrastructure & Webmail Deployment (Stalwart, LLDAP, Brevo, SnappyMail)
@@ -50,14 +62,14 @@ flowchart TD
 ## 2. Key Accomplishments & Technical Milestones
 
 ### A. Authelia Session Extension
-- Extended Authelia session and JWT timeouts in [`Core/config/authelia/configuration.yml`](file:///home/kiskaadee/Homelab/Core/config/authelia/configuration.yml):
+- Extended Authelia session and JWT timeouts in `Core/config/authelia/configuration.yml`:
   - `expiration: 7d` (7 days maximum session lifetime).
   - `inactivity: 3d` (3 days idle timeout).
   - `remember_me: 1M` (1 month persistent cookie).
 - Live cookie header verified: `authelia_session=...; expires=Tue, 22 Sep 2026`.
 
 ### B. Stalwart Mail Server Core Infrastructure
-- Deployed **Stalwart Mail Server** (`stalwartlabs/stalwart:v0.16.22`) to [`Core/docker-compose.yml`](file:///home/kiskaadee/Homelab/Core/docker-compose.yml) on `proxy-net`.
+- Deployed **Stalwart Mail Server** (`stalwartlabs/stalwart:v0.16.22`) to `Core/docker-compose.yml` on `proxy-net`.
 - **Port Bindings**:
   - `25:25`: Standard Inbound SMTP from external MTAs.
   - `465:465`: SMTPS (Implicit TLS Submission).
@@ -67,7 +79,7 @@ flowchart TD
   - Internal `8080`: Traefik HTTPS routing for `https://mail.roadtotech.me`.
 - **Persistent Storage**:
   - Configured RocksDB database under `/var/lib/stalwart` mapped to local host directory `./config/stalwart/data`.
-  - Declared `systemd.tmpfiles.rules` in [`Core/nixos/modules/homeserver.nix`](file:///home/kiskaadee/Homelab/Core/nixos/modules/homeserver.nix) to ensure permanent directory permissions (`0777`) across machine reboots, rebuilds, or fresh disaster recoveries.
+  - Declared `systemd.tmpfiles.rules` in `Core/nixos/modules/homeserver.nix` to ensure permanent directory permissions (`0777`) across machine reboots, rebuilds, or fresh disaster recoveries.
 
 ### C. LLDAP Directory Integration & JIT Provisioning
 - Integrated Stalwart with the internal LLDAP instance (`ldap://lldap:3890`):
@@ -132,7 +144,7 @@ flowchart TD
 ## 5. Next Steps & Future Enhancements
 
 1. **Authelia Live Password Reset Integration**:
-   - Update [`Core/config/authelia/configuration.yml`](file:///home/kiskaadee/Homelab/Core/config/authelia/configuration.yml) to replace `notifier: filesystem` with `notifier: smtp` (`submission://stalwart:587`), enabling instant password reset emails for all LLDAP users.
+   - Update `Core/config/authelia/configuration.yml` to replace `notifier: filesystem` with `notifier: smtp` (`submission://stalwart:587`), enabling instant password reset emails for all LLDAP users.
 2. **Gitea Mailer Configuration**:
    - Configure `[mailer]` in Gitea (`Sites/homelab-gitea/`) to send commit, issue, and review notifications from `git@roadtotech.me`.
 3. **Automated System Alerts**:

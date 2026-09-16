@@ -3,6 +3,8 @@ type: plan
 status: completed
 project: homelab
 tags:
+  - operations
+  - architecture
   - gitea
   - cicd
   - gitops

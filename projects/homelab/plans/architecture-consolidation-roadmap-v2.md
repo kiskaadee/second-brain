@@ -3,10 +3,11 @@ type: plan
 status: active
 project: homelab
 tags:
-  - homelab
   - architecture
-  - gitops
   - security
+  - operations
+  - homelab
+  - gitops
   - roadmap
   - consolidation
 ---
@@ -58,7 +59,7 @@ architectural contracts.
 
 ### The Three-Layer Architecture with Orchestration Control Plane
 
-The legacy docs in [`docs/legacy/architecture.html`](file:///home/kiskaadee/Projects/active/homelab/Core/docs/legacy/architecture.html) depict a two-tier "Control
+The legacy docs in `docs/legacy/architecture.html` depict a two-tier "Control
 Plane → Data Plane" model. In practice, the system operates across three
 execution layers, with orchestration acting as a **cross-cutting control
 mechanism** — not a fourth layer.
@@ -141,10 +142,10 @@ into a proper **deployment admission pipeline**.
 
 #### Threat Model
 
-The current [`gitops_dispatcher.py`](file:///home/kiskaadee/Projects/active/homelab/Core/scripts/gitops_dispatcher.py) makes `app.yaml` effectively executable configuration via
+The current `gitops_dispatcher.py` makes `app.yaml` effectively executable configuration via
 the `custom` action path. The implementation feeds the configured command to
 `subprocess.run(cmd, shell=True, cwd=str(target_dir), check=True)` (line ~170).
-The GitOps service runs as `kiskaadee` (configured in [`homeserver.nix`](file:///home/kiskaadee/Projects/active/homelab/Core/nixos/modules/homeserver.nix)),
+The GitOps service runs as `kiskaadee` (configured in `homeserver.nix`),
 which belongs to `docker` and `wheel`. The full threat chain:
 
 ```
@@ -213,7 +214,7 @@ admission pipeline that validates before acting:
 >                        ↓
 > Core:             trusted mapping
 >                        ↓
->                   /home/kiskaadee/Sites/homelab-docs
+>                   ~/Sites/homelab-docs
 > ```
 >
 > Canonical path validation (`realpath` under `~/Sites/<allowed-repo>`) remains
@@ -267,7 +268,7 @@ contract.
 
 #### Current State
 
-The current [`appctl_engine.py`](file:///home/kiskaadee/Projects/active/homelab/Core/scripts/appctl_engine.py) uses a zero-dependency custom YAML parser
+The current `appctl_engine.py` uses a zero-dependency custom YAML parser
 (`parse_yaml_simple`) that is intentionally permissive. Fields like `auth`,
 `networks`, `env`, and `deployment` are consumed via `.get()` with defaults.
 There is no schema validation — any key is silently accepted, any missing key
@@ -389,12 +390,12 @@ breaking existing repositories.
 **Priority:** Continuous Verification — parallel with Manifest Contract and
 Privilege Boundary.
 
-**Goal:** Convert written architectural invariants from [`AGENTS.md`](file:///home/kiskaadee/Projects/active/homelab/Core/AGENTS.md) into
+**Goal:** Convert written architectural invariants from `AGENTS.md` into
 executable tests.
 
 The current `AGENTS.md` already contains invariants (decentralized manifests,
 read-only socket-proxy, no committed secrets, Unlicense preservation). The
-[`docker-compose.yml`](file:///home/kiskaadee/Projects/active/homelab/Core/docker-compose.yml) correctly implements the socket-proxy policy
+`docker-compose.yml` correctly implements the socket-proxy policy
 (`POST=0`, `DELETE=0`). But these are convention-dependent — nothing prevents
 regression.
 
@@ -448,7 +449,7 @@ no references to deprecated paths (infra/core/, ./up.sh, ./down.sh)
 > [!TIP]
 > That last category is particularly valuable because the current repository
 > demonstrates exactly why documentation drift happens — the legacy
-> [`setup_guide.md`](file:///home/kiskaadee/Projects/active/homelab/Core/docs/setup_guide.md) and HTML docs reference patterns that no longer exist.
+> `setup_guide.md` and HTML docs reference patterns that no longer exist.
 
 #### Deliverables
 
@@ -471,7 +472,7 @@ privileges.
 #### Current Problem
 
 Even after removing `custom` execution, the GitOps service runs as `kiskaadee`
-(configured in [`homeserver.nix`](file:///home/kiskaadee/Projects/active/homelab/Core/nixos/modules/homeserver.nix)) with `wheel` and `docker` group membership. A remotely
+(configured in `homeserver.nix`) with `wheel` and `docker` group membership. A remotely
 triggered service should not possess that level of authority.
 
 The current systemd service has no hardening directives — no `ProtectSystem`, no
@@ -700,11 +701,11 @@ of shell scripts.
 
 > **Secrets belong to the subsystem that semantically owns them.**
 
-The current [`traefik-deployments.nix`](file:///home/kiskaadee/Projects/active/homelab/Core/nixos/modules/traefik-deployments.nix) acts as the Host Secret Projection Layer,
+The current `traefik-deployments.nix` acts as the Host Secret Projection Layer,
 injecting credentials into `/run/secrets/rendered/traefik-deployments.env`. This
 role should be formally documented.
 
-The `system.pdf_decrypt_password` key currently lives in [`secrets.yaml`](file:///home/kiskaadee/Projects/active/homelab/Core/nixos/secrets.yaml) but is
+The `system.pdf_decrypt_password` key currently lives in `secrets.yaml` but is
 consumed via `dynu.nix` or `shell.nix`. Secrets should not live in modules based
 on which utility happens to consume them. The correct ownership model:
 
@@ -790,7 +791,7 @@ The refactoring makes that complexity legible — it does not add more.
 
 ### P0 — GitOps Trust Boundary
 
-- [ ] Remove `custom` action execution from [`gitops_dispatcher.py`](file:///home/kiskaadee/Projects/active/homelab/Core/scripts/gitops_dispatcher.py)
+- [ ] Remove `custom` action execution from `gitops_dispatcher.py`
 - [ ] Migrate `homelab-magnetflix` away from `custom` action
 - [ ] Implement HMAC-SHA256 webhook signature verification
 - [ ] Implement trusted repository name → local path mapping (not path from payload)
@@ -803,7 +804,7 @@ The refactoring makes that complexity legible — it does not add more.
 
 - [ ] Write manifest specification v1 (fields, types, defaults, constraints)
 - [ ] Create `schemas/app-v1.schema.json`
-- [ ] Implement Pydantic validator in [`appctl_engine.py`](file:///home/kiskaadee/Projects/active/homelab/Core/scripts/appctl_engine.py)
+- [ ] Implement Pydantic validator in `appctl_engine.py`
 - [ ] Add `schemaVersion` requirement to all manifests
 - [ ] Replace imperative action lists with `deployment.strategy` declarations
 - [ ] Migrate all `~/Sites/*/app.yaml` to v1 schema
@@ -821,7 +822,7 @@ The refactoring makes that complexity legible — it does not add more.
 ### P1 — Privilege Boundary
 
 - [ ] Create dedicated `gitops` Unix user
-- [ ] Apply systemd hardening directives to [`homeserver.nix`](file:///home/kiskaadee/Projects/active/homelab/Core/nixos/modules/homeserver.nix)
+- [ ] Apply systemd hardening directives to `homeserver.nix`
 - [ ] Restrict filesystem access scope
 - [ ] Document privilege model
 

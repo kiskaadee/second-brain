@@ -3,6 +3,8 @@ type: discussion
 project: homelab
 date: 2026-09-08
 tags:
+  - architecture
+  - operations
   - homelab
   - ai
   - chatbot
@@ -83,6 +85,6 @@ Create a lightweight, self-hosted chatbot backend running on the `roadtotech.me`
   - **09:00 PM**: Evening reflection reminder.
 
 ### Phase 3: Brain Vault Tools & RAG
-* Connect the assistant with read/write access to `/home/kiskaadee/Brain`:
+* Connect the assistant with read/write access to `~/Brain`:
   - `/note <text>`: Appends entry to `~/Brain/journal/daily/YYYY-MM-DD.md`.
   - `/ask <question>`: RAG search across `~/Brain/knowledge` to answer questions about past study notes.

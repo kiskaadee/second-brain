@@ -3,12 +3,14 @@ type: discussion
 project: homelab
 date: 2026-09-11
 tags:
+  - architecture
+  - operations
+  - ADR
   - homelab
   - dynu
   - ddns
   - python
   - rust
-  - architecture
 ---
 
 # 🔄 Discussion: Dynu DDNS Polling Frequency, Resolver Rotation, and Rust Migration

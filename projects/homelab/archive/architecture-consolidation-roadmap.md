@@ -3,10 +3,12 @@ type: plan
 status: completed
 project: homelab
 tags:
-  - homelab
   - architecture
-  - gitops
   - security
+  - operations
+  - ADR
+  - homelab
+  - gitops
   - roadmap
 ---
 
@@ -77,7 +79,7 @@ The legacy documentation depicts a 2-tier system (`Control Plane -> Data Plane`)
 * **Resolution**:
   1. **Abolish `custom` commands completely**. Deployment actions must be a closed, hardcoded enum: `git_pull`, `compose_config`, `compose_pull`, `compose_up`, `healthcheck`.
   2. **Webhook Authentication**: Require Gitea HMAC-SHA256 signature verification (`X-Gitea-Signature`) using a secret token stored via SOPS.
-  3. **Strict Target Containment**: Validate that target paths are strictly canonicalized under `/home/kiskaadee/Sites/<allowed-repo>` with no path traversal (`..`) permitted.
+  3. **Strict Target Containment**: Validate that target paths are strictly canonicalized under `~/Sites/<allowed-repo>` with no path traversal (`..`) permitted.
 
 #### B. Manifest Ownership & Schema Contract
 * **Problem**: `app.yaml` is parsed with a lightweight, forgiving manual parser. Certain fields like `auth: false` or `networks: [proxy-net]` appear declarative, yet actual enforcement lives inside Docker Compose labels.

@@ -1,12 +1,14 @@
 ---
 type: discussion
 project: homelab
+date: 2026-09-11
 tags:
-  - nixos
   - architecture
+  - operations
+  - ADR
+  - nixos
   - homelab
   - monorepo
-date: 2026-09-11
 ---
 
 # Architectural Analysis: NixOS Monorepo vs. Multi-Repo for Homelab & Workstations

@@ -2,9 +2,10 @@
 type: guide
 project: homelab
 tags:
+  - operations
+  - architecture
   - homelab
   - appctl
-  - architecture
   - devops
   - git
 ---
@@ -29,7 +30,7 @@ This guide covers everyday operations for managing containerized applications in
 ## 🏛️ Directory Layout
 
 ```text
-/home/kiskaadee/
+~/
 ├── Core/                      # Control Plane (Traefik, Authelia, Socket-Proxy, Portainer, Dozzle)
 │   ├── docker-compose.yml
 │   ├── config/
@@ -69,7 +70,7 @@ networks:
 
 # Stack-specific default environment variables
 env:
-  PROJECT_PATH: "/home/kiskaadee/Brain"
+  PROJECT_PATH: "~/Brain"
 
 # Optional dynamic GitOps deployment configuration
 deployment:

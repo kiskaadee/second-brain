@@ -3,6 +3,8 @@ type: plan
 status: completed
 project: homelab
 tags:
+  - operations
+  - architecture
   - homelab
   - server
   - storage
@@ -21,9 +23,9 @@ Establish clear, unambiguous directory boundaries across both the Server and Lap
 > [!NOTE]
 > The initial proposal for a monolithic `~/Deployments` directory was superseded by the decoupled `~/Core` and `~/Sites` architecture documented in [Homelab Architecture: Appctl & Decentralized Repositories](../../guides/appctl-operations-and-manifest-guide.md) and executed in [Core & Sites Cutover and Testing Plan](../../archive/core-sites-cutover-testing-plan.md).
 
-### 🖥️ Production Server Layout (`/home/kiskaadee/`)
+### 🖥️ Production Server Layout (`~/`)
 ```text
-/home/kiskaadee/
+~/
 ├── Core/                      # Hardened Ingress & Gateway (Traefik, Authelia, Socket-Proxy)
 ├── Sites/                     # Decentralized micro-repositories for each container stack
 ├── Brain/                     # Synced personal knowledge base & operational docs
@@ -37,9 +39,9 @@ Establish clear, unambiguous directory boundaries across both the Server and Lap
 
 ---
 
-### 💻 Laptop Workstation Layout (`/home/kiskaadee/`)
+### 💻 Laptop Workstation Layout (`~/`)
 ```text
-/home/kiskaadee/
+~/
 ├── Projects/                  # Active source code repositories
 │   └── active/                # Current work trees (e.g. homelab micro-repos, new-repo, dynu-monitor)
 ├── Learn/                     # Backend residency and study coursework

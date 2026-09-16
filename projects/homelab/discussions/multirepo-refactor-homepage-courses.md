@@ -3,6 +3,9 @@ type: discussion
 project: homelab
 date: 2026-09-14
 tags:
+  - architecture
+  - operations
+  - ADR
   - homelab
   - homepage
   - courses
@@ -16,8 +19,8 @@ This document analyzes and outlines the execution plan for disentangling **Homep
 
 ### Verdict: Is this the right direction?
 **Yes, strongly affirmative.**
-- **Homepage** is an administrative and operational dashboard coupled to Core infrastructure (`socket-proxy`, `socket-net`, `traefik`, host system resource widgets). It belongs in `/home/kiskaadee/Homelab/Core`.
-- **Courses** (the learning API & Kanban) is a discrete user-domain application with its own database (Turso/LibSQL), domain logic, and frontend requirements. It belongs in `/home/kiskaadee/Homelab/Sites/courses`.
+- **Homepage** is an administrative and operational dashboard coupled to Core infrastructure (`socket-proxy`, `socket-net`, `traefik`, host system resource widgets). It belongs in `~/Homelab/Core`.
+- **Courses** (the learning API & Kanban) is a discrete user-domain application with its own database (Turso/LibSQL), domain logic, and frontend requirements. It belongs in `~/Homelab/Sites/courses`.
 - **Decoupling eliminates technical debt**: Injecting the learning Kanban into Homepage via `custom.js` and `custom.css` with DOM mutations (`MutationObserver`) was an architectural anti-pattern. Decoupling allows Homepage to remain fast and standard, while providing Courses with a dedicated standalone web UI.
 
 ---

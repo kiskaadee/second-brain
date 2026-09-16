@@ -96,7 +96,7 @@ docs/
   1. Boot minimal NixOS ISO.
   2. Partitioning, filesystem formatting, and mounting.
   3. Generating `system/hardware-configuration.nix`.
-  4. Cloning `Config` to `/home/kiskaadee/Config`.
+  4. Cloning `Config` to `~/Config`.
   5. Dry build validation: `nix build .#nixosConfigurations.laptop.config.system.build.toplevel --no-link`.
   6. System installation: `nixos-install --flake .#laptop`.
   7. Reboot and initial login via `dank-greeter`.

@@ -3,13 +3,16 @@ type: discussion
 project: homelab
 date: 2026-09-08
 tags:
+  - architecture
+  - security
+  - operations
+  - ADR
   - homelab
   - gitops
   - webhook
   - gitea
   - appctl
   - automation
-  - architecture
 ---
 
 # 🚀 Dynamic Decentralized GitOps Dispatcher Architecture
@@ -79,12 +82,12 @@ flowchart TD
 ## 🧩 Key System Components
 
 ### 1. The Declarative Webhook Daemon (`pkgs.webhook`)
-The webhook listener is declared immutably via NixOS in [`Config/hosts/server/homeserver.nix`](file:///home/kiskaadee/Config/hosts/server/homeserver.nix):
+The webhook listener is declared immutably via NixOS in `Config/hosts/server/homeserver.nix`:
 - **Port**: `9000` (Internal LAN / Tailscale only).
 - **Service Name**: `homelab-gitops.service`.
 - **Payload Handling**: Configured with `pass-arguments-to-command = [ { source = "entire-payload"; } ]`, passing the complete Gitea JSON event payload directly into the Python dispatcher arguments.
 
-### 2. The Dynamic Dispatcher Engine ([`gitops_dispatcher.py`](file:///home/kiskaadee/Projects/active/homelab/homelab-core/scripts/gitops_dispatcher.py))
+### 2. The Dynamic Dispatcher Engine (`gitops_dispatcher.py`)
 A zero-dependency Python 3 engine executing on the server host:
 - Parses the repository name and ref (`branch`) from standard input.
 - Dynamically locates the target directory in `~/Sites` (matching `<repo>`, `homelab-<repo>`, or data vaults).

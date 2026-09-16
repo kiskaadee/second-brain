@@ -3,6 +3,9 @@ type: plan
 status: completed
 project: homelab
 tags:
+  - architecture
+  - security
+  - operations
   - homelab
   - email
   - stalwart
@@ -63,7 +66,7 @@ flowchart TD
 
 ## 2. Docker Compose Service Definition
 
-Add the `stalwart` service to [`Core/docker-compose.yml`](file:///home/kiskaadee/Homelab/Core/docker-compose.yml):
+Add the `stalwart` service to `Core/docker-compose.yml`:
 
 ```yaml
   stalwart:

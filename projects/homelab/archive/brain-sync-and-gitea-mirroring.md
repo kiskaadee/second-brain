@@ -1,14 +1,16 @@
 ---
 type: plan
 project: homelab
+status: completed
 tags:
+  - operations
+  - architecture
   - gitea
   - brain
   - sync
   - gitops
   - cicd
   - homelab
-status: completed
 ---
 
 # 🧠 Real-Time Brain Synchronization, CI/CD & Gitea Push Mirroring

@@ -3,6 +3,8 @@ type: plan
 status: completed
 project: homelab
 tags:
+  - operations
+  - architecture
   - appctl
   - homelab
   - cutover
@@ -45,7 +47,7 @@ flowchart TD
 ## 📋 Step-by-Step Execution Plan
 
 ### Phase 1: Declarative Configuration & Domain Update
-Update NixOS declarations to define `roadtotech.me` globally and point the systemd service to `/home/kiskaadee/Core`:
+Update NixOS declarations to define `roadtotech.me` globally and point the systemd service to `~/Core`:
 
 1. **Update NixOS Declarations**:
    - `~/Config/hosts/desktop/homeserver.nix`:

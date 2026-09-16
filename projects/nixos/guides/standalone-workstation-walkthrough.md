@@ -13,7 +13,7 @@ tags:
 
 ## Overview
 
-Following the migration of homelab server infrastructure to the dedicated `Core` repository, the primary system configuration repository ([`/home/kiskaadee/Config`](file:///home/kiskaadee/Config)) was transformed from a multi-host fleet hierarchy into a standalone, domain-driven configuration for the mobile workstation (`laptop`).
+Following the migration of homelab server infrastructure to the dedicated `Core` repository, the primary system configuration repository (`~/Config`) was transformed from a multi-host fleet hierarchy into a standalone, domain-driven configuration for the mobile workstation (`laptop`).
 
 Subsequently, all remaining workstation boundaries, compositor residue, and secrets architecture were refined, verified, and successfully activated on the host.
 

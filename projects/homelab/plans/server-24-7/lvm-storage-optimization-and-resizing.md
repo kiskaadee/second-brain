@@ -3,6 +3,7 @@ type: plan
 status: active
 project: homelab
 tags:
+  - operations
   - homelab
   - lvm
   - storage
@@ -31,7 +32,7 @@ nvme0n1 (931.5 GB NVMe SSD)
 
 ### 🚨 Critical Diagnostic: 323 GB Desktop Indexer Cache
 During disk diagnostics, `/home` was found to be 85% full due almost entirely to:
-* **`/home/kiskaadee/.cache/danksearch` (323 GB)**: Local search indexing daemon (`dsearch`) generated massive cache dumps and CPU overhead.
+* **`~/.cache/danksearch` (323 GB)**: Local search indexing daemon (`dsearch`) generated massive cache dumps and CPU overhead.
 * Actual application repositories (`~/Sites`), Brain vault (`~/Brain`), and NixOS configurations (`~/Config`) consume **under 10 GB total**.
 
 ### Target Production Server Layout:

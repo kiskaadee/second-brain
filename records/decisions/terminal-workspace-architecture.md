@@ -119,7 +119,7 @@ normalize_name() {
 ```
 
 ### 6.3 Global Collision Policy (Strict Refusal)
-If multiple paths yield identical normalized session names (e.g. `/home/kiskaadee/Homelab/Core` and `/home/kiskaadee/Projects/archive/core`), validation fails globally:
+If multiple paths yield identical normalized session names (e.g. `~/Homelab/Core` and `/home/kiskaadee/Projects/archive/core`), validation fails globally:
 ```text
 ERROR: workspace name collision: 'core'
   /home/kiskaadee/Homelab/Core

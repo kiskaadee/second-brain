@@ -2,6 +2,8 @@
 type: guide
 project: homelab
 tags:
+  - operations
+  - architecture
   - homelab
   - appctl
   - traefik
@@ -27,7 +29,7 @@ Deploying a new application consists of 4 steps:
 
 ## Step 1: Create the Project Repository
 
-All user applications reside in independent repositories under `/home/kiskaadee/Sites/`:
+All user applications reside in independent repositories under `~/Sites/`:
 
 ```bash
 mkdir -p ~/Sites/homelab-myapp

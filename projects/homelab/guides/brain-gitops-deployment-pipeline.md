@@ -2,6 +2,8 @@
 type: guide
 project: homelab
 tags:
+  - operations
+  - architecture
   - homelab
   - brain
   - gitops
@@ -21,7 +23,7 @@ Any change committed locally flows through a multi-stage pipeline:
 2. **Local Post-commit Trigger**: Automatic push over custom SSH port `2223`.
 3. **Gitea CI & Hot Mirroring**: Server-side Actions validation (`act_runner`) and GitHub backup sync.
 4. **Webhook Event Dispatch**: Internal HTTP POST to `homelab-gitops` on port `9000`.
-5. **Host-Level GitOps Dispatcher**: Zero-delay fast-forward Git pull into the server's `/home/kiskaadee/Brain` instance.
+5. **Host-Level GitOps Dispatcher**: Zero-delay fast-forward Git pull into the server's `~/Brain` instance.
 6. **Live Consumer API & Presentation**: Instantaneous rendering via `homelab-doc2site` at `https://docs.roadtotech.me`.
 
 ---
@@ -53,7 +55,7 @@ flowchart TD
     subgraph ServerHost["3. Homeserver Host (192.168.1.36)"]
         WebhookDaemon["systemd: homelab-gitops\n(webhook daemon :9000)"]
         Dispatcher["gitops_dispatcher.py\n(payload resolver)"]
-        BrainVault["/home/kiskaadee/Brain\n(git pull --ff-only)"]
+        BrainVault["~/Brain\n(git pull --ff-only)"]
 
         WebhookTrigger --> WebhookDaemon --> Dispatcher --> BrainVault
     end
@@ -76,7 +78,7 @@ flowchart TD
 
 The repository uses native Git hooks located in `.githooks/` (configured via `git config core.hooksPath .githooks`):
 
-- **`pre-commit`**: Executes [`scripts/validate-brain.py`](file:///home/kiskaadee/Brain/scripts/validate-brain.py) before finalizing any commit. It enforces:
+- **`pre-commit`**: Executes [`scripts/validate-brain.py`](../../../scripts/validate-brain.py) before finalizing any commit. It enforces:
   1. *No deprecated directories* (`notes/`, `scratch/`, etc.).
   2. *Required root files* (`README.md`, `AGENTS.md`, `flake.nix`, etc.).
   3. *Frontmatter schema* (`type`, `status`, `topics`, `tags`, `project`).
@@ -136,10 +138,10 @@ Upon push completion, Gitea delivers an HTTP POST event to the server's internal
 - **Endpoint**: `http://192.168.1.36:9000/hooks/deploy`
 - **Payload**: Gitea JSON push payload detailing repository name (`second-brain`), branch (`refs/heads/main`), and commit SHAs.
 
-The server's systemd unit (`homelab-gitops`) pipes this payload directly into [`homelab-core/scripts/gitops_dispatcher.py`](file:///home/kiskaadee/Projects/active/homelab/homelab-core/scripts/gitops_dispatcher.py):
+The server's systemd unit (`homelab-gitops`) pipes this payload directly into `homelab-core/scripts/gitops_dispatcher.py`:
 
 1. `gitops_dispatcher.py` identifies `second-brain` as a core data vault.
-2. It resolves the vault target directory to `/home/kiskaadee/Brain`.
+2. It resolves the vault target directory to `~/Brain`.
 3. It runs `git pull --ff-only origin main` in the background.
 4. Total execution time from local `git commit` to server synchronization is typically **under 1.5 seconds**.
 
@@ -147,7 +149,7 @@ The server's systemd unit (`homelab-gitops`) pipes this payload directly into [`
 
 ### 4. Consumer API & Live Presentation (`doc2site`)
 
-- The documentation rendering service (`homelab-doc2site`) runs in Docker and mounts `/home/kiskaadee/Brain` directly into its container filesystem.
+- The documentation rendering service (`homelab-doc2site`) runs in Docker and mounts `~/Brain` directly into its container filesystem.
 - Because `git pull` directly updates the underlying markdown files on the server host, `doc2site` serves the updated knowledge graph immediately upon HTTP request without needing a container rebuild, restart, or cache purge.
 - The web portal is accessible at `https://docs.roadtotech.me`.
 

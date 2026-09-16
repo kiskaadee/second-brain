@@ -2,6 +2,8 @@
 type: guide
 project: homelab
 tags:
+  - operations
+  - architecture
   - homelab
   - email
   - deliverability

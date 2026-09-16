@@ -2,7 +2,13 @@
 type: plan
 status: completed
 project: homelab
-tags: [homelab, nixos, appliance, migration]
+tags:
+  - architecture
+  - operations
+  - homelab
+  - nixos
+  - appliance
+  - migration
 ---
 
 # Implementation Plan: Turn `homelab-core` into a Declarative NixOS Appliance
@@ -79,7 +85,7 @@ flowchart TD
 ```
 
 ### Phase 1: Repository Scaffolding in `homelab-core`
-1. Create a dedicated branch in `/home/kiskaadee/Projects/active/homelab/homelab-core`:
+1. Create a dedicated branch in `~/Projects/active/homelab/homelab-core`:
    `feat/nixos-appliance`
 2. Create directory `nixos/` with subdirectories `nixos/modules/` and `nixos/scripts/`.
 3. Create `.sops.yaml` in `homelab-core` containing the server's age key (`*server`) and user's key (`*kiskaadee`).
@@ -173,18 +179,18 @@ Document this exact runbook in `homelab-core/docs/disaster-recovery.md`:
 nixos-generate-config --root /mnt
 
 # 4. Clone homelab-core into target root:
-git clone https://github.com/kiskaadee/homelab-core.git /mnt/home/kiskaadee/Core
+git clone https://github.com/kiskaadee/homelab-core.git /mnt~/Core
 # (or via local USB backup / Gitea)
 
 # 5. Copy the generated hardware-configuration.nix into the repo:
-cp /mnt/etc/nixos/hardware-configuration.nix /mnt/home/kiskaadee/Core/nixos/hardware-configuration.nix
+cp /mnt/etc/nixos/hardware-configuration.nix /mnt~/Core/nixos/hardware-configuration.nix
 
 # 6. Restore the server age secret key (from offline password manager/backup):
 mkdir -p /mnt/var/lib/sops-nix
 # Place key at /mnt/var/lib/sops-nix/key.txt or /mnt/etc/ssh/ssh_host_ed25519_key
 
 # 7. Install system directly from homelab-core:
-nixos-install --flake /mnt/home/kiskaadee/Core#server
+nixos-install --flake /mnt~/Core#server
 
 # 8. Reboot: The entire homelab, Traefik, Docker services, and GitOps wake up automatically!
 reboot

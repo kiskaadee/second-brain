@@ -2,6 +2,8 @@
 type: guide
 project: homelab
 tags:
+  - operations
+  - security
   - homelab
   - sops
   - secrets

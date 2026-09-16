@@ -3,6 +3,8 @@ type: plan
 status: completed
 project: homelab
 tags:
+  - architecture
+  - operations
   - homelab
   - homepage
   - courses
@@ -13,8 +15,8 @@ tags:
 
 ## Goal Description
 Restructure the homelab services by disentangling the **Homepage** dashboard from the **Learning Hub** (courses API & Kanban board):
-1. **Reintegrate Homepage into Homelab Core** (`/home/kiskaadee/Homelab/Core`): Return Homepage to its natural role as the central infrastructure portal and container status monitor in the Core stack, removing custom DOM-injection scripts (`custom.js`, `custom.css`).
-2. **Establish Standalone Courses App** (`/home/kiskaadee/Homelab/Sites/courses`): Promote the learning API and its Kanban board into an independent application under `Sites/courses`, equipped with its own `app.yaml`, standalone frontend UI, Turso database connection, and isolated lifecycle.
+1. **Reintegrate Homepage into Homelab Core** (`~/Homelab/Core`): Return Homepage to its natural role as the central infrastructure portal and container status monitor in the Core stack, removing custom DOM-injection scripts (`custom.js`, `custom.css`).
+2. **Establish Standalone Courses App** (`~/Homelab/Sites/courses`): Promote the learning API and its Kanban board into an independent application under `Sites/courses`, equipped with its own `app.yaml`, standalone frontend UI, Turso database connection, and isolated lifecycle.
 3. **Update Orchestrator (`appctl`)**: Direct `appctl sync` to output Homepage configuration to `Core/config/homepage/services.yaml`, ensuring dynamic discovery of all `Sites/*/app.yaml` manifests including the new `courses` site.
 4. **Decommission `Sites/dashboard`**: Safely transition and retire the deprecated `Sites/dashboard` repository.
 
@@ -231,12 +233,12 @@ Ensure `config/homepage` is validated as part of the core repository structure t
 ### Automated Tests
 1. **Core Structural & Security Invariants**:
    ```bash
-   cd /home/kiskaadee/Homelab/Core
+   cd ~/Homelab/Core
    uv run --with pytest --with pyyaml pytest tests
    ```
 2. **Courses Service Unit Tests & Type Check**:
    ```bash
-   cd /home/kiskaadee/Homelab/Sites/courses
+   cd ~/Homelab/Sites/courses
    uv run python -m unittest discover tests
    uv run pyright
    ```

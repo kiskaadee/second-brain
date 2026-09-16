@@ -3,6 +3,7 @@ type: plan
 status: active
 project: homelab
 tags:
+  - operations
   - homelab
   - gitea
   - github

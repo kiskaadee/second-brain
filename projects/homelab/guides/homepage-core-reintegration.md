@@ -2,6 +2,8 @@
 type: guide
 project: homelab
 tags:
+  - operations
+  - architecture
   - homelab
   - homepage
   - core
@@ -11,14 +13,14 @@ tags:
 # Walkthrough: Homepage Reintegration into Homelab Core
 
 ## Overview
-We have extracted **Homepage** (`gethomepage`) from the temporary hybrid `Sites/dashboard` repository and reintegrated it as a first-class service in [Homelab/Core](/home/kiskaadee/Homelab/Core).
+We have extracted **Homepage** (`gethomepage`) from the temporary hybrid `Sites/dashboard` repository and reintegrated it as a first-class service in `Homelab/Core` (`~/Core`).
 
 ---
 
 ## Changes Implemented
 
 ### 1. Reintegrated Clean Configuration
-- **Location**: `/home/kiskaadee/Homelab/Core/config/homepage/`
+- **Location**: `~/Homelab/Core/config/homepage/`
 - **Assets Migrated**:
   - `bookmarks.yaml`: Personal project and social quicklinks
   - `docker.yaml`: Direct connection to `socket-proxy:2375`
@@ -57,7 +59,7 @@ We have extracted **Homepage** (`gethomepage`) from the temporary hybrid `Sites/
    ```bash
    appctl sync
    # ✨ Homepage synchronized successfully (4 visible apps in 4 groups)
-   # 📄 Generated /home/kiskaadee/Homelab/Core/config/homepage/services.yaml
+   # 📄 Generated ~/Homelab/Core/config/homepage/services.yaml
    ```
 3. **Core Service Listing**:
    ```bash
@@ -66,6 +68,6 @@ We have extracted **Homepage** (`gethomepage`) from the temporary hybrid `Sites/
    ```
 4. **Compose Syntax Validation**:
    ```bash
-   docker compose -f /home/kiskaadee/Homelab/Core/docker-compose.yml config
+   docker compose -f ~/Homelab/Core/docker-compose.yml config
    # Configuration verified valid
    ```

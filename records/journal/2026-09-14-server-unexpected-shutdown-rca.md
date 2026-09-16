@@ -2,7 +2,15 @@
 type: journal
 project: homelab
 date: 2026-09-14
-tags: [homelab, incident, rca, hardware, jellyfin, nixos, vaapi]
+tags:
+  - operations
+  - homelab
+  - incident
+  - rca
+  - hardware
+  - jellyfin
+  - nixos
+  - vaapi
 ---
 
 # Incident RCA: Unexpected Server Shutdown & Thermal Cut-Off Resolution

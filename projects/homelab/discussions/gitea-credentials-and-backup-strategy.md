@@ -1,12 +1,16 @@
 ---
 type: discussion
 project: homelab
+date: 2026-09-10
 tags:
+  - architecture
+  - operations
+  - security
+  - ADR
+  - homelab
   - gitea
   - git
   - backup
-  - homelab
-date: 2026-09-10
 ---
 
 # Discussion: Gitea Git Credential Helper, Protocol Trade-Offs, and Hybrid Backup Architecture

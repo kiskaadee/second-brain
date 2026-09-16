@@ -19,14 +19,14 @@ The **Learning Platform** (`Sites/learning`) is an integrated personal developme
 Rather than being just a static web UI, it is designed as a **hybrid system**:
 1. **A Web Dashboard**: Visualizing active courses, study streaks, and a DSA pattern mastery matrix.
 2. **A Tactical CLI Tool**: Zero-friction terminal commands (`learning daily`, `learning draft`, `learning review`) for local problem-solving sessions.
-3. **An MCP & REST Service**: Acting as the stateful backend consumed by the [Supervisor System](file:///home/kiskaadee/Brain/projects/supervisor/plans/supervisor-system-specification.md) to ambiently monitor learning objectives, active study sessions, and milestone verification.
+3. **An MCP & REST Service**: Acting as the stateful backend consumed by the [Supervisor System](../../supervisor/plans/supervisor-system-specification.md) to ambiently monitor learning objectives, active study sessions, and milestone verification.
 
 ---
 
 ## 2. Repository Transition & Git History Preservation
 
 To reuse the full commit history without losing provenance:
-- Elevate [`Sites/dashboard/learning/`](file:///home/kiskaadee/Homelab/Sites/dashboard/learning) to the root of the repository.
+- Elevate `Sites/dashboard/learning/` to the root of the repository.
 - Retire migrated Homepage configuration files (now living permanently in `Core/config/homepage/`).
 - Rename directory from `Sites/dashboard` to `Sites/learning` (and clean up the empty placeholder `Sites/courses`).
 - Update `app.yaml`:
@@ -76,7 +76,7 @@ Beyond raw course links and basic problem lists, a top-tier learning companion f
      - **Communication Clarity**: Did you articulate *why* the algorithm works in the Intuition section as you would to an interviewer?
      - **Alternative Approaches**: Socratic hints toward optimal trade-offs (e.g. hashmap vs two-pointer).
 3. **Pattern Exposure & Blind-Spot Radar**:
-   - Tracking exposure across the 16 core patterns identified in [`00-practiced-patterns.md`](file:///home/kiskaadee/Brain/practice/LeetCode/00-practiced-patterns.md) (Two Pointers, Sliding Window, Monotonic Stack, Backtracking, DP, Graphs, etc.).
+   - Tracking exposure across the 16 core patterns identified in [`00-practiced-patterns.md`](../../../practice/LeetCode/00-practiced-patterns.md) (Two Pointers, Sliding Window, Monotonic Stack, Backtracking, DP, Graphs, etc.).
    - Visualizing coverage: *"You have solved 6 HashMap problems, but 0 Sliding Window or Graph problems this month."*
 4. **Spaced Repetition & Weakness Queue**:
    - Problems tagged as `struggled` or `need-review` automatically resurface on a Leitner-style schedule (e.g. 3 days, 10 days, 30 days).
@@ -94,7 +94,7 @@ Beyond raw course links and basic problem lists, a top-tier learning companion f
 ---
 
 ### Pillar 3: Supervisor & MCP Integration (Autonomous Navigation)
-Following the [Supervisor System Specification](file:///home/kiskaadee/Brain/projects/supervisor/plans/supervisor-system-specification.md):
+Following the [Supervisor System Specification](../../supervisor/plans/supervisor-system-specification.md):
 - Expose an **MCP Server (Model Context Protocol)** directly from the Learning application so AI tools (like Antigravity or Supervisor) can:
   - `get_daily_challenge()`: Inspect today's problem.
   - `get_active_curriculum()`: Check what courses or chapters are currently on deck.

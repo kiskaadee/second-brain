@@ -16,7 +16,7 @@ tags:
 An evaluation of transitioning from GitHub-hosted Nixpkgs flake references (`github:nixos/nixpkgs/nixos-unstable`) to the official project-hosted channel tarballs (`https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst`), based on the NixOS Discourse community discussion *"PSA: Use nixos.org tarballs for your flake inputs!"*.
 
 This plan identifies:
-1. Every location in the [`/home/kiskaadee/Config`](file:///home/kiskaadee/Config) repository and system configuration where this change can be applied.
+1. Every location in the `~/Config` repository and system configuration where this change can be applied.
 2. The architectural, performance, and operational trade-offs of making the change.
 3. A safe execution strategy respecting repository invariants (Build, Never Switch).
 
@@ -42,10 +42,10 @@ This plan identifies:
 
 | Area | Current Declaration | Candidate Change | Recommendation |
 | :--- | :--- | :--- | :--- |
-| **System Flake Input**<br>[`flake.nix:L8`](file:///home/kiskaadee/Config/flake.nix#L8) | `nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";` | `nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";` | **Recommended** (Primary candidate) |
+| **System Flake Input**<br>`flake.nix:L8` | `nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";` | `nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";` | **Recommended** (Primary candidate) |
 | **System Flake Registry**<br>(CLI `nix run nixpkgs#...`) | Unconfigured (falls back to global registry pointing to `github:NixOS/nixpkgs`) | Add `nix.registry.nixpkgs.flake = inputs.nixpkgs;` to system base | **Recommended** (Ensures CLI tools share the exact channel cache without querying GitHub) |
-| **Dev Environments Guide**<br>[`docs/development-environments.md:L34`](file:///home/kiskaadee/Config/docs/development-environments.md#L34) | `nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";` | `nixpkgs.url = "https://channels.nixos.org/nixpkgs-unstable/nixexprs.tar.zst";` | **Recommended** (Documents the faster `nixpkgs-unstable` channel for standalone dev flakes) |
-| **Antigravity Guide**<br>[`docs/antigravity.md:L97`](file:///home/kiskaadee/Config/docs/antigravity.md#L97) | `nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";` | `nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";` | **Optional** (Documentation reference) |
+| **Dev Environments Guide**<br>`docs/development-environments.md:L34` | `nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";` | `nixpkgs.url = "https://channels.nixos.org/nixpkgs-unstable/nixexprs.tar.zst";` | **Recommended** (Documents the faster `nixpkgs-unstable` channel for standalone dev flakes) |
+| **Antigravity Guide**<br>`docs/antigravity.md:L97` | `nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";` | `nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";` | **Optional** (Documentation reference) |
 
 ---
 

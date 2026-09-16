@@ -2,6 +2,9 @@
 type: guide
 project: homelab
 tags:
+  - operations
+  - security
+  - architecture
   - homelab
   - lldap
   - authelia
@@ -14,36 +17,36 @@ tags:
 ## Summary of Completed Implementations
 
 ### 1. Repository Tests in Pre-Commit Hook
-- **Hook Location**: [`.githooks/pre-commit`](file:///home/kiskaadee/Homelab/Core/.githooks/pre-commit) (executable, tracked in git).
+- **Hook Location**: `.githooks/pre-commit` (executable, tracked in git).
 - **Git Hooks Path**: Configured via `git config core.hooksPath .githooks` on both local dev and production server environments.
-- **Flake Integration**: [`flake.nix`](file:///home/kiskaadee/Homelab/Core/flake.nix#L35-L37) now includes a `shellHook` that automatically ensures `core.hooksPath` is registered whenever entering the Nix development shell.
-- **Structural Invariant Test**: Added `.githooks/pre-commit` presence and executable bit verification in [`tests/structural/test_repository_structure.py`](file:///home/kiskaadee/Homelab/Core/tests/structural/test_repository_structure.py#L29-L39).
+- **Flake Integration**: `flake.nix` now includes a `shellHook` that automatically ensures `core.hooksPath` is registered whenever entering the Nix development shell.
+- **Structural Invariant Test**: Added `.githooks/pre-commit` presence and executable bit verification in `tests/structural/test_repository_structure.py`.
 - **Verification**: Verified automatically on `git commit` — executes Ruff linter and the full 35 Pytest invariant tests in ~0.12s before allowing commits.
 
 ---
 
 ### 2. LLDAP Service & Dynamic User Backend
-- **Service Container**: `nitnelave/lldap:stable` deployed in [`docker-compose.yml`](file:///home/kiskaadee/Homelab/Core/docker-compose.yml#L102-L133) on `proxy-net`.
+- **Service Container**: `nitnelave/lldap:stable` deployed in `docker-compose.yml` on `proxy-net`.
 - **Public Admin & Self-Service UI**: [https://users.roadtotech.me](https://users.roadtotech.me) (secured with Traefik TLS ACME certificate).
 - **Internal LDAP Endpoint**: `ldap://lldap:3890` with Base DN `dc=roadtotech,dc=me`.
 - **Decoupled SOPS Secrets**:
   - `LLDAP_JWT_SECRET`
   - `LLDAP_KEY_SEED`
   - `LLDAP_LDAP_USER_PASS` / `AUTHELIA_LDAP_PASSWORD`
-  - Added to encrypted [`nixos/secrets.yaml`](file:///home/kiskaadee/Homelab/Core/nixos/secrets.yaml) and exposed via [`nixos/modules/homeserver.nix`](file:///home/kiskaadee/Homelab/Core/nixos/modules/homeserver.nix).
+  - Added to encrypted `nixos/secrets.yaml` and exposed via `nixos/modules/homeserver.nix`.
 
 ---
 
 ### 3. Authelia LDAP Reconfiguration
-- **Backend Switched**: [`config/authelia/configuration.yml`](file:///home/kiskaadee/Homelab/Core/config/authelia/configuration.yml#L10-L28) replaced the static `file` backend with `ldap` pointing to `ldap://lldap:3890`.
+- **Backend Switched**: `config/authelia/configuration.yml` replaced the static `file` backend with `ldap` pointing to `ldap://lldap:3890`.
 - **Users File Removed**: Removed `/run/secrets/rendered/users.yml:/config/users.yml:ro` mount from Authelia.
 - **Bypass Rule**: Added `users.{{ env "DOMAIN" }}` to Authelia's bypass list so users can access LLDAP's login and self-service portal directly.
-- **Appctl Integration**: Registered `lldap` under **Core Infrastructure** in [`scripts/appctl_engine.py`](file:///home/kiskaadee/Homelab/Core/scripts/appctl_engine.py#L328) and Homepage dashboard card (`lldap.png` icon).
+- **Appctl Integration**: Registered `lldap` under **Core Infrastructure** in `scripts/appctl_engine.py` and Homepage dashboard card (`lldap.png` icon).
 
 ---
 
 ### 4. Directory Seeding & Verification
-- Created [`scripts/bootstrap_lldap_users.py`](file:///home/kiskaadee/Homelab/Core/scripts/bootstrap_lldap_users.py).
+- Created `scripts/bootstrap_lldap_users.py`.
 - Groups created in LLDAP: `admins`, `dev`, `users`.
 - Users migrated:
   - `kiskaadee` (`fcortesbio@gmail.com`) -> Groups: `admins`, `dev`

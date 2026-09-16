@@ -11,7 +11,7 @@ tags:
 # ❄️ NixOS Fleet & Declarative System Configuration
 
 ## 🎯 Project Overview
-This project documents the architecture, flake hierarchy, host specializations, module designs, and operational maintenance for the workstation NixOS configuration managed in [`/home/kiskaadee/Config`](file:///home/kiskaadee/Config).
+This project documents the architecture, flake hierarchy, host specializations, module designs, and operational maintenance for the workstation NixOS configuration managed in `~/Config`.
 
 Following the architectural decoupling of the homelab infrastructure into `Core`, `Config` functions as a dedicated standalone configuration for the mobile workstation (`laptop`), structured cleanly around system-level machine concerns (`system/`) and user-session domains (`home/`).
 
@@ -85,6 +85,6 @@ graph TD
 ---
 
 ## 🔗 Related Projects & Locations
-* **Local Flake Repository**: [`/home/kiskaadee/Config`](file:///home/kiskaadee/Config)
+* **Local Flake Repository**: `~/Config`
 * **Homelab Services Project**: [Homelab & Infrastructure Planning](../homelab/README.md)
 

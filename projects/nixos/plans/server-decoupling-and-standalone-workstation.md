@@ -14,7 +14,7 @@ tags:
 
 ## Executive Summary & Context
 
-Following the migration of the homelab infrastructure, Docker stacks, and Traefik edge ingress to the dedicated [`homelab-core`](file:///home/kiskaadee/Projects/active/homelab/Core) repository, the primary system configuration repository ([`/home/kiskaadee/Config`](file:///home/kiskaadee/Config)) transitions from a multi-host fleet manager into a single-purpose, declarative configuration for the mobile workstation host (`laptop`) running Wayland (Niri) and Home Manager.
+Following the migration of the homelab infrastructure, Docker stacks, and Traefik edge ingress to the dedicated `homelab-core` repository, the primary system configuration repository (`~/Config`) transitions from a multi-host fleet manager into a single-purpose, declarative configuration for the mobile workstation host (`laptop`) running Wayland (Niri) and Home Manager.
 
 This document combines the **first-principles architectural analysis** of the standalone workstation with the **concrete phased implementation plan** to decommission legacy server files, dissolve the "multi-host tax", and re-align documentation.
 
@@ -155,7 +155,7 @@ Phase 2: Workstation Architectural Consolidation
   - `homeserver.nix` (Core homelab runtime services)
   - `monitor.py` (WAN IP rotation detector)
   - `traefik-deployments.nix` (Edge proxy configuration)
-- *Verification Invariant*: Confirm all homelab services have corresponding canonical representations in [`homelab-core`](file:///home/kiskaadee/Projects/active/homelab/Core/nixos).
+- *Verification Invariant*: Confirm all homelab services have corresponding canonical representations in `homelab-core`.
 
 #### 3. User Modules & Workstation Cleanup
 - **`modules/user/base.nix`**:

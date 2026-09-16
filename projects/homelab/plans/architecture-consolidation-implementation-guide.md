@@ -3,10 +3,11 @@ type: plan
 status: active
 project: homelab
 tags:
-  - homelab
   - architecture
-  - gitops
   - security
+  - operations
+  - homelab
+  - gitops
   - implementation
 ---
 
@@ -22,14 +23,14 @@ The objective is not to introduce new infrastructure. It is to make the existing
 
 | Phase / Milestone | Status | Deliverables Completed / Commits | Immediate Next Action |
 | :--- | :--- | :--- | :--- |
-| **P0: GitOps Trust Boundary** | **🔒 100% SEALED & FROZEN** | Deliverables 1.1–1.5 ([`29dd186`](file:///home/kiskaadee/Projects/homelab/Core), [`01acdb4`](file:///home/kiskaadee/Projects/homelab/Core), [`fa8054a`](file:///home/kiskaadee/Projects/homelab/Core), [`c265c3e`](file:///home/kiskaadee/Projects/homelab/Core), [`5aae4ef`](file:///home/kiskaadee/Projects/homelab/Core), [`f8cbe08`](file:///home/kiskaadee/Projects/homelab/Core), [`4c9e7a4`](file:///home/kiskaadee/Projects/homelab/Core)) | Full admission pipeline, revision-consistent manifest validation, status tracking, and superseding async execution locked in. |
-| **Architecture Invariants & CI** | **✅ ESTABLISHED** | Deliverables 3.1, 3.2, 3.6 ([`142697a`](file:///home/kiskaadee/Projects/homelab/Core), [`f4b676b`](file:///home/kiskaadee/Projects/homelab/Core), [`3351466`](file:///home/kiskaadee/Projects/homelab/Core)) | 35 automated tests passing, `./scripts/test`, pure Nix `flake check`, Gitea Actions CI. |
+| **P0: GitOps Trust Boundary** | **🔒 100% SEALED & FROZEN** | Deliverables 1.1–1.5 (`29dd186`, `01acdb4`, `fa8054a`, `c265c3e`, `5aae4ef`, `f8cbe08`, `4c9e7a4`) | Full admission pipeline, revision-consistent manifest validation, status tracking, and superseding async execution locked in. |
+| **Architecture Invariants & CI** | **✅ ESTABLISHED** | Deliverables 3.1, 3.2, 3.6 (`142697a`, `f4b676b`, `3351466`) | 35 automated tests passing, `./scripts/test`, pure Nix `flake check`, Gitea Actions CI. |
 | **P1: Manifest Contract v1** | **🎯 UP NEXT** | Pending Deliverables 2.1–2.5 | Author `docs/architecture/manifest-specification.md` and JSON schema. Address repository identity authority & alias collision rejection. |
 | **P1: Privilege Boundary** | **⏳ PENDING** | Deliverables 4.1–4.4 | Dedicated `gitops` user & systemd confinement. |
 | **P2: Architecture Docs** | **⏳ PENDING** | Deliverables 5.1–5.9 | Architecture topologies, ownership matrix, and historical archive. |
 | **P3/P4: Reliability & Lifecycle** | **⏳ PENDING** | Deliverables 6.1–7.4 | Preflight checks, container health verification, deployment history, and systemd-supervised durable worker lifecycle. |
 
-> **Current Repository State**: `main` branch at commit [`4c9e7a4`](file:///home/kiskaadee/Projects/homelab/Core). All 35 automated tests pass via `./scripts/test` and `nix flake check`. Gitea Actions CI enforces zero architectural regressions. P0 is functionally closed and frozen.
+> **Current Repository State**: `main` branch at commit `4c9e7a4`. All 35 automated tests pass via `./scripts/test` and `nix flake check`. Gitea Actions CI enforces zero architectural regressions. P0 is functionally closed and frozen.
 
 ---
 
@@ -263,7 +264,7 @@ homelab-magnetflix
 Map those identities to known directories under:
 
 ```text
-/home/kiskaadee/Sites/
+~/Sites/
 ```
 
 The important property is:

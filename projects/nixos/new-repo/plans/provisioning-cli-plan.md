@@ -15,7 +15,7 @@ tags:
 ## 🎯 Objective
 Build a fast, type-safe, and self-contained Rust command-line tool (`new-repo`) to provision repositories across self-hosted Gitea and GitHub with automated push mirroring, template generation, and zero plaintext secret leakage.
 
-**Repository Location**: [`/home/kiskaadee/Projects/active/new-repo`](file:///home/kiskaadee/Projects/active/new-repo)
+**Repository Location**: `/home/kiskaadee/Projects/active/new-repo`
 
 ---
 

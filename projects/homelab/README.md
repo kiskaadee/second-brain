@@ -2,6 +2,9 @@
 type: project
 status: active
 tags:
+  - architecture
+  - operations
+  - security
   - homelab
   - infrastructure
 ---
@@ -37,7 +40,7 @@ The homelab is organized into four decoupled architectural layers to isolate fai
 | :--- | :--- | :--- |
 | **Gitea Forge** | [homelab-core](https://gitea.roadtotech.me/kiskaadee/homelab-core) | Primary Git repository housing the NixOS appliance and Core services |
 | **Clone (SSH)** | `ssh://git@gitea.roadtotech.me:2223/kiskaadee/homelab-core.git` | Developer clone URL using SSH port 2223 |
-| **Workstation Path** | `/home/kiskaadee/Projects/active/homelab/Core` | Active local development checkout on laptop workstation |
+| **Workstation Path** | `~/Homelab/Core` | Active local development checkout on workstation (`~/Homelab/Core` and `~/Homelab/Sites`) |
 | **Production Target** | `server-remote:~/Core` | Production deployment checkout on the 24/7 server host |
 
 ---

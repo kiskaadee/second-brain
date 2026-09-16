@@ -2,7 +2,13 @@
 type: discussion
 project: homelab
 date: 2026-09-11
-tags: [nixos, homelab, architecture, inventory]
+tags:
+  - architecture
+  - operations
+  - ADR
+  - nixos
+  - homelab
+  - inventory
 ---
 
 # Migration Blueprint: Splitting `nixos-config` and `homelab-core`

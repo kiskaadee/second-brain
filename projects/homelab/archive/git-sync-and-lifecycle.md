@@ -3,6 +3,8 @@ type: plan
 status: completed
 project: homelab
 tags:
+  - operations
+  - architecture
   - homelab
   - appctl
   - git
@@ -12,7 +14,7 @@ tags:
 # 🔄 appctl Git Synchronization & Full-Stack Lifecycle Strategy
 
 ## 🎯 Motivation & Rationale
-In a decentralized homelab architecture where [`~/Core`](file:///home/kiskaadee/Core) and every application stack in [`~/Sites`](file:///home/kiskaadee/Sites) are independent Git repositories:
+In a decentralized homelab architecture where `~/Core` and every application stack in `~/Sites` are independent Git repositories:
 1. **Prevent Configuration Drift**: Developers frequently push edits (compose labels, `app.yaml` metadata, Dockerfile changes) from laptops or secondary workstations. The production server needs instant visibility into repositories that are behind remote (`git pull` needed) or ahead of remote (`git push` pending).
 2. **Prevent Forgotten Uncommitted State**: Dirty working trees on production need to be surfaced prominently to avoid accidental overwrites or uncommitted production hotfixes.
 3. **Atomic Stack Updates (`appctl update`)**: Provide a single command that pulls Git repository changes, pulls new Docker container images, recreates the stack, and synchronizes the Homepage dashboard.

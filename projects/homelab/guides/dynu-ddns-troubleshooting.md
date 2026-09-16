@@ -2,11 +2,12 @@
 type: guide
 project: homelab
 tags:
+  - operations
+  - homelab
   - dynu
   - ddns
   - wan
   - troubleshooting
-  - homelab
 ---
 # Dynu DDNS Domain Configuration Troubleshooting
 

@@ -3,6 +3,8 @@ type: plan
 status: active
 project: homelab
 tags:
+  - operations
+  - architecture
   - homelab
   - dynu
   - ddns
@@ -14,7 +16,7 @@ tags:
 
 ## 🎯 Goal Description
 
-Migrate the dynamic DNS gatekeeper daemon from the current Python script to a native, statically compiled **Rust daemon** located at `/home/kiskaadee/Projects/active/ddns-monitor`.
+Migrate the dynamic DNS gatekeeper daemon from the current Python script to a native, statically compiled **Rust daemon** located at `~/Projects/active/ddns-monitor`.
 
 This implementation introduces high-frequency 30-second polling and stateful round-robin resolver rotation across 5 public echo providers while eliminating Python interpreter overhead on the headless server. Crucially, it decouples the DDNS update mechanism behind a pluggable `DdnsConnector` trait to support both **Dynu** and **Cloudflare** (overcoming Dynu's free-tier 4-alias quota limit).
 

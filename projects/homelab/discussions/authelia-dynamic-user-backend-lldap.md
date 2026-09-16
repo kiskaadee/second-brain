@@ -3,6 +3,9 @@ type: discussion
 project: homelab
 date: 2026-09-14
 tags:
+  - architecture
+  - security
+  - ADR
   - homelab
   - authelia
   - lldap

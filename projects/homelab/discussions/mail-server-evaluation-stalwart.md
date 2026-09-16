@@ -3,10 +3,12 @@ type: discussion
 project: homelab
 date: 2026-09-15
 tags:
+  - architecture
+  - security
+  - ADR
   - homelab
   - email
   - stalwart
-  - architecture
 ---
 
 # Mail Server Evaluation for Homelab Core: Why Stalwart is the Modern Standard

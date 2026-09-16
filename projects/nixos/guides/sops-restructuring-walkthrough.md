@@ -38,8 +38,8 @@ Restructured all flat keys into nested YAML mappings encrypted with Age:
 * Updated all core secret placeholders (`authelia/*`, `traefik/*`, `dynu/*`).
 
 ### 3. Application & DDNS Modules
-* **[`hosts/server/traefik-deployments.nix`](file:///home/kiskaadee/Config/hosts/server/traefik-deployments.nix)**: Updated secret references to service-scoped keys (`postgres/*`, `mongo/*`, `ollama/*`, `learning/*`, `gitea/*`).
-* **[`hosts/server/dynu.nix`](file:///home/kiskaadee/Config/hosts/server/dynu.nix)**: Updated DDNS configuration placeholders to `dynu/*` and `system/pdf_decrypt_password`.
+* **`hosts/server/traefik-deployments.nix`**: Updated secret references to service-scoped keys (`postgres/*`, `mongo/*`, `ollama/*`, `learning/*`, `gitea/*`).
+* **`hosts/server/dynu.nix`**: Updated DDNS configuration placeholders to `dynu/*` and `system/pdf_decrypt_password`.
 
 ---
 

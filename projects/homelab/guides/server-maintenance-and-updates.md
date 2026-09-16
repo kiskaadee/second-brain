@@ -2,6 +2,7 @@
 type: guide
 project: homelab
 tags:
+  - operations
   - homelab
   - nixos
   - maintenance

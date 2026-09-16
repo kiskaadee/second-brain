@@ -71,4 +71,4 @@ sequenceDiagram
 ## 📑 Project Documents & Plans
 
 - [**Repository Provisioning CLI Plan**](plans/provisioning-cli-plan.md) — Comprehensive functional specification, trait architecture, API contracts, and implementation milestones.
-- **Local Implementation Tree**: [`/home/kiskaadee/Projects/active/new-repo`](file:///home/kiskaadee/Projects/active/new-repo)
+- **Local Implementation Tree**: `/home/kiskaadee/Projects/active/new-repo`

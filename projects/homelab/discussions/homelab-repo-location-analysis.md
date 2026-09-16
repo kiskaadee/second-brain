@@ -3,8 +3,10 @@ type: discussion
 project: homelab
 date: 2026-09-14
 tags:
-  - homelab
   - architecture
+  - operations
+  - ADR
+  - homelab
   - gitops
   - workspace
 ---
@@ -147,10 +149,10 @@ If you decide to move to the dedicated `~/Homelab` structure:
    mv ~/Projects/homelab ~/Homelab
    ln -s ~/Homelab ~/Projects/homelab
    ```
-2. **Add Jumper Alias to [`home/shell/jump.sh`](file:///home/kiskaadee/Config/home/shell/jump.sh)**:
+2. **Add Jumper Alias to `home/shell/jump.sh`**:
    ```bash
    hl()      { jump "$HOME/Homelab" "$1" 2; }
    homelab() { hl "$@"; }
    ```
-3. **Update DankSearch Indexing in [`home/desktop.nix`](file:///home/kiskaadee/Config/home/desktop.nix)**:
+3. **Update DankSearch Indexing in `home/desktop.nix`**:
    Add `~/Homelab` as an explicit indexed search root so full-text search covers server configs cleanly without traversing symlink loops.

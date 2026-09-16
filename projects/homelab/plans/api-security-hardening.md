@@ -3,8 +3,9 @@ type: plan
 status: active
 project: homelab
 tags:
-  - homelab
   - security
+  - architecture
+  - homelab
   - hardening
   - api
 ---

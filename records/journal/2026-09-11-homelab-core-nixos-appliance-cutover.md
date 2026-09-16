@@ -2,7 +2,13 @@
 type: journal
 project: homelab
 date: 2026-09-11
-tags: [homelab, nixos, migration, cutover]
+tags:
+  - architecture
+  - operations
+  - homelab
+  - nixos
+  - migration
+  - cutover
 ---
 
 # homelab-core NixOS Appliance Merged & Documentation Audit Complete

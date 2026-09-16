@@ -3,6 +3,8 @@ type: plan
 status: completed
 project: homelab
 tags:
+  - architecture
+  - operations
   - homelab
   - nixos
   - migration
