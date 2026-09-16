@@ -53,6 +53,8 @@ graph TD
    - Pruned `hosts/desktop/` and `nixosConfigurations.desktop` to standardize on a 2-host fleet (`server` and `laptop`).
 5. 🟢 [**SOPS Secrets Restructuring & Multi-User Authelia Support**](plans/sops-restructuring-plan.md) `[Completed]`
    - Migrated flat SOPS secrets to service-scoped namespaces and added declarative Nix user database rendering.
+6. 🟢 [**DMS Runtime Ownership & Workstation Operations Manual**](plans/dms-reproducibility-and-docs-plan.md) `[Completed]`
+   - Documented DMS session invariants, runtime mutation boundaries, containerized reproducibility, and operational workflows.
 
 ---
 
@@ -68,6 +70,10 @@ graph TD
    - Secret hierarchy re-encryption, template generation, and host dry-build verification.
 5. [**DMS Desktop Bootstrap & Container Reproducibility Validation**](guides/dms-bootstrap-and-reproducibility-validation.md)
    - Containerized flake check, one-time bootstrap behavior, and runtime mutation model verification.
+6. [**Terminal Workspace Subsystem Architecture & Navigation**](guides/terminal-workspace-subsystem.md)
+   - Niri compositor window bindings, Alacritty terminal integration, and `tmux-sessionizer` (`ts`) workspace switching.
+7. [**Integrated Linters & Quality Checks in Nix Flake Check**](guides/nix-flake-check-linters.md)
+   - CI static analysis and linting (`ruff-lint`, `statix`, `deadnix`, `nixfmt`, `luacheck`) declared in `flake.nix`.
 
 ---
 
