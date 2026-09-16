@@ -28,6 +28,12 @@ At server boot, the `sops-nix` systemd module decrypts these secrets and renders
 
 ## 👤 Adding or Modifying Authelia Users
 
+> [!NOTE]
+> **Dynamic User Management via LLDAP:**
+> User provisioning is now dynamically handled via the self-hosted **LLDAP** service at `https://users.roadtotech.me`. You no longer need to edit Nix declarations or regenerate SOPS secrets for user additions. See [LLDAP + Authelia Integration](lldap-authelia-integration.md) for details.
+> 
+> The static SOPS procedure below is preserved for reference or fallback recovery accounts.
+
 Authelia users are declared declaratively in `~/Core/nixos/modules/homeserver.nix`, while their password hashes are stored encrypted in `nixos/secrets.yaml`.
 
 ### Step 1: Generate an Argon2 Password Hash

@@ -77,6 +77,9 @@ Implementation roadmaps currently in progress (`status: active`) that are active
 Operational runbooks and procedures for daily administration:
 
 * [**Onboarding a New Application Stack**](guides/onboarding-a-new-service.md) — Step-by-step procedure for deploying new Docker Compose services in `~/Sites` with `app.yaml` and Traefik routing.
+* [**LLDAP & Authelia SSO Integration Runbook**](guides/lldap-authelia-integration.md) — Dynamic user directory configuration, Authelia LDAP auth, and pre-commit quality gate checks.
+* [**Mail Deliverability & Outbound Relay Guide**](guides/mail-deliverability-rdns-relay-guide.md) — Solving residential IP/PTR blocks and Spamhaus PBL using Stalwart and Brevo SMTP relay.
+* [**Homepage Dashboard Reintegration into Core**](guides/homepage-core-reintegration.md) — Clean service discovery and configuration of gethomepage in Homelab Core.
 * [**Managing Secrets and Authelia Users**](guides/managing-secrets-and-authelia-users.md) — Guide for editing SOPS-encrypted secrets and managing user authentication credentials.
 * [**Server Maintenance and System Updates Runbook**](guides/server-maintenance-and-updates.md) — Standard operating procedure for NixOS updates, garbage collection, and container pruning.
 * [**Appctl & Application Manifests (`app.yaml`) User Guide**](guides/appctl-operations-and-manifest-guide.md) — Comprehensive reference for the `appctl` CLI tool and `app.yaml` schema.
@@ -91,6 +94,13 @@ Operational runbooks and procedures for daily administration:
 Archived and foundational documentation for completed milestones:
 
 ### Resolved Architectural Discussions
+* [**Stalwart Mail Server Evaluation for Homelab Core**](discussions/mail-server-evaluation-stalwart.md) — Evaluated Stalwart vs Mailcow, Poste.io, and Postfix; resolved via Stalwart deployment.
+* [**Hostinger Business Email vs. Self-Hosted Stalwart**](discussions/hostinger-vs-stalwart-email-evaluation.md) — Compared cloud SaaS mail vs self-hosted mail with smart host relay.
+* [**Dual-Email Schema: Internal Mailboxes vs External Recovery**](discussions/dual-email-schema-lldap-stalwart.md) — Solved password recovery loops in identity directories with separate `mail` and `recovery_email` attributes.
+* [**Decoupling User Management from Secrets via LLDAP**](discussions/authelia-dynamic-user-backend-lldap.md) — Migrated from static SOPS user databases to dynamic LDAP authentication.
+* [**Authelia Session Lifetimes & Email Architecture**](discussions/authelia-session-email-architecture.md) — Configured 7d/3d session policies and email-based perimeter security.
+* [**Homelab Repository Location & Placement Analysis**](discussions/homelab-repo-location-analysis.md) — Evaluated `~/Homelab` vs `~/Projects/homelab`; resolved via dedicated `~/Homelab` tree.
+* [**Multirepo Refactor: Homepage & Learning Hub Separation**](discussions/multirepo-refactor-homepage-courses.md) — Decoupled dashboard infrastructure from domain applications.
 * [**NixOS Monorepo vs. Multi-Repo Architecture**](discussions/nixos-monorepo-vs-multirepo.md) — Evaluated workstation and server decoupling; resolved via appliance migration.
 * [**Decoupling `nixos-config` and `homelab-core`**](discussions/nixos-monorepo-decoupling.md) — Migration inventory and separation plan; resolved via repository split.
 * [**Dynamic Decentralized GitOps Dispatcher Architecture**](discussions/gitops-dispatcher-architecture.md) — Decoupled deployment webhook design; implemented in production.
@@ -98,6 +108,8 @@ Archived and foundational documentation for completed milestones:
 * [**Dynu DDNS Polling Frequency and Rust Migration**](discussions/dynu-monitor-polling-and-language-tradeoffs.md) — Investigated polling intervals and language trade-offs; resolved via `dynu-monitor-rust-daemon.md` plan.
 
 ### Completed Plans
+* 🟢 [**Stalwart Mail Server & SnappyMail Webmail Deployment**](plans/stalwart-email-server-implementation-plan.md)
+* 🟢 [**Multirepo Refactor of Homepage & Learning Hub**](plans/multirepo-refactor-homepage-courses.md)
 * 🟢 [**Architecture Consolidation & Hardening Roadmap v1**](archive/architecture-consolidation-roadmap.md) (Superseded by v2)
 * 🟢 [**Turn `homelab-core` into a Declarative NixOS Appliance**](archive/nixos-appliance-migration.md)
 * 🟢 [**Core & Sites Cutover and Testing Plan**](archive/core-sites-cutover-testing-plan.md)
