@@ -10,13 +10,13 @@ tags:
   - migration
 ---
 
-# 🦀 Rust Daemon Migration Plan: Standalone `dynu-monitor`
+# 🦀 Rust Daemon Migration Plan: Standalone `ddns-monitor` (formerly `dynu-monitor`)
 
 ## 🎯 Goal Description
 
-Migrate the dynamic DNS gatekeeper daemon from the current Python script to a native, statically compiled **Rust daemon** located at `/home/kiskaadee/Projects/active/dynu-monitor`.
+Migrate the dynamic DNS gatekeeper daemon from the current Python script to a native, statically compiled **Rust daemon** located at `/home/kiskaadee/Projects/active/ddns-monitor`.
 
-This implementation introduces high-frequency 30-second polling and stateful round-robin resolver rotation across 5 public echo providers while eliminating Python interpreter overhead on the headless server.
+This implementation introduces high-frequency 30-second polling and stateful round-robin resolver rotation across 5 public echo providers while eliminating Python interpreter overhead on the headless server. Crucially, it decouples the DDNS update mechanism behind a pluggable `DdnsConnector` trait to support both **Dynu** and **Cloudflare** (overcoming Dynu's free-tier 4-alias quota limit).
 
 ---
 
@@ -36,12 +36,12 @@ This implementation introduces high-frequency 30-second polling and stateful rou
                                 │
                ┌────────────────┼────────────────┐
                ▼                ▼                ▼
-        Box<dyn IpResolver> Box<dyn StateRepo> Box<dyn DdnsUpdater>
+        Box<dyn IpResolver> Box<dyn StateRepo> Box<dyn DdnsConnector>
                │                │                │
                ▼                ▼                ▼
-         HttpEchoPool       StateFile        Systemctl
-          (5 endpoints)    (state.json)  (ddclient.service)
-                                │
+         HttpEchoPool       StateFile       [Pluggable Connectors]
+          (5 endpoints)    (state.json)     ├── DynuConnector (REST / ddclient)
+                                │           └── CloudflareConnector (API v4)
                                 ▼
                            HistoryFile
                         (ip_history.jsonl)
@@ -63,17 +63,18 @@ This implementation introduces high-frequency 30-second polling and stateful rou
 ### Milestone 1: Domain Entities & In-Memory Logic *(In Progress)*
 - [x] Define domain types: `Ipv4Addr`, `ProviderId`, `MonitorEvent`.
 - [ ] Implement `IpMonitorService` pure business logic.
-- [ ] Mock traits `MockIpResolver`, `MockStateRepository`, `MockDdnsUpdater`.
+- [ ] Mock traits `MockIpResolver`, `MockStateRepository`, `MockDdnsConnector`.
 - [ ] Unit tests verifying:
   - No change detected $\rightarrow$ zero updater calls.
   - Change detected $\rightarrow$ updater triggered $\rightarrow$ state updated.
   - Updater fails $\rightarrow$ state remains unchanged.
 
-### Milestone 2: Infrastructure Adapters (HTTP, File, Systemd)
+### Milestone 2: Infrastructure Adapters & Provider Connectors
 - [ ] Implement `ReqwestIpResolver` with 5-endpoint pool (`ipify`, `icanhazip`, `ifconfig.me`, `checkip.dynu`, `wtfismyip`).
 - [ ] Implement `JsonStateRepository` with atomic write (write to `.tmp` then rename).
 - [ ] Implement `JsonlHistoryRepository` for append-only audit logs.
-- [ ] Implement `SystemdDdnsUpdater` calling `systemctl start ddclient.service`.
+- [ ] Implement `DynuConnector` calling `systemctl start ddclient.service` or Dynu REST API.
+- [ ] Implement `CloudflareConnector` querying Cloudflare API v4 for zero-quota DNS record updates.
 
 ### Milestone 3: Nix Packaging & Flake Integration
 - [ ] Write `flake.nix` in `Projects/active/dynu-monitor` producing a static package.

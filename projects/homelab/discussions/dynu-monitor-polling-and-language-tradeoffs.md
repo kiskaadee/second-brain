@@ -56,6 +56,35 @@ Rather than merging the intermediate Python rewrite into `Core`, the preferred a
 
 ## 4. Architectural Invariants for the Rust Implementation
 
-1. **Gatekeeper Pattern**: `dynu-monitor` only triggers `ddclient.service` when a public IP change is verified.
-2. **Update Confirmation**: `last_ip` in `state.json` is updated **only after** `ddclient` exits successfully. A failed update preserves the previous IP so retries continue.
+1. **Gatekeeper Pattern**: `ddns-monitor` only triggers the configured DDNS provider connector when a public IP change is verified.
+2. **Update Confirmation**: `last_ip` in `state.json` is updated **only after** the provider update succeeds. A failed update preserves the previous IP so retries continue.
 3. **Graceful Resolver Failover**: If the current provider in the round-robin sequence fails or times out (5s), the daemon falls back to the next provider immediately without failing the tick.
+
+---
+
+## 5. Provider Decoupling & Rebrand to `ddns-monitor`
+
+### The Catalyst: Dynu Quota Constraints vs. Cloudflare
+During the Homelab email server and DKIM setup, a fundamental upstream constraint was encountered: **Dynu limits free accounts to 4 custom CNAME/alias records**. While sufficient for minimal setups, scaling the homelab with service subdomains, transactional email relays (Brevo/SES), and verification tokens creates friction unless paying for Dynu Membership ($9.99/yr).
+
+In contrast, **Cloudflare DNS** provides:
+* 100% free, unlimited DNS records, CNAMEs, and TXT entries.
+* Global anycast sub-second DNS propagation.
+* Robust public REST API (native Traefik DNS-01 and DDNS automation).
+
+### The Connector Pattern Architecture
+Rather than hardcoding the daemon to Dynu, the project is renamed from `dynu-monitor` to **`ddns-monitor`** and implements a pluggable **Connector / Adapter pattern**:
+
+```mermaid
+flowchart TD
+    Core["ddns-monitor (Domain Core)<br/>• 30s Polling Loop<br/>• 5-Provider Echo Rotation<br/>• State Tracking (last_ip)"] -->|Trait Contract| Trait["Box<dyn DdnsConnector>"]
+    Trait --> Dynu["DynuConnector<br/>(Dynu REST API / ddclient)"]
+    Trait --> Cloudflare["CloudflareConnector<br/>(Cloudflare API v4)"]
+    Trait --> Mock["MockConnector<br/>(In-memory Test Double)"]
+```
+
+### Benefits of the Decoupled Design
+1. **Zero-Downtime Provider Migration**: Switching from Dynu to Cloudflare simply requires swapping the connector in configuration without altering IP detection, history tracking, or systemd daemon structure.
+2. **Isolated Credentials**: Each connector manages its own authentication (e.g. `DynuCredentials` vs `CloudflareApiToken`), passed cleanly via SOPS templates.
+3. **Multi-Provider Sync**: The core can support a `CompositeConnector` that simultaneously updates multiple DNS zones across providers if dual-routing is required.
+
