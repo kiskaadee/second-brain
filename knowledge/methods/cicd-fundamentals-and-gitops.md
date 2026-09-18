@@ -63,6 +63,33 @@ For self-hosted homelabs and edge servers behind NAT/firewalls, there are two pr
 
 ---
 
+## 📦 Containerized Runners & The Pre-Baked Image Paradigm
+
+In self-hosted CI environments (such as **Gitea Actions** powered by `act_runner` or local `nektos/act`), jobs execute inside ephemeral Docker containers rather than dedicated virtual machines. This introduces critical architectural differences from GitHub-hosted runners:
+
+### 1. Pre-Baked Toolchain Containers vs. In-Job Dynamic Installers
+* ❌ **Anti-Pattern (In-Job Installers)**: Starting with a generic Ubuntu base container and downloading toolchains (`uses: .../setup-action` or curl-to-bash scripts) on every run.
+  * *Failure Mode*: Standard Docker containers lack `systemd` as PID 1. Dynamic installers attempting to register daemons, build users, or background sockets (`/nix/var/nix/daemon-socket/socket`) hang or fail.
+  * *API Redirection*: Marketplace actions expecting `github.com` query `${{ github.server_url }}`, which in self-hosted forges resolves to the local instance (e.g. `https://gitea.roadtotech.me`), causing timeouts or 404s.
+* ✅ **Best Practice (Pre-Baked Images)**: Run jobs directly inside specialized, official container images:
+  * Nix: `container: { image: nixos/nix:latest }`
+  * Python: `container: { image: python:3.12-slim }`
+  * Node: `container: { image: node:20-alpine }`
+  * Rust: `container: { image: rust:1.80-slim }`
+  * *Benefits*: Zero install latency, no systemd dependency, locally cached container layers, and deterministic builds.
+
+### 2. Mandatory Containerized CI Invariants
+1. **Git Safe Directory Invariant**:
+   Whenever a container runs with a root UID or a UID different from the runner's workspace UID, Git's security boundary will block access to the mounted volume.
+   ```bash
+   git config --global --add safe.directory "$GITHUB_WORKSPACE"
+   ```
+   *Rule*: Always execute this command before any Git, Flake, or build tool invocation.
+2. **Self-Contained Lockfile & Flake Verification**:
+   Ensure all checks (`nix flake check`, `pytest`, `npm test`) run hermetically using dependencies pinned in lockfiles (`flake.lock`, `package-lock.json`, `poetry.lock`).
+
+---
+
 ## 🛠️ Production-Ready GitHub Actions Workflow Template
 
 Below is a standard workflow (`.github/workflows/ci-cd.yml`) for homelab micro-services:
