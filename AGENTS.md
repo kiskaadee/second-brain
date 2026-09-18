@@ -184,10 +184,11 @@ project: optional-project-name
 
 ## Link Conventions
 
-- Use standard relative Markdown links: `[text](../relative/path.md)`
+- Use standard relative Markdown links for intra-vault files: `[text](../relative/path.md)`.
 - Do not use Obsidian `[[double-bracket]]` syntax. The repository must be valid Markdown without Obsidian.
-- For links to files in separate repositories (e.g., `bitetrack-api`), use their public GitHub URLs.
+- **Cross-Repository Portability**: For links to files in separate repositories (e.g., `homelab-core`, `bitetrack-api`), use their public/forge Git URLs (e.g., `https://gitea.roadtotech.me/...` or `https://github.com/...`) or semantic code blocks. **Never use machine-specific absolute file URIs (`file:///...`)**.
 - When reorganizing files, run `python scripts/validate-brain.py` to catch broken links before committing.
+
 
 ---
 
