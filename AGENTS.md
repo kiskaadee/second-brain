@@ -194,25 +194,30 @@ project: optional-project-name
 
 ## Git Commit Standards
 
-All commits must follow Conventional Commits format:
+In this repository, commit types directly reflect the Brain's semantic taxonomy rather than generic code forge types (`docs:`). Every commit must follow this format:
 
 ```
 <type>(<scope>): <short description>
 
-<body explaining what changed and why>
+<optional body explaining context and rationale>
 ```
 
-Types: `feat`, `docs`, `fix`, `refactor`, `chore`
-Scopes (optional): `knowledge`, `projects`, `records`, `practice`, `inbox`, `brain`
+### Semantic Commit Types
 
-Examples:
-```
-docs(knowledge): add PostgreSQL indexing guide
-refactor(brain): move homelab docs into projects/homelab/
-feat(practice): add LeetCode 0075 sort colors writeup
-```
+| Type | Used For | Example |
+| :--- | :--- | :--- |
+| `knowledge` | Concepts, technologies, and backend methods | `knowledge(pytest): add fixture DI guide` |
+| `plan` | Project roadmaps and implementation specs | `plan(homelab): define Stalwart mail server rollout` |
+| `guide` | Practical SOPs, runbooks, and operation procedures | `guide(nixos): add terminal workspace walkthrough` |
+| `discussion` | Architectural inquiries, evaluations, trade-offs | `discussion(homelab): evaluate LLDAP vs Stalwart auth` |
+| `decision` | Architectural Decision Records (ADRs) | `decision(nixos): adopt standalone workstation model` |
+| `journal` | Dated journals, post-mortems, RCA logs | `journal(homelab): record Gitea mirror DNS RCA` |
+| `practice` | Algorithm writeups and LeetCode drills | `practice(leetcode): add 0075 sort colors solution` |
+| `meta` | Brain governance, `AGENTS.md`, taxonomies, root docs | `meta(agents): establish inbox curation protocol` |
+| `infra` | Repository tooling, validator scripts, Nix flakes | `infra(validator): add broken link check` |
+| `refactor` | Structural reorganization, directory restructurings | `refactor(homelab): move archive docs to project root` |
 
-Keep commits atomic: one logical change per commit.
+Keep commits atomic: one logical document addition or document + linked cross-reference update per commit.
 
 ---
 
@@ -243,4 +248,62 @@ To avoid draft fragmentation, shadow duplication, and excessive inbox maintenanc
 
 3. **Session Consolidation**:
    At the conclusion of any agentic workflow or task, ensure there is at most **one** comprehensive capture document in `inbox/` representing the session.
+
+---
+
+## Inbox Curation Protocol
+
+When the user requests an inbox curation or maintenance pass (e.g., *"Curate the inbox"*, *"Process inbox"*, *"It's time to curate"*), agents must execute the following deterministic workflow:
+
+### Step 1: Baseline Integrity Verification
+Run the structural validator to verify a clean working state before making any modifications:
+```bash
+python scripts/validate-brain.py
+```
+If existing errors are found, address them or establish baseline awareness before proceeding.
+
+### Step 2: Inbox Inventory & Draft Clustering
+1. Inspect all pending files in `inbox/` (excluding `inbox/README.md` and `.gitignore`).
+2. **Cluster by Topic & Session**: Identify multiple drafts or evolutionary iterations created for the same subject.
+3. **Consolidation & Deduplication**:
+   - Consolidate iterative drafts into **one single comprehensive document** representing the final canonical knowledge.
+   - Keep multiple documents only when there is a distinct semantic separation across Brain types (e.g., an active `plan` vs. an architectural `discussion` vs. a retrospective `journal`).
+   - If ambiguous whether to merge or separate, **prompt the user** before proceeding.
+
+### Step 3: Semantic Classification & Target Resolution
+Map each consolidated document to its canonical destination following the [Semantic Contracts](#semantic-contracts):
+- **`knowledge/`** — Durable concepts, tools, languages, and backend engineering methods.
+  - `concepts/` (algorithms, data structures, abstract theory)
+  - `technologies/` (tools, libraries, languages, CLI utilities)
+  - `methods/` (architecture patterns, testing, auth, SQL)
+- **`projects/<project>/`** — Project-specific context. Place under `discussions/`, `plans/`, `guides/`, or update `README.md`.
+- **`records/`** — Historical artifacts (`journal/`, `discussions/`, `decisions/`, `experiments/`).
+- **`practice/`** — Algorithm drills and LeetCode writeups.
+
+> [!NOTE]
+> **Ambiguous Documents**: If a capture is incomplete or its target destination is ambiguous, propose the most logical target path to the user. Leave unconfirmed items in `inbox/` until clarified.
+
+### Step 4: Frontmatter & Content Normalization
+Transform the staging frontmatter into a valid schema-compliant metadata block:
+1. Replace `type: inbox` with the canonical type (`knowledge`, `guide`, `plan`, `decision`, etc.).
+2. Add appropriate `status` (`draft` or `stable`), `topics`, `tags`, `project`, or `date` identifiers.
+3. Fix markdown parsing errors, heading levels, invalid code fences, or malformed links.
+4. Ensure all internal links use standard relative Markdown paths (never `file:///` URIs).
+
+### Step 5: Directory Placement & Cross-Reference Linking
+1. Write the document to its designated canonical directory (create new directories when needed).
+2. Remove the staging file(s) and any superseded drafts from `inbox/`.
+3. Update relevant parent indices (e.g., project `README.md` sections) and link related existing knowledge notes (e.g., adding `related: [...]` and cross-reference links in sibling documents).
+
+### Step 6: Atomic Git Commit
+Create an isolated atomic commit for each curated document and any adjacent modified files using the [Semantic Commit Taxonomy](#git-commit-standards):
+```bash
+git add <target-file> [adjacent-modified-files...]
+git commit -m "<type>(<scope>): <short description>"
+```
+*(Note: The Git pre-commit hook automatically executes `scripts/validate-brain.py` during `git commit`, ensuring schema and link integrity before each commit).*
+
+### Step 7: Curation Summary
+Present a clear summary of all curated documents, their target paths, and associated commit references to the user.
+
 
