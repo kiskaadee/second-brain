@@ -22,6 +22,7 @@ ROOT = pathlib.Path(__file__).parent.parent.resolve()
 VALID_TYPES = {
     "knowledge", "project", "plan", "guide", "decision",
     "journal", "discussion", "experiment", "practice", "inbox", "reference",
+    "agent",
 }
 
 DEPRECATED_DIRS = [
@@ -45,6 +46,7 @@ FRONTMATTER_EXEMPT_FILES = {
     ROOT / "README.md",
     ROOT / "AGENTS.md",
     ROOT / "inbox" / "README.md",
+    ROOT / "agents" / "README.md",
 }
 
 errors: list[str] = []

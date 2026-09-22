@@ -13,6 +13,7 @@ A personal knowledge graph organized by document type, not by subject.
 | [`projects/`](projects/) | Contextual documents that belong to a specific project. |
 | [`records/`](records/) | Historical artifacts — things that happened. |
 | [`practice/`](practice/) | Algorithm exercises and implementation drills. |
+| [`agents/`](agents/) | Canonical agent specifications, behavioral guardrails, and role profiles. |
 
 ---
 
@@ -82,6 +83,20 @@ practice/
     ├── 00-practiced-patterns.md   ← Pattern index
     ├── 0001-two-sum.md
     └── Solutions/                 ← Python solution files
+```
+
+---
+
+## Agents Store
+
+```
+agents/
+├── homelab-operations.md   ← Homelab operational workstation & diagnostics agent
+├── homelab-core.md         ← Homelab Core platform & deployment invariants agent
+├── nixos-workstation.md    ← Laptop declarative NixOS/Home Manager configuration agent
+├── magnetflix.md           ← MagNetFlix automated media acquisition pipeline agent
+├── nekoweb.md              ← NekoWeb manga platform & full-stack agent
+└── second-brain.md         ← Personal knowledge graph curation & validation agent
 ```
 
 ---

@@ -15,6 +15,7 @@ The Brain stores five fundamentally different kinds of information:
 | `projects/` | Contextual, project-specific documents. Each project owns its own sub-folder. |
 | `records/` | Historical artifacts: journals, discussions, decisions, experiments. |
 | `practice/` | Algorithm exercises, LeetCode writeups, and implementation drills. |
+| `agents/` | Canonical agent specifications, behavioral guardrails, and role profiles. |
 
 ---
 
@@ -80,6 +81,12 @@ Sub-directories:
 ### `practice/`
 Unchanged in structure. Contains LeetCode writeups and Python solution files with their own Nix devShell environment. Do not reorganize this directory without reading its `flake.nix`.
 
+### `agents/`
+Canonical store of AI agent profiles, instructions, operational boundaries, and guardrails across projects and workstations. Each document in `agents/` preserves an agent's configuration as a first-class documentation article rather than an active workspace rulebook, ensuring long-term auditability without interfering with Brain repository workflows.
+
+- *Format*: Metadata Frontmatter → Overview & Operational Scope → Canonical Specification (Fenced Code Block) → Related Context & Documentation.
+- *Frontmatter*: `type: agent`, `status: active | draft | archived`, `name: <slug>`, `target_workspace: <path-or-repo>`, `project: <optional-project-name>`, `tags: [list, of, tags]`.
+
 ---
 
 ## Metadata Convention
@@ -88,10 +95,10 @@ Every committed markdown document in the knowledge graph must have a YAML frontm
 
 ### Core & Optional Fields
 
-- **`type`** *(Required)*: `knowledge`, `project`, `plan`, `guide`, `decision`, `journal`, `discussion`, `experiment`, `practice`, `inbox`, `reference`.
+- **`type`** *(Required)*: `knowledge`, `project`, `plan`, `guide`, `decision`, `journal`, `discussion`, `experiment`, `practice`, `inbox`, `reference`, `agent`.
 - **`tags`** *(Optional)*: List of keyword tags (e.g., `tags: [homelab, ddns, networking]` or YAML list format) applicable to any document type for cross-cutting discovery.
 - **`project`** *(Optional)*: Project identifier (e.g., `project: homelab`, `project: dynu-monitor`, `project: bitetrack`) indicating context ownership.
-- **`status`** *(Conditional)*: Lifecycle status for plans (`draft`, `active`, `completed`, `abandoned`), decisions (`proposed`, `accepted`, `superseded`), projects (`planned`, `active`, `paused`, `completed`), knowledge (`draft`, `stable`), and practice (`active`, `completed`).
+- **`status`** *(Conditional)*: Lifecycle status for plans (`draft`, `active`, `completed`, `abandoned`), decisions (`proposed`, `accepted`, `superseded`), projects (`planned`, `active`, `paused`, `completed`), knowledge (`draft`, `stable`), practice (`active`, `completed`), and agents (`active`, `draft`, `archived`).
 
 ### Frontmatter Templates
 
@@ -169,6 +176,16 @@ topics: [list, of, topics]
 tags: [optional, tags]
 ---
 
+# agent (agent profiles & specifications)
+---
+type: agent
+status: active | draft | archived
+name: agent-slug
+target_workspace: /path/to/workspace
+project: optional-project-name
+tags: [optional, tags]
+---
+
 # inbox (unprocessed captures)
 ---
 type: inbox
@@ -213,6 +230,7 @@ In this repository, commit types directly reflect the Brain's semantic taxonomy 
 | `decision` | Architectural Decision Records (ADRs) | `decision(nixos): adopt standalone workstation model` |
 | `journal` | Dated journals, post-mortems, RCA logs | `journal(homelab): record Gitea mirror DNS RCA` |
 | `practice` | Algorithm writeups and LeetCode drills | `practice(leetcode): add 0075 sort colors solution` |
+| `agent` | Agent specifications, behavioral guardrails, and role profiles | `agent(homelab): document homelab operations agent spec` |
 | `meta` | Brain governance, `AGENTS.md`, taxonomies, root docs | `meta(agents): establish inbox curation protocol` |
 | `infra` | Repository tooling, validator scripts, Nix flakes | `infra(validator): add broken link check` |
 | `refactor` | Structural reorganization, directory restructurings | `refactor(homelab): move archive docs to project root` |
