@@ -68,9 +68,11 @@ Implementation roadmaps currently in progress (`status: active`) that are active
    - Defense-in-depth security hardening for custom microservice APIs (Learning Hub and Minecraft dashboard) using Authelia ForwardAuth, token validation, and rate limiting.
 4. 🟡 [**Smart Selective Deployment Pipeline for Homelab Core**](plans/appctl/smart-deployment-pipeline.md) `[Active]`
    - Enhancing `appctl` and Gitea Actions with change-aware selective container restarts to prevent unnecessary service interruptions during routine deployments.
-5. 🟡 [**GitHub to Gitea Automated Batch Migration Plan**](plans/gitea/github-to-gitea-migration-plan.md) `[Active]`
+5. 🟡 [**appctl Engine V2: Architectural Modernization & Type-Safe Refactoring Plan**](plans/appctl/appctl-engine-v2-refactoring.md) `[Active]`
+   - Modernizing the homelab control utility into a clean, typed Python 3 engine with PyYAML parsing, explicit domain models, and a TDD test suite.
+6. 🟡 [**GitHub to Gitea Automated Batch Migration Plan**](plans/gitea/github-to-gitea-migration-plan.md) `[Active]`
    - Automated migration tooling using `gh` and `tea` APIs to migrate ~35 repositories from GitHub to self-hosted Gitea with push mirrors for redundancy.
-6. 🟡 [**LVM Storage Optimization & Partition Resizing Strategy**](plans/server-24-7/lvm-storage-optimization-and-resizing.md) `[Active]`
+7. 🟡 [**LVM Storage Optimization & Partition Resizing Strategy**](plans/server-24-7/lvm-storage-optimization-and-resizing.md) `[Active]`
    - Storage space audit, disk cleanup runbooks, and a non-destructive LVM logical volume expansion procedure for the server's root filesystem.
 
 ---
@@ -80,6 +82,7 @@ Implementation roadmaps currently in progress (`status: active`) that are active
 Operational runbooks and procedures for daily administration:
 
 * [**Onboarding a New Application Stack**](guides/onboarding-a-new-service.md) — Step-by-step procedure for deploying new Docker Compose services in `~/Sites` with `app.yaml` and Traefik routing.
+* [**Jellyfin GPU Hardware Acceleration Guide**](guides/jellyfin-gpu-hardware-acceleration.md) — Configuring `/dev/dri` device passthrough, host group permissions, and GPU telemetry for hardware transcoding.
 * [**LLDAP & Authelia SSO Integration Runbook**](guides/lldap-authelia-integration.md) — Dynamic user directory configuration, Authelia LDAP auth, and pre-commit quality gate checks.
 * [**Mail Deliverability & Outbound Relay Guide**](guides/mail-deliverability-rdns-relay-guide.md) — Solving residential IP/PTR blocks and Spamhaus PBL using Stalwart and Brevo SMTP relay.
 * [**Homepage Dashboard Reintegration into Core**](guides/homepage-core-reintegration.md) — Clean service discovery and configuration of gethomepage in Homelab Core.
