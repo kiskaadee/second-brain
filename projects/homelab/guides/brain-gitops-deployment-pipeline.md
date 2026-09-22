@@ -172,3 +172,10 @@ Gitea maintains an automated push mirror to GitHub (`github.com/kiskaadee/second
 | **3. Server Pull** | `ssh server-remote "cd ~/Brain && git status"` | `Your branch is up to date with 'origin/main'.` |
 | **4. Live Web View** | Open `https://docs.roadtotech.me` | Edited content appears immediately |
 | **5. CI Status** | Repository $\rightarrow$ Actions tab in Gitea | Pipeline `Brain Structural Validation` green (✓) |
+
+---
+
+## 🏛️ Related References & Incident Post-Mortems
+
+* [GitOps Dispatcher Webhook Signature Mismatch: Epistemic Root Cause Analysis](../../../records/journal/2026-09-21-gitops-webhook-payload-signature-mismatch.md) — Detailed investigation into `adnanh/webhook` payload serialization divergence and HMAC signature verification.
+
