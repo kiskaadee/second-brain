@@ -53,7 +53,8 @@ projects/
 ├── new-repo/       ← Automated repository provisioning CLI
 ├── magnetflix/     ← Media indexing and streaming application
 ├── nekoweb/        ← Web showcase and static site generation
-└── supervisor/     ← Personal engineering progress tracking & supervisory system
+├── supervisor/     ← Personal engineering progress tracking & supervisory system
+└── brain/          ← Second Brain platform, validation, and metadata extraction tooling
 ```
 
 **Key documents:**
@@ -64,6 +65,7 @@ projects/
 - [MagNetFlix Overview](projects/magnetflix/README.md)
 - [Nekoweb Overview](projects/nekoweb/README.md)
 - [Supervisor Overview](projects/supervisor/README.md)
+- [Second Brain Platform Overview](projects/brain/README.md)
 
 ---
 
