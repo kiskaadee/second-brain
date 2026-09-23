@@ -429,7 +429,7 @@ python scripts/extract-terms.py --bench 2>/dev/null
 ### Phase 3 — Single Document Spot Check
 
 ```bash
-python scripts/extract-terms.py records/journal/2026-09-18-gitea-github-mirror-dns-resolution-failure.md
+python scripts/extract-terms.py records/debug/2026-09-18-gitea-github-mirror-dns-resolution-failure.md
 ```
 
 Expected output should contain terms like: `docker`, `dns`, `resolv.conf`, `mirror`, `network-online.target`, `gitea` — not generic terms like `operations` or `homelab`.

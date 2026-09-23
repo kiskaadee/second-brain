@@ -1,5 +1,5 @@
 ---
-type: journal
+type: debug
 project: homelab
 date: 2026-09-21
 tags:
@@ -47,24 +47,29 @@ During routine operations, pushes to the `second-brain` repository on Gitea fail
 
 ### Raw Observations (Machine Outputs)
 1. **Working Tree State**: Inspecting `~/Brain` on `server` revealed the working tree was not updating automatically:
-   ```text
-   On branch main
-   Your branch is behind 'origin/main' by 4 commits, and can be fast-forwarded.
-     (use "git pull" to update your local branch)
-   ```
+
+```log
+On branch main
+Your branch is behind 'origin/main' by 4 commits, and can be fast-forwarded.
+	(use "git pull" to update your local branch)
+```
+
 2. **Initial Systemd Journal Trace**: Inspecting `homelab-gitops.service` logs revealed that the webhook daemon triggered the dispatcher script, but authentication failed closed:
-   ```text
-   webhook[4494]: executing /home/kiskaadee/Core/scripts/gitops_dispatcher.py with arguments [..., "<json>", "", "push"]
-   webhook[4494]: [ERROR] [GitOps] Authentication failed: Missing signature header.
+
+```log
+webhook[4494]: executing /home/kiskaadee/Core/scripts/gitops_dispatcher.py with arguments [..., "<json>", "", "push"]
+webhook[4494]: [ERROR] [GitOps] Authentication failed: Missing signature header.
    webhook[4494]: [ERROR] [GitOps] ❌ Webhook authentication failed. Rejecting request.
    webhook[4494]: [webhook] error occurred: exit status 1
-   ```
-3. **Secondary Systemd Journal Trace (Post-Secret Configuration)**: After configuring the shared secret in Gitea repository settings and triggering a test delivery, the daemon received the signature header but failed cryptographic verification:
-   ```text
-   webhook[4494]: executing /home/kiskaadee/Core/scripts/gitops_dispatcher.py with arguments [..., "<json>", "c98657cbabeb6d7cf54f4868163d082d2dcb622a489f16c2549cc81549b26b83", "push"]
-   webhook[4494]: [ERROR] [GitOps] Authentication failed: Signature mismatch.
-   webhook[4494]: [ERROR] [GitOps] ❌ Webhook authentication failed. Rejecting request.
-   ```
+```
+
+3. **Secondary `systemd` Journal Trace (Post-Secret Configuration)**: After configuring the shared secret in Gitea repository settings and triggering a test delivery, the daemon received the signature header but failed cryptographic verification:
+
+```log
+webhook[4494]: executing /home/kiskaadee/Core/scripts/gitops_dispatcher.py with arguments [..., "<json>", "c98657cbabeb6d7cf54f4868163d082d2dcb622a489f16c2549cc81549b26b83", "push"]
+webhook[4494]: [ERROR] [GitOps] Authentication failed: Signature mismatch.
+webhook[4494]: [ERROR] [GitOps] ❌ Webhook authentication failed. Rejecting request.
+```
 
 ---
 

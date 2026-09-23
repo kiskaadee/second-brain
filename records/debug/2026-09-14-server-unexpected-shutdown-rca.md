@@ -1,5 +1,5 @@
 ---
-type: journal
+type: debug
 project: homelab
 date: 2026-09-14
 tags:

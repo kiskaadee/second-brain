@@ -177,5 +177,5 @@ Gitea maintains an automated push mirror to GitHub (`github.com/kiskaadee/second
 
 ## 🏛️ Related References & Incident Post-Mortems
 
-* [GitOps Dispatcher Webhook Signature Mismatch: Epistemic Root Cause Analysis](../../../records/journal/2026-09-21-gitops-webhook-payload-signature-mismatch.md) — Detailed investigation into `adnanh/webhook` payload serialization divergence and HMAC signature verification.
+* [GitOps Dispatcher Webhook Signature Mismatch: Epistemic Root Cause Analysis](../../../records/debug/2026-09-21-gitops-webhook-payload-signature-mismatch.md) — Detailed investigation into `adnanh/webhook` payload serialization divergence and HMAC signature verification.
 
