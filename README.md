@@ -36,6 +36,7 @@ knowledge/
 - [SQL](knowledge/methods/sql.md)
 - [Testing](knowledge/methods/testing.md)
 - [CI/CD & GitOps](knowledge/methods/cicd-fundamentals-and-gitops.md)
+- [Deterministic Tag Extraction](knowledge/methods/deterministic-tag-extraction.md)
 
 ---
 
