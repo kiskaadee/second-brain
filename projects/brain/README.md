@@ -67,3 +67,4 @@ graph TD
 
 * 🟢 **Validation & Taxonomy Foundation** — Implementation of `scripts/validate-brain.py`, pre-commit hook enforcement, and five-category semantic schema.
 * 🟢 **Multi-Agent Catalog** — Formalization of `agents/` store and operational profiles.
+* 🟢 [**Incident Debug Records & Daily Journal Workflow Reorganization**](plans/incident-debug-and-journal-workflow.md) — Established first-class `type: debug` records in `records/debug/`, strictly one daily journal per date in `records/journal/YYYY-MM-DD.md`, and automated inbox curation protocol.
