@@ -108,7 +108,7 @@ When verifying whether two endpoints possess matching credentials, never log raw
 
 ## 3. Modular Investigation Structure
 
-When authoring an incident journal (`Brain/records/journal/YYYY-MM-DD-<slug>.md`), apply the following modular sections as appropriate:
+When authoring an epistemic incident report (`Brain/records/debug/YYYY-MM-DD-<slug>.md` with `type: debug`), apply the following modular sections as appropriate:
 
 ### 1. System Context & Fundamentals
 * Establish the specific role of the affected subsystem.

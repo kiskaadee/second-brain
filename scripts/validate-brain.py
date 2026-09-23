@@ -22,7 +22,7 @@ ROOT = pathlib.Path(__file__).parent.parent.resolve()
 VALID_TYPES = {
     "knowledge", "project", "plan", "guide", "decision",
     "journal", "discussion", "experiment", "practice", "inbox", "reference",
-    "agent",
+    "agent", "debug",
 }
 
 DEPRECATED_DIRS = [

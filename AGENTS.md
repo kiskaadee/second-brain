@@ -13,7 +13,7 @@ The Brain stores five fundamentally different kinds of information:
 | `inbox/` | Unprocessed captures — no classification required. Write first, classify later. |
 | `knowledge/` | Durable understanding: concepts, technologies, and methods. |
 | `projects/` | Contextual, project-specific documents. Each project owns its own sub-folder. |
-| `records/` | Historical artifacts: journals, discussions, decisions, experiments. |
+| `records/` | Historical artifacts: journals, debug post-mortems, discussions, decisions, experiments. |
 | `practice/` | Algorithm exercises, LeetCode writeups, and implementation drills. |
 | `agents/` | Canonical agent specifications, behavioral guardrails, and role profiles. |
 
@@ -73,7 +73,8 @@ The folder establishes context (ownership/locality). The document's `type` field
 Historical artifacts. The original messy thinking is worth preserving — often what you want to recover later is not just the conclusion, but *why* you reached it.
 
 Sub-directories:
-- `journal/` — Dated engineering journals and retrospectives.
+- `journal/` — Dated daily engineering journals and retrospectives (strictly one entry per day named `YYYY-MM-DD.md`).
+- `debug/` — Epistemic incident reports, root-cause analyses, and diagnostic post-mortems (`type: debug`).
 - `discussions/` — Conversations that informed decisions or produced knowledge.
 - `decisions/` — Architectural decision records.
 - `experiments/` — Prototypes, runbooks, and technical investigations.
@@ -95,7 +96,7 @@ Every committed markdown document in the knowledge graph must have a YAML frontm
 
 ### Core & Optional Fields
 
-- **`type`** *(Required)*: `knowledge`, `project`, `plan`, `guide`, `decision`, `journal`, `discussion`, `experiment`, `practice`, `inbox`, `reference`, `agent`.
+- **`type`** *(Required)*: `knowledge`, `project`, `plan`, `guide`, `decision`, `journal`, `debug`, `discussion`, `experiment`, `practice`, `inbox`, `reference`, `agent`.
 - **`tags`** *(Optional)*: List of keyword tags (e.g., `tags: [homelab, ddns, networking]` or YAML list format) applicable to any document type for cross-cutting discovery.
 - **`project`** *(Optional)*: Project identifier (e.g., `project: homelab`, `project: dynu-monitor`, `project: bitetrack`) indicating context ownership.
 - **`status`** *(Conditional)*: Lifecycle status for plans (`draft`, `active`, `completed`, `abandoned`), decisions (`proposed`, `accepted`, `superseded`), projects (`planned`, `active`, `paused`, `completed`), knowledge (`draft`, `stable`), practice (`active`, `completed`), and agents (`active`, `draft`, `archived`).
@@ -143,9 +144,17 @@ project: project-name
 tags: [list, of, tags]
 ---
 
-# journal (historical record)
+# journal (daily historical log)
 ---
 type: journal
+date: YYYY-MM-DD
+tags: [list, of, tags]
+project: optional-project-name
+---
+
+# debug (incident reports, postmortems, root cause analyses)
+---
+type: debug
 date: YYYY-MM-DD
 tags: [list, of, tags]
 project: optional-project-name
@@ -228,7 +237,8 @@ In this repository, commit types directly reflect the Brain's semantic taxonomy 
 | `guide` | Practical SOPs, runbooks, and operation procedures | `guide(nixos): add terminal workspace walkthrough` |
 | `discussion` | Architectural inquiries, evaluations, trade-offs | `discussion(homelab): evaluate LLDAP vs Stalwart auth` |
 | `decision` | Architectural Decision Records (ADRs) | `decision(nixos): adopt standalone workstation model` |
-| `journal` | Dated journals, post-mortems, RCA logs | `journal(homelab): record Gitea mirror DNS RCA` |
+| `journal` | Dated daily engineering journals | `journal: record daily log for 2026-09-21` |
+| `debug` | Epistemic incident reports, postmortems, RCA logs | `debug(homelab): record gitops webhook signature mismatch rca` |
 | `practice` | Algorithm writeups and LeetCode drills | `practice(leetcode): add 0075 sort colors solution` |
 | `agent` | Agent specifications, behavioral guardrails, and role profiles | `agent(homelab): document homelab operations agent spec` |
 | `meta` | Brain governance, `AGENTS.md`, taxonomies, root docs | `meta(agents): establish inbox curation protocol` |
@@ -295,7 +305,7 @@ Map each consolidated document to its canonical destination following the [Seman
   - `technologies/` (tools, libraries, languages, CLI utilities)
   - `methods/` (architecture patterns, testing, auth, SQL)
 - **`projects/<project>/`** — Project-specific context. Place under `discussions/`, `plans/`, `guides/`, or update `README.md`.
-- **`records/`** — Historical artifacts (`journal/`, `discussions/`, `decisions/`, `experiments/`).
+- **`records/`** — Historical artifacts (`journal/`, `debug/`, `discussions/`, `decisions/`, `experiments/`).
 - **`practice/`** — Algorithm drills and LeetCode writeups.
 
 > [!NOTE]
@@ -303,15 +313,20 @@ Map each consolidated document to its canonical destination following the [Seman
 
 ### Step 4: Frontmatter & Content Normalization
 Transform the staging frontmatter into a valid schema-compliant metadata block:
-1. Replace `type: inbox` with the canonical type (`knowledge`, `guide`, `plan`, `decision`, etc.).
+1. Replace `type: inbox` with the canonical type (`knowledge`, `guide`, `plan`, `decision`, `debug`, etc.).
 2. Add appropriate `status` (`draft` or `stable`), `topics`, `tags`, `project`, or `date` identifiers.
 3. Fix markdown parsing errors, heading levels, invalid code fences, or malformed links.
 4. Ensure all internal links use standard relative Markdown paths (never `file:///` URIs).
 
 ### Step 5: Directory Placement & Cross-Reference Linking
 1. Write the document to its designated canonical directory (create new directories when needed).
-2. Remove the staging file(s) and any superseded drafts from `inbox/`.
-3. Update relevant parent indices (e.g., project `README.md` sections) and link related existing knowledge notes (e.g., adding `related: [...]` and cross-reference links in sibling documents).
+2. **Incident & Debug Processing**: When curating an incident capture (`*-debug.md`):
+   - Normalize to `type: debug` and move to `records/debug/YYYY-MM-DD-<slug>.md`.
+   - Update or create the daily journal at `records/journal/YYYY-MM-DD.md`.
+   - Under `## Incidents & Debugging`, record a concise bullet summary and relative link:
+     `- [Title](../debug/YYYY-MM-DD-<slug>.md): Root cause summary and declarative remediation.`
+3. Remove the staging file(s) and any superseded drafts from `inbox/`.
+4. Update relevant parent indices (e.g., project `README.md` sections) and link related existing knowledge notes (e.g., adding `related: [...]` and cross-reference links in sibling documents).
 
 ### Step 6: Atomic Git Commit
 Create an isolated atomic commit for each curated document and any adjacent modified files using the [Semantic Commit Taxonomy](#git-commit-standards):

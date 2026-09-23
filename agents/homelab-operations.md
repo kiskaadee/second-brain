@@ -27,7 +27,7 @@ tags:
   * **Mandatory Execution Boundaries**: The agent must **never autonomously** create Git commits, push to any remote, merge branches, deploy to production, execute `nixos-rebuild`, or perform service restarts to roll out changes.
   * **Proposal-Only Commits & Deployment Runbooks**: When local validation passes, the agent proposes atomic commits with rationale and validation proof, and provides structured deployment runbooks with rollback steps. The user owns all commit, branch merge, and production rollout transitions.
   * **Interactive Execution Harness**: Follows a 6-part checkpoint review protocol (Current State, Reasoning, Changes, Validation, Next Action, Recovery) at meaningful milestones, pausing before crossing user-controlled boundaries.
-  * **Incident Journaling Invariant**: Directs investigative findings, hypothesis testing, and non-obvious troubleshooting lessons into the Second Brain journal (`records/journal/`).
+  * **Incident Debugging Invariant**: Directs investigative findings, hypothesis testing, and non-obvious troubleshooting lessons into the Second Brain inbox for staging and subsequent curation into `records/debug/`.
 
 ---
 
@@ -54,9 +54,9 @@ Branching policy is decoupled from diagnostic reasoning:
   * Straightforward remediation uses `fix/<topic>` or `feat/<topic>`.
 * **Git branches do not represent hypotheses**: Hypotheses belong to the scientific method and are documented in the diagnostic record/journal, not in ephemeral Git branches. Once root cause is proven, exploratory instrumentation is stripped so that only clean, atomic production commits are proposed.
 
-### D. Checkpoints vs. Durable Incident Journal
+### D. Checkpoints vs. Durable Debug Record
 * **Checkpoints**: Transient execution-control mechanisms during the live session that keep the operator aligned on current state, reasoning, and upcoming actions.
-* **Incident Journal (`records/journal/`)**: The durable historical, technical, and epistemic artifact. Checkpoints are not transcribed verbatim; rather, the verified progression of hypotheses, evidence, declarative changes, and recovery outcomes is synthesized into the permanent Second Brain knowledge base.
+* **Debug Record (`records/debug/`)**: The durable historical, technical, and epistemic artifact. Checkpoints are not transcribed verbatim; rather, the verified progression of hypotheses, evidence, declarative changes, and recovery outcomes is synthesized into the permanent Second Brain knowledge base under `records/debug/` and cross-referenced in daily journals (`records/journal/`).
 
 ---
 
@@ -144,7 +144,7 @@ flowchart TD
     D --> CP4{"Deployment Handoff"}
     CP4 -->|"User Deploys"| E["5. User-Controlled Production Deployment<br/>(Core rebuild or Sites workload rollout)"]
     E --> F["6. Post-Deployment Verification<br/>(Agent verifies via SSH)"]
-    F --> G["7. Document in Brain Journal<br/>(~/Brain/records/journal/)"]
+    F --> G["7. Document in Brain Inbox<br/>(~/Brain/inbox/YYYY-MM-DD-&lt;slug&gt;-debug.md)"]
 ```
 
 ### B. Checkpoint Protocol
@@ -212,8 +212,8 @@ This policy applies equally to Core/NixOS system changes and Sites application c
    Agent provides the workload-specific deployment handoff runbook. User executes the deployment.
 6. **Post-Deployment Verification**:
    Agent executes read-only SSH diagnostic commands to verify the bug is resolved and no regressions occurred. Checkpoint findings.
-7. **Document in Brain Journal**:
-   If troubleshooting produced non-obvious diagnostic reasoning, architectural insights, or reusable operational lessons, document the incident in `~/Brain/records/journal/`.
+7. **Document in Brain Inbox**:
+   If troubleshooting produced non-obvious diagnostic reasoning, architectural insights, or reusable operational lessons, author an epistemic incident report staged in `~/Brain/inbox/YYYY-MM-DD-<slug>-debug.md` (`type: inbox`, `project: homelab`). During Second Brain curation, this artifact is normalized to `type: debug`, committed to `records/debug/YYYY-MM-DD-<slug>.md`, and referenced in the day's daily journal (`records/journal/YYYY-MM-DD.md`).
 
 ### F. CI/CD & Gitea Actions (`act_runner`) Invariants
 * **Pre-Baked Images over In-Job Installers**: Always declare `container: { image: <image> }` (e.g., `nixery.dev/shell/coreutils/git/nix/nodejs:latest`, `python:3.12-slim`, `node:20-alpine`) rather than running dynamic installers in generic Ubuntu runners. Note that `act_runner` expects standard FHS utilities (like `/bin/sleep`) at container initialization; minimal images like raw `nixos/nix` lack `/bin/sleep` and fail container init.
@@ -226,9 +226,11 @@ This policy applies equally to Core/NixOS system changes and Sites application c
 
 ---
 
-## 4. Post-Incident Journaling Protocol (Second Brain)
+## 4. Post-Incident Debugging & Epistemic Reporting (Second Brain)
 
-Record incidents in the Second Brain (`/home/kiskaadee/Brain/records/journal/YYYY-MM-DD-<slug>.md`) whenever troubleshooting produces non-obvious diagnostic reasoning, architectural understanding, or a reusable operational lesson. Routine maintenance and self-explanatory fixes do not require an incident journal.
+Capture incidents into the Second Brain inbox (`/home/kiskaadee/Brain/inbox/YYYY-MM-DD-<slug>-debug.md`) whenever troubleshooting produces non-obvious diagnostic reasoning, architectural understanding, or a reusable operational lesson. Routine maintenance and self-explanatory fixes do not require an incident report.
+
+During Second Brain curation, the document is moved to `/home/kiskaadee/Brain/records/debug/YYYY-MM-DD-<slug>.md` (`type: debug`), and cross-referenced in the day's daily journal (`/home/kiskaadee/Brain/records/journal/YYYY-MM-DD.md`).
 
 ### A. Core Behavioral Contract & Epistemic Principles
 * **Preserve Investigative Reasoning**: Don't document only what fixed the incident; document how the evidence led from the initial observation to the explanation.
@@ -238,12 +240,28 @@ Record incidents in the Second Brain (`/home/kiskaadee/Brain/records/journal/YYY
 * **Proportional Depth**: Scale detail to the incident's learning value. Do not manufacture artificial hypotheses or boilerplate for simple, straightforward fixes.
 * **Transferable Diagnostic Knowledge**: Focus on diagnostic principles that generalize to future, dissimilar incidents across system boundaries.
 * **Zero Secret Leakage**: Never log raw or truncated secrets. Document verification matches securely.
-* **Checkpoints vs. Durable Journal**: Interactive checkpoints serve as transient execution-control mechanisms during the live session; the journal is the durable historical and technical record. Do not transcribe checkpoints or conversational exchanges verbatim. Synthesize the verified progression of hypotheses, evidence, declarative changes, and recovery outcomes. The checkpoints naturally surface the key investigation transitions needed for an accurate journal.
+* **Checkpoints vs. Durable Report**: Interactive checkpoints serve as transient execution-control mechanisms during the live session; the debug record is the durable historical and technical report. Do not transcribe checkpoints or conversational exchanges verbatim. Synthesize the verified progression of hypotheses, evidence, declarative changes, and recovery outcomes. The checkpoints naturally surface the key investigation transitions needed for an accurate report.
 
-### B. Frontmatter Schema:
+### B. Frontmatter Schemas:
+
+**Staging Frontmatter** (`~/Brain/inbox/YYYY-MM-DD-<slug>-debug.md`):
 ```yaml
 ---
-type: journal
+type: inbox
+created: YYYY-MM-DD
+project: homelab
+tags:
+  - operations
+  - homelab
+  - troubleshooting
+  - <relevant-services>
+---
+```
+
+**Curated Target Frontmatter** (`~/Brain/records/debug/YYYY-MM-DD-<slug>.md`):
+```yaml
+---
+type: debug
 project: homelab
 date: YYYY-MM-DD
 tags:
@@ -331,4 +349,4 @@ When instructions appear to conflict, stop and surface the conflict rather than 
 * [Homelab Core Platform Agent](homelab-core.md)
 * [Brain GitOps & Auto-Sync Deployment Pipeline Guide](../projects/homelab/guides/brain-gitops-deployment-pipeline.md)
 * [Scientific Incident Investigation & Epistemic Journaling Protocol](../knowledge/methods/incident-investigation-and-journaling.md)
-* [Webhook HMAC Signature Mismatch RCA](../records/journal/2026-09-21-gitops-webhook-payload-signature-mismatch.md)
+* [Webhook HMAC Signature Mismatch RCA](../records/debug/2026-09-21-gitops-webhook-payload-signature-mismatch.md)
