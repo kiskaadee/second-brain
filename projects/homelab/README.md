@@ -112,6 +112,7 @@ Archived and foundational documentation for completed milestones:
 * [**Dynamic Decentralized GitOps Dispatcher Architecture**](discussions/gitops-dispatcher-architecture.md) — Decoupled deployment webhook design; implemented in production.
 * [**Gitea Git Credential Helper and Backup Strategy**](discussions/gitea-credentials-and-backup-strategy.md) — Evaluated credential helpers and push mirroring; resolved via Git credential helper configuration.
 * [**Dynu DDNS Polling Frequency and Rust Migration**](discussions/dynu-monitor-polling-and-language-tradeoffs.md) — Investigated polling intervals and language trade-offs; resolved via `dynu-monitor-rust-daemon.md` plan.
+* [**Dozzle Forward-Proxy Authentication & Persistent Volume Architecture**](discussions/dozzle-auth-and-storage-architecture.md) — Evaluated Dozzle v2 login prompt vs ForwardAuth SSO; resolved via `DOZZLE_AUTH_PROVIDER=forward-proxy` and persistent `/data` volume.
 
 ### Completed Plans
 * 🟢 [**Stalwart Mail Server & SnappyMail Webmail Deployment**](plans/stalwart-email-server-implementation-plan.md)
