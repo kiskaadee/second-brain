@@ -113,8 +113,10 @@ Archived and foundational documentation for completed milestones:
 * [**Gitea Git Credential Helper and Backup Strategy**](discussions/gitea-credentials-and-backup-strategy.md) — Evaluated credential helpers and push mirroring; resolved via Git credential helper configuration.
 * [**Dynu DDNS Polling Frequency and Rust Migration**](discussions/dynu-monitor-polling-and-language-tradeoffs.md) — Investigated polling intervals and language trade-offs; resolved via `dynu-monitor-rust-daemon.md` plan.
 * [**Dozzle Forward-Proxy Authentication & Persistent Volume Architecture**](discussions/dozzle-auth-and-storage-architecture.md) — Evaluated Dozzle v2 login prompt vs ForwardAuth SSO; resolved via `DOZZLE_AUTH_PROVIDER=forward-proxy` and persistent `/data` volume.
+* [**Core Service Qualification & Portainer Deprecation**](discussions/core-service-qualification-and-portainer-deprecation.md) — Evaluated platform service qualification criteria; resolved via complete deprecation of Portainer and retaining Gitea and CI runner decoupled.
 
 ### Completed Plans
+* 🟢 [**Clean Deprecation of Portainer from Core**](plans/portainer-deprecation-plan.md)
 * 🟢 [**Stalwart Mail Server & SnappyMail Webmail Deployment**](plans/stalwart-email-server-implementation-plan.md)
 * 🟢 [**Multirepo Refactor of Homepage & Learning Hub**](plans/multirepo-refactor-homepage-courses.md)
 * 🟢 [**Architecture Consolidation & Hardening Roadmap v1**](archive/architecture-consolidation-roadmap.md) (Superseded by v2)
