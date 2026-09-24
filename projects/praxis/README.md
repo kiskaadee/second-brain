@@ -72,8 +72,9 @@ flowchart TD
 
 | Target | Location / URL | Description |
 | :--- | :--- | :--- |
-| **Git Repository** | [GitHub (praxis)](https://github.com/kiskaadee/praxis) | Canonical source repository on GitHub |
-| **Clone (SSH)** | `git@github.com:kiskaadee/praxis.git` | Developer clone URL using SSH |
+| **Primary Forge (Upstream)** | [Gitea (praxis)](https://gitea.roadtotech.me/kiskaadee/praxis) | Canonical upstream Git repository hosted on Homelab Gitea |
+| **GitHub Mirror** | [GitHub (praxis)](https://github.com/kiskaadee/praxis) | Automated public push mirror on GitHub |
+| **Clone (SSH)** | `ssh://git@gitea.roadtotech.me:2223/kiskaadee/praxis.git` | Developer clone URL via Gitea SSH (port 2223) |
 | **Workstation Path** | `~/Projects/active/praxis` | Active development checkout on local workstation |
 | **Deployment Target** | Homelab Micro-Server | Dockerized application stack integrated with Traefik & Authelia SSO |
 
