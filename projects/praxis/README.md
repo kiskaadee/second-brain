@@ -94,6 +94,8 @@ Implementation roadmaps and specifications currently active (`status: active`):
    - Baseline requirements defining the Three-Layer Temporal Model, multi-modal logging, session snapshot lifecycle, set-intent completion policies, and factual adherence metrics.
 2. 🟡 [**Praxis Domain Model & OOP Design Specification v1.0.1**](praxis-domain-model-v1.0.1.md) `[Active]`
    - Approved domain aggregates (`Routine`, `WorkoutSession`, `Exercise`), value objects, behavioral contracts, state transition matrices, and hexagonal port interfaces (`AuthProvider`, SQL repositories).
+3. 🟡 [**Praxis Implementation Blueprint (v0.2.0 — Phase 0 Complete)**](plans/praxis-implementation-blueprint.md) `[Active — Phase 1 Start]`
+   - Concrete Python decisions translating SRS + Domain Model: package structure, dependency direction, immutability strategy, ID representation, resolved ambiguities, toolchain configuration (ruff, pyright, pytest, 90% coverage gate), Git hooks, and Phase 1 implementation order.
 
 ---
 
@@ -104,6 +106,7 @@ Implementation roadmaps and specifications currently active (`status: active`):
 ---
 
 ## 🏛️ Completed Milestones & Resolved Discussions
+
 
 Archived baseline drafts preserved for historical reference and comparison:
 
