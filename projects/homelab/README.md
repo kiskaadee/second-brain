@@ -116,6 +116,7 @@ Archived and foundational documentation for completed milestones:
 * [**Core Service Qualification & Portainer Deprecation**](discussions/core-service-qualification-and-portainer-deprecation.md) — Evaluated platform service qualification criteria; resolved via complete deprecation of Portainer and retaining Gitea and CI runner decoupled.
 
 ### Completed Plans
+* 🟢 [**Diun Load-Shaping, Workload Exemption & Authenticated SMTPS Delivery (2026-09-24)**](../../records/debug/2026-09-24-diun-workload-isolation-and-load-shaping.md) — Resolved 6 post-deployment issues: Portainer bcrypt `$` interpolation, high-concurrency DNS load mitigated via `WORKERS=6` + `JITTER=30s`, local-build exemptions decentralized to `Sites/*`, and Diun migrated to port 465 SMTPS with dedicated service account. 19 images clean, mail delivered authenticated.
 * 🟢 [**Clean Deprecation of Portainer from Core**](plans/portainer-deprecation-plan.md)
 * 🟢 [**Stalwart Mail Server & SnappyMail Webmail Deployment**](plans/stalwart-email-server-implementation-plan.md)
 * 🟢 [**Multirepo Refactor of Homepage & Learning Hub**](plans/multirepo-refactor-homepage-courses.md)
@@ -129,3 +130,4 @@ Archived and foundational documentation for completed milestones:
 * 🟢 [**NixOS Server & Laptop Migration**](archive/nixos-server-laptop-migration.md)
 * 🟢 [**Domain Migration (`roadtotech.me`)**](archive/domain-migration-roadtotech.md)
 * 🟢 [**Production Folder Structure Reorganization**](plans/server-24-7/folder-structure-reorganization.md)
+
