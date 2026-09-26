@@ -64,7 +64,7 @@ flowchart LR
     end
 
     Client -->|Submit| Stalwart
-    Stalwart -->|Encrypted TLS (587)| Relay
+    Stalwart -->|"Encrypted TLS (587)"| Relay
     Relay -->|Delivers| Gmail
 ```
 
@@ -98,7 +98,7 @@ flowchart LR
     end
 
     Stalwart <==>|Encrypted WireGuard Tunnel| VPS
-    VPS <==>|Port 25 (In & Out)| World
+    VPS <==>|"Port 25 (In & Out)"| World
 ```
 
 1. Rent a cheap cloud VPS (Hetzner Cloud ~$3.50/mo or RackNerd ~$15/yr) that provides a static IPv4 and allows setting custom rDNS (PTR).

@@ -9,233 +9,314 @@ Checks:
   3. Every .md document (outside exempt paths) has YAML frontmatter.
   4. Every frontmatter block has a valid `type` field.
   5. Every relative markdown link resolves to an existing file.
+  6. All markdown code fences are balanced.
+  7. Mermaid diagrams are structurally valid.
+  8. Python code passes Ruff linting.
+  9. Python code passes Pyright type checking.
 """
+
+from __future__ import annotations
 
 import pathlib
 import re
 import shutil
 import subprocess
-import sys
+from typing import Literal, NamedTuple
 
 ROOT = pathlib.Path(__file__).parent.parent.resolve()
 
-VALID_TYPES = {
+# ── Configuration ──────────────────────────────────────────────────────────────
+
+VALID_TYPES: frozenset[str] = frozenset({
     "knowledge", "project", "plan", "guide", "decision",
     "journal", "discussion", "experiment", "practice", "inbox", "reference",
     "agent", "debug",
-}
+})
 
-DEPRECATED_DIRS = [
+DEPRECATED_DIRS: tuple[str, ...] = (
     "homelab", "journal", "learning", "docs",
     "knowledge/dsa", "knowledge/python", "knowledge/tools",
     "knowledge/devenv", "knowledge/skills",
-]
+)
 
-REQUIRED_ROOT_FILES = ["README.md", "AGENTS.md", "LICENSE"]
+REQUIRED_ROOT_FILES: tuple[str, ...] = ("README.md", "AGENTS.md", "LICENSE")
 
-EXEMPT_PATTERNS = [
+# Paths (or path substrings) excluded entirely from validation.
+EXEMPT_PATTERNS: tuple[str, ...] = (
     ".obsidian",
     "inbox",
     "practice/LeetCode/Solutions",
     "scripts",
     ".git",
-]
+)
 
-# Root-level files that are navigational/meta and intentionally have no frontmatter
-FRONTMATTER_EXEMPT_FILES = {
+# Navigational/meta files exempt from frontmatter and link validation.
+# They are still validated for code fences and Mermaid diagrams.
+FRONTMATTER_EXEMPT_FILES: frozenset[pathlib.Path] = frozenset({
     ROOT / "README.md",
     ROOT / "AGENTS.md",
     ROOT / "inbox" / "README.md",
     ROOT / "agents" / "README.md",
-}
+})
 
-errors: list[str] = []
-warnings: list[str] = []
-
-
-def is_exempt(path: pathlib.Path) -> bool:
-    rel = str(path.relative_to(ROOT))
-    return any(ex in rel for ex in EXEMPT_PATTERNS)
-
-
-# ── Check 1: No deprecated directories ────────────────────────────────────────
-print("Checking deprecated directories...")
-for d in DEPRECATED_DIRS:
-    target = ROOT / d
-    if target.exists():
-        errors.append(f"Deprecated directory still exists: {d}/")
-print(f"  {'✓' if not any('Deprecated' in e for e in errors) else '✗'} Done.\n")
-
-
-# ── Check 2: Required root files ──────────────────────────────────────────────
-print("Checking required root files...")
-for f in REQUIRED_ROOT_FILES:
-    if not (ROOT / f).exists():
-        errors.append(f"Missing required root file: {f}")
-print(f"  {'✓' if not any('Missing required' in e for e in errors) else '✗'} Done.\n")
-
-
-# ── Check 3 & 4: Frontmatter presence and valid type ─────────────────────────
-print("Checking frontmatter...")
-fm_errors = 0
-for md in ROOT.rglob("*.md"):
-    if is_exempt(md):
-        continue
-    if md in FRONTMATTER_EXEMPT_FILES:
-        continue
-    content = md.read_text(errors="replace")
-    rel = md.relative_to(ROOT)
-    if not content.startswith("---"):
-        errors.append(f"Missing frontmatter: {rel}")
-        fm_errors += 1
-        continue
-    # Extract frontmatter block
-    end = content.find("\n---", 3)
-    if end == -1:
-        errors.append(f"Malformed frontmatter (no closing ---): {rel}")
-        fm_errors += 1
-        continue
-    fm_block = content[3:end]
-    type_match = re.search(r'^type:\s*(\S+)', fm_block, re.MULTILINE)
-    if not type_match:
-        errors.append(f"Frontmatter missing 'type' field: {rel}")
-        fm_errors += 1
-    elif type_match.group(1) not in VALID_TYPES:
-        errors.append(f"Invalid type '{type_match.group(1)}': {rel}")
-        fm_errors += 1
-print(f"  {'✓' if fm_errors == 0 else '✗'} Done ({fm_errors} issues).\n")
-
-
-# ── Check 5: Relative link resolution ─────────────────────────────────────────
-print("Checking relative links...")
-link_errors = 0
-for md in ROOT.rglob("*.md"):
-    if is_exempt(md):
-        continue
-    if md in FRONTMATTER_EXEMPT_FILES:
-        continue
-    content = md.read_text(errors="replace")
-    for m in re.finditer(r'\[([^\]]*)\]\(([^)]+)\)', content):
-        target = m.group(2).split('#')[0].strip()
-        if not target or target.startswith(('http', 'file:', 'mailto:')):
-            continue
-        resolved = (md.parent / target).resolve()
-        if not resolved.exists():
-            rel = md.relative_to(ROOT)
-            errors.append(f"Broken link in {rel}: {target}")
-            link_errors += 1
-print(f"  {'✓' if link_errors == 0 else '✗'} Done ({link_errors} broken links).\n")
-
-
-# ── Check 6: Code fence balance ───────────────────────────────────────────────
-print("Checking markdown code fences...")
-fence_errors = 0
-for md in ROOT.rglob("*.md"):
-    if is_exempt(md):
-        continue
-    content = md.read_text(errors="replace")
-    rel = md.relative_to(ROOT)
-    fences = [line for line in content.splitlines() if line.strip().startswith("```")]
-    if len(fences) % 2 != 0:
-        errors.append(f"Unclosed code fence in {rel} (found {len(fences)} fence delimiters)")
-        fence_errors += 1
-print(f"  {'✓' if fence_errors == 0 else '✗'} Done ({fence_errors} issues).\n")
-
-
-# ── Check 7: Mermaid diagram validation ───────────────────────────────────────
-print("Checking Mermaid diagrams...")
-mermaid_errors = 0
-MERMAID_TYPES = {
+MERMAID_TYPES: frozenset[str] = frozenset({
     "flowchart", "graph", "sequencediagram", "erdiagram", "classdiagram",
     "statediagram", "gantt", "pie", "gitgraph", "mindmap", "timeline",
     "quadrantchart", "c4context", "zenuml", "sankey-beta", "kanban",
-    "block-beta", "packet-beta", "architecture-beta"
-}
+    "block-beta", "packet-beta", "architecture-beta",
+})
 
-for md in ROOT.rglob("*.md"):
-    if is_exempt(md):
-        continue
-    content = md.read_text(errors="replace")
-    rel = md.relative_to(ROOT)
+# ── Types ──────────────────────────────────────────────────────────────────────
 
-    # Find all ```mermaid ... ``` blocks
-    for m in re.finditer(r'```mermaid\s*\n(.*?)\n```', content, re.DOTALL):
+Severity = Literal["error", "warning"]
+
+
+class Document(NamedTuple):
+    path: pathlib.Path
+    rel: pathlib.Path
+    content: str
+    validates_frontmatter: bool  # False for navigational/meta files
+
+
+class Issue(NamedTuple):
+    severity: Severity
+    path: pathlib.Path | None
+    line: int | None  # reserved for Phase 2 — always None in Phase 1
+    message: str
+
+
+# ── Discovery ──────────────────────────────────────────────────────────────────
+
+def discover_documents(root: pathlib.Path) -> list[Document]:
+    """Return every Markdown file that requires validation.
+
+    All inclusion/exclusion policy lives here. A Document that reaches a
+    document validator is already known to be one that should be validated.
+    """
+    documents: list[Document] = []
+    for path in root.rglob("*.md"):
+        rel_str = str(path.relative_to(root))
+        if any(pattern in rel_str for pattern in EXEMPT_PATTERNS):
+            continue
+        documents.append(Document(
+            path=path,
+            rel=path.relative_to(root),
+            content=path.read_text(errors="replace"),
+            validates_frontmatter=path not in FRONTMATTER_EXEMPT_FILES,
+        ))
+    return documents
+
+
+# ── Repository checks ──────────────────────────────────────────────────────────
+
+def check_deprecated_dirs(root: pathlib.Path) -> list[Issue]:
+    return [
+        Issue("error", root / d, None, f"Deprecated directory still exists: {d}/")
+        for d in DEPRECATED_DIRS
+        if (root / d).exists()
+    ]
+
+
+def check_required_files(root: pathlib.Path) -> list[Issue]:
+    return [
+        Issue("error", root / f, None, f"Missing required root file: {f}")
+        for f in REQUIRED_ROOT_FILES
+        if not (root / f).exists()
+    ]
+
+
+# ── Document checks ────────────────────────────────────────────────────────────
+
+def check_frontmatter(doc: Document) -> list[Issue]:
+    if not doc.validates_frontmatter:
+        return []
+
+    content = doc.content
+    if not content.startswith("---"):
+        return [Issue("error", doc.rel, None, f"Missing frontmatter: {doc.rel}")]
+
+    end = content.find("\n---", 3)
+    if end == -1:
+        return [Issue("error", doc.rel, None, f"Malformed frontmatter (no closing ---): {doc.rel}")]
+
+    fm_block = content[3:end]
+    type_match = re.search(r'^type:\s*(\S+)', fm_block, re.MULTILINE)
+    if not type_match:
+        return [Issue("error", doc.rel, None, f"Frontmatter missing 'type' field: {doc.rel}")]
+
+    doc_type = type_match.group(1)
+    if doc_type not in VALID_TYPES:
+        return [Issue("error", doc.rel, None, f"Invalid type '{doc_type}': {doc.rel}")]
+
+    return []
+
+
+def check_links(doc: Document) -> list[Issue]:
+    if not doc.validates_frontmatter:
+        return []
+
+    issues: list[Issue] = []
+    for m in re.finditer(r'\[([^\]]*)\]\(([^)]+)\)', doc.content):
+        target = m.group(2).split('#')[0].strip()
+        if not target or target.startswith(('http', 'file:', 'mailto:')):
+            continue
+        resolved = (doc.path.parent / target).resolve()
+        if not resolved.exists():
+            issues.append(Issue("error", doc.rel, None, f"Broken link in {doc.rel}: {target}"))
+    return issues
+
+
+def check_code_fences(doc: Document) -> list[Issue]:
+    fences = [line for line in doc.content.splitlines() if line.strip().startswith("```")]
+    if len(fences) % 2 != 0:
+        return [Issue(
+            "error", doc.rel, None,
+            f"Unclosed code fence in {doc.rel} (found {len(fences)} fence delimiters)",
+        )]
+    return []
+
+
+def check_mermaid(doc: Document) -> list[Issue]:
+    issues: list[Issue] = []
+    for m in re.finditer(r'```mermaid\s*\n(.*?)\n```', doc.content, re.DOTALL):
         block = m.group(1).strip()
         if not block:
-            errors.append(f"Empty Mermaid diagram block in {rel}")
-            mermaid_errors += 1
+            issues.append(Issue("error", doc.rel, None, f"Empty Mermaid diagram block in {doc.rel}"))
             continue
 
-        lines = [line.strip() for line in block.splitlines() if line.strip() and not line.strip().startswith("%%")]
+        lines = [
+            line.strip() for line in block.splitlines()
+            if line.strip() and not line.strip().startswith("%%")
+        ]
         if not lines:
             continue
 
-        # Check valid diagram header
         header = lines[0].split()[0].lower()
         if header not in MERMAID_TYPES:
-            errors.append(f"Invalid Mermaid diagram type '{header}' in {rel}")
-            mermaid_errors += 1
+            issues.append(Issue(
+                "error", doc.rel, None,
+                f"Invalid Mermaid diagram type '{header}' in {doc.rel}",
+            ))
             continue
 
-        # Check subgraph / block balance depending on diagram type
-        if header in ["flowchart", "graph"]:
+        if header in ("flowchart", "graph"):
             subgraphs = sum(1 for line in lines if line.startswith("subgraph"))
             ends = sum(1 for line in lines if line == "end" or line.startswith("end "))
             if subgraphs != ends:
-                errors.append(f"Unbalanced subgraph in Mermaid diagram in {rel} ({subgraphs} subgraph vs {ends} end)")
-                mermaid_errors += 1
+                issues.append(Issue(
+                    "error", doc.rel, None,
+                    f"Unbalanced subgraph in Mermaid diagram in {doc.rel} "
+                    f"({subgraphs} subgraph vs {ends} end)",
+                ))
         elif header == "sequencediagram":
-            block_openers = sum(1 for line in lines if re.match(r'^(alt|opt|loop|par|critical|break|rect)\b', line))
+            block_openers = sum(
+                1 for line in lines
+                if re.match(r'^(alt|opt|loop|par|critical|break|rect)\b', line)
+            )
             ends = sum(1 for line in lines if re.match(r'^end\b', line))
             if block_openers != ends:
-                errors.append(f"Unbalanced control blocks in Mermaid sequenceDiagram in {rel} ({block_openers} block openers vs {ends} end)")
-                mermaid_errors += 1
+                issues.append(Issue(
+                    "error", doc.rel, None,
+                    f"Unbalanced control blocks in Mermaid sequenceDiagram in {doc.rel} "
+                    f"({block_openers} block openers vs {ends} end)",
+                ))
 
-        # Check for unquoted special characters in transition labels: e.g. -->|label|
         for line in lines:
-            for label_match in re.finditer(r'-->\|([^|]+)\|', line):
+            for label_match in re.finditer(r'[-.=~<>]*\|([^|]+)\|', line):
                 label = label_match.group(1).strip()
-                # If label contains special characters like *, /, or unescaped parens but isn't quoted
-                if any(ch in label for ch in ['*', '/']) and not (label.startswith('"') and label.endswith('"')):
-                    errors.append(f"Unquoted special character in Mermaid edge label '|{label}|' in {rel} (wrap in \"...\")")
-                    mermaid_errors += 1
+                if (
+                    any(ch in label for ch in ('*', '/', '(', ')', '[', ']', '{', '}'))
+                    and not (label.startswith('"') and label.endswith('"'))
+                ):
+                    issues.append(Issue(
+                        "error", doc.rel, None,
+                        f"Unquoted special character in Mermaid edge label "
+                        f"'|{label}|' in {doc.rel} (wrap in \"...\")",
+                    ))
+    return issues
 
-print(f"  {'✓' if mermaid_errors == 0 else '✗'} Done ({mermaid_errors} issues).\n")
 
+# ── External checks ────────────────────────────────────────────────────────────
 
-# ── Check 8: Python Linting (Ruff) ────────────────────────────────────────────
-print("Checking Python code quality (Ruff)...")
-if shutil.which("ruff"):
-    res = subprocess.run(["ruff", "check", str(ROOT)], capture_output=True, text=True, check=False)
+def run_ruff(root: pathlib.Path) -> list[Issue]:
+    if not shutil.which("ruff"):
+        print("  ℹ Ruff not in PATH — Python lint check skipped.")
+        return []
+    res = subprocess.run(["ruff", "check", str(root)], capture_output=True, text=True, check=False)
     if res.returncode != 0:
-        errors.append(f"Ruff linting failed:\n{res.stdout.strip()}")
-        print("  ✗ Done (Ruff errors found).\n")
-    else:
-        print("  ✓ Done (0 lint issues).\n")
-else:
-    print("  ℹ Skipped (ruff not in PATH).\n")
+        return [Issue("error", None, None, f"Ruff linting failed:\n{res.stdout.strip()}")]
+    return []
 
 
-# ── Check 9: Python Type Checking (Pyright) ───────────────────────────────────
-print("Checking Python type consistency (Pyright)...")
-if shutil.which("pyright"):
-    res = subprocess.run(["pyright", str(ROOT / "scripts"), str(ROOT / "practice")], capture_output=True, text=True, check=False)
+def run_pyright(root: pathlib.Path) -> list[Issue]:
+    if not shutil.which("pyright"):
+        print("  ℹ Pyright not in PATH — type check skipped.")
+        return []
+    res = subprocess.run(
+        ["pyright", str(root / "scripts"), str(root / "practice")],
+        capture_output=True, text=True, check=False,
+    )
     if res.returncode != 0:
-        errors.append(f"Pyright type checks failed:\n{res.stdout.strip()}")
-        print("  ✗ Done (Pyright errors found).\n")
+        return [Issue("error", None, None, f"Pyright type checks failed:\n{res.stdout.strip()}")]
+    return []
+
+
+# ── Reporting ──────────────────────────────────────────────────────────────────
+
+def report(issues: list[Issue]) -> None:
+    """Render collected issues to stdout.
+
+    The renderer is deliberately separated from the checks so that the output
+    format can evolve (e.g. --format json) without touching validation logic.
+    """
+    errors = [i for i in issues if i.severity == "error"]
+    warnings = [i for i in issues if i.severity == "warning"]
+
+    if warnings:
+        print(f"\n⚠️  {len(warnings)} warning(s):\n")
+        for issue in warnings:
+            print(f"  ⚠ {issue.message}")
+
+    if errors:
+        print(f"\n❌ Validation failed — {len(errors)} error(s):\n")
+        for issue in errors:
+            print(f"  ✗ {issue.message}")
     else:
-        print("  ✓ Done (0 type errors).\n")
-else:
-    print("  ℹ Skipped (pyright not in PATH).\n")
+        print("\n✅ All checks passed. Brain structure is valid.")
 
 
-# ── Summary ───────────────────────────────────────────────────────────────────
-if errors:
-    print(f"❌ Validation failed — {len(errors)} error(s):\n")
-    for e in errors:
-        print(f"  ✗ {e}")
-    sys.exit(1)
-else:
-    print("✅ All checks passed. Brain structure is valid.")
+# ── Runner ─────────────────────────────────────────────────────────────────────
+
+def main() -> int:
+    issues: list[Issue] = []
+
+    # ── Repository-level checks ────────────────────────────────────────────────
+    print("Checking repository structure...")
+    issues.extend(check_deprecated_dirs(ROOT))
+    issues.extend(check_required_files(ROOT))
+
+    # ── Document checks (single-pass discovery) ────────────────────────────────
+    print("Processing markdown files...")
+    documents = discover_documents(ROOT)
+
+    document_checks = (
+        check_frontmatter,
+        check_links,
+        check_code_fences,
+        check_mermaid,
+    )
+    for doc in documents:
+        for check in document_checks:
+            issues.extend(check(doc))
+
+    # ── External tooling checks ────────────────────────────────────────────────
+    print("Running Python quality checks...")
+    issues.extend(run_ruff(ROOT))
+    issues.extend(run_pyright(ROOT))
+
+    report(issues)
+    return 1 if any(i.severity == "error" for i in issues) else 0
 
 
+if __name__ == "__main__":
+    raise SystemExit(main())

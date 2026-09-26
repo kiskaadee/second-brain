@@ -63,7 +63,7 @@ flowchart TB
     WebUI -->|HTTP POST| Traefik
     Traefik -->|HTTP + Remote-User| BFF
     BFF -->|gRPC SubmitDownload| Worker
-    BFF <-->|gRPC Event Stream (SSE)| Worker
+    BFF <-->|"gRPC Event Stream (SSE)"| Worker
     Worker --> DB
     Worker -->|RPC| Torrent
     Torrent --> Staging
