@@ -54,6 +54,8 @@ graph TD
 
 1. 🟡 [**Deterministic Term Extraction for Brain Documents**](plans/deterministic-term-extraction.md) `[Active]`
    - Cheap, reproducible, auditable lexical extraction pipeline (`scripts/extract-terms.py`, `scripts/patch-terms.py`, `scripts/stopwords.txt`) to replace non-deterministic tag generation with structural AST weighting.
+2. 🟡 [**Structural Refactoring for validate-brain.py Pipeline**](plans/validate-brain-refactoring.md) `[Active]`
+   - Multi-phase refactoring of the pre-commit integrity validator into a single-pass `Document`/`Issue` pipeline with line-numbered diagnostics and robust Markdown fence handling. (Phase 1 complete).
 
 ---
 
