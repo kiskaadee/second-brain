@@ -85,6 +85,13 @@ class Issue(NamedTuple):
     message: str
 
 
+class CodeBlock(NamedTuple):
+    language: str | None  # lowercased first word of the info string, or None
+    content: str          # raw text between the fences (newlines preserved)
+    start_line: int       # 1-indexed line of the opening fence
+    end_line: int         # 1-indexed line of the closing fence
+
+
 # ── Discovery ──────────────────────────────────────────────────────────────────
 
 def discover_documents(root: pathlib.Path) -> list[Document]:
@@ -105,6 +112,65 @@ def discover_documents(root: pathlib.Path) -> list[Document]:
             validates_frontmatter=path not in FRONTMATTER_EXEMPT_FILES,
         ))
     return documents
+
+
+# ── Shared Markdown scanner ────────────────────────────────────────────────────
+
+def scan_code_blocks(content: str) -> tuple[list[CodeBlock], list[int]]:
+    """Linearly scan Markdown content and extract fenced code blocks.
+
+    Walks the document line-by-line, tracking fence state. Handles
+    variable-width backtick sequences (3+): a 4-backtick outer fence is
+    not prematurely closed by a 3-backtick inner fence, matching the
+    CommonMark specification. Up to 3 leading spaces are permitted on
+    fence lines.
+
+    Returns:
+        blocks   — one CodeBlock per fully matched opening/closing fence pair,
+                   in document order.
+        unclosed — 1-indexed start_line of every opening fence that reaches
+                   end-of-file without a matching close.
+    """
+    blocks: list[CodeBlock] = []
+    unclosed: list[int] = []
+    lines = content.splitlines()
+
+    i = 0
+    while i < len(lines):
+        open_m = re.match(r'^[ \t]{0,3}(`{3,})(.*)', lines[i])
+        if open_m:
+            ticks = open_m.group(1)           # "```" or "````", etc.
+            info  = open_m.group(2).strip()   # info string (e.g. "mermaid")
+            lang  = info.split()[0].lower() if info else None
+            start = i + 1                     # 1-indexed line of the opener
+
+            i += 1
+            body: list[str] = []
+            closed = False
+
+            while i < len(lines):
+                # A closing fence uses the same backtick char, has >= the
+                # opener's length, and carries no info string.
+                close_m = re.match(r'^[ \t]{0,3}(`+)\s*$', lines[i])
+                if close_m and len(close_m.group(1)) >= len(ticks):
+                    blocks.append(CodeBlock(
+                        language=lang,
+                        content="\n".join(body),
+                        start_line=start,
+                        end_line=i + 1,
+                    ))
+                    closed = True
+                    i += 1
+                    break
+                body.append(lines[i])
+                i += 1
+
+            if not closed:
+                unclosed.append(start)
+        else:
+            i += 1
+
+    return blocks, unclosed
 
 
 # ── Helpers ────────────────────────────────────────────────────────────────────
@@ -153,7 +219,6 @@ def check_frontmatter(doc: Document) -> list[Issue]:
         return [Issue("error", doc.rel, 1, "Frontmatter missing 'type' field")]
 
     # Position of 'type:' in the original content is 3 (the opening ---) + match start.
-    # _line_of gives us the exact line in the file.
     type_line = _line_of(content, 3 + type_match.start())
     doc_type = type_match.group(1)
     if doc_type not in VALID_TYPES:
@@ -181,39 +246,44 @@ def check_links(doc: Document) -> list[Issue]:
 
 
 def check_code_fences(doc: Document) -> list[Issue]:
-    # Track (line_number, fence_text) pairs so we can report the last unpaired fence.
-    fence_lines: list[int] = [
-        i
-        for i, line in enumerate(doc.content.splitlines(), 1)
-        if line.strip().startswith("```")
+    """Report each unclosed opening fence as a separate, precisely located issue.
+
+    Uses scan_code_blocks() so that fence state is tracked linearly and
+    inner fences inside outer blocks are never miscounted.
+    """
+    _, unclosed = scan_code_blocks(doc.content)
+    return [
+        Issue("error", doc.rel, line_no, "Unclosed code fence")
+        for line_no in unclosed
     ]
-    if len(fence_lines) % 2 != 0:
-        return [Issue(
-            "error", doc.rel, fence_lines[-1],
-            f"Unclosed code fence (found {len(fence_lines)} fence delimiters)",
-        )]
-    return []
 
 
 def check_mermaid(doc: Document) -> list[Issue]:
+    """Validate all Mermaid diagrams in the document.
+
+    Uses scan_code_blocks() so that only genuine top-level ```mermaid blocks
+    are validated — example mermaid blocks inside documentation fences
+    (e.g. inside a ````markdown outer fence) are correctly ignored.
+    """
+    blocks, _ = scan_code_blocks(doc.content)
     issues: list[Issue] = []
 
-    for m in re.finditer(r'```mermaid\s*\n(.*?)\n```', doc.content, re.DOTALL):
-        # Line of the opening ```mermaid fence in the file.
-        fence_line = _line_of(doc.content, m.start())
+    for block in blocks:
+        if block.language != "mermaid":
+            continue
 
         # Pair each raw line with its file-level line number.
-        # m.group(1) starts on the line immediately after ```mermaid,
-        # so raw_lines[i] lives at fence_line + 1 + i.
-        raw_lines = m.group(1).splitlines()
+        # block.start_line is the opening ```mermaid fence;
+        # the first body line is always at block.start_line + 1.
+        raw_lines = block.content.splitlines()
         numbered: list[tuple[int, str]] = [
-            (fence_line + 1 + i, raw_line.strip())
+            (block.start_line + 1 + i, raw_line.strip())
             for i, raw_line in enumerate(raw_lines)
             if raw_line.strip() and not raw_line.strip().startswith("%%")
         ]
 
         if not numbered:
-            issues.append(Issue("error", doc.rel, fence_line + 1, "Empty Mermaid diagram block"))
+            issues.append(Issue("error", doc.rel, block.start_line + 1, "Empty Mermaid diagram block"))
             continue
 
         first_line_no, first_line = numbered[0]
