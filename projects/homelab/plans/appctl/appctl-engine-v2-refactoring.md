@@ -128,9 +128,47 @@ This plan modernizes the engine from a procedural ~900-line script with a hand-r
 - [ ] Run full automated test suite: `pytest tests/` (100% Green).
 - [ ] Run code linter: `ruff check .` with zero errors.
 - [ ] Run type checker: `pyright` with zero errors.
-- [ ] Replace `scripts/appctl_engine.py` with `scripts/appctl_engine_v2.py`.
-- [ ] Run `./scripts/test` and live verification (`appctl list`, `appctl info`, `appctl sync`).
+- [ ] **Topology Synchronization (Roadmap v3 P1 alignment)**:
+  - Update `scripts/appctl_engine_v2.py` `get_core_services()`:
+    * `stalwart`: domain `smtp.${HOMELAB_DOMAIN}`.
+    * Remove `snappymail` (discovered dynamically in `~/Sites/snappymail`).
+    * Remove deprecated `portainer`.
+- [ ] **Manifest Engine Convergence (Roadmap v3 P3 alignment)**:
+  - In `~/Projects/active/appctl-refactor`, cherry-pick the atomic commit from `main` that introduces `Core/scripts/core_manifest.py`.
+  - Refactor `appctl_engine_v2.py` to ingest manifests via `core_manifest.py` in place of standalone `load_manifest()`.
+  - Update unit test fixtures in `tests/unit/test_appctl_engine_v2.py` to validate against schema v1.0 models.
+- [ ] Promote `scripts/appctl_engine_v2.py` to `scripts/appctl_engine.py` within `refactor/appctl-rework`.
+- [ ] Merge `refactor/appctl-rework` into `main`.
+- [ ] Run `./scripts/test` and live verification (`appctl list`, `appctl info`, `appctl sync`) on `main`.
 - [ ] Update `docs/appctl.md` with V2 architecture and developer documentation.
+
+---
+
+## 4.5 Cross-Track Coordination with Architecture Roadmap v3
+
+The `appctl-v2` refactor operates as **Track B** (modernizing implementation in worktree `~/Projects/active/appctl-refactor` on branch `refactor/appctl-rework`), running parallel to the **Homelab Architecture Consolidation Roadmap v3** (**Track A** on `main`).
+
+```text
+Track B: appctl-v2 (refactor/appctl-rework)
+    │  (internal modernizations: dataclasses, PyYAML, TDD)
+    │
+    │ integration seam (cherry-pick core_manifest.py commit from main)
+    ▼
+Track A: Homelab Architecture (main)
+    ├── P1: Mail topology (minimal compatibility patch to legacy engine on main)
+    ├── P2: GitOps authority (independent of appctl)
+    └── P3: Manifest convergence (DELIBERATE JOIN POINT where Track B merges to main)
+```
+
+### Branch Operating Rules
+1. **Isolated Development**: `refactor/appctl-rework` is NOT rebased or merged into `main` during P1 or P2. Frequent cross-merging between active branches is strictly avoided.
+2. **Minimal Legacy Patching**: P1 modifies legacy `appctl_engine.py` on `main` strictly to update the `stalwart` domain and remove `snappymail`. Track B applies the identical semantic change directly to its typed `CoreService` definitions without merging git branches.
+3. **P3 Controlled Convergence Direction**:
+   - `core_manifest.py` originates on `main` (tested with GitOps and existing platform tests).
+   - Track B brings that specific commit into `refactor/appctl-rework` via `git cherry-pick`.
+   - `appctl-v2` adapts its normalization seam to `core_manifest.py` and confirms all unit tests pass in its worktree.
+   - On `refactor/appctl-rework`, `scripts/appctl_engine_v2.py` is promoted to `scripts/appctl_engine.py`.
+   - The tested, compliant `refactor/appctl-rework` branch is then merged into `main`.
 
 ---
 
@@ -142,3 +180,11 @@ This plan modernizes the engine from a procedural ~900-line script with a hand-r
    Unit tests in `tests/unit/test_appctl_engine_v2.py` must run hermetically without requiring a live Docker daemon, live network access, or mutating the user's real `~/Sites` or `~/Core`.
 3. **The Unlicense Integrity**:
    All new files and refactored code preserve public domain status under The Unlicense.
+4. **Architectural Seams Preserved for Roadmap v3**:
+   `appctl_engine_v2.py` must preserve the 5 architectural seams until convergence at P3:
+   - **CLI Syntax**: Invocation syntax, subcommands, and flags unchanged.
+   - **`resolve` JSON Contract**: Emits exact keys required by `scripts/appctl`: required `name`, `dir_path`, `type` (`"app"` or `"core_service"`), `domain`, plus contextual `container` and `env`. Backed by an automated test fixture.
+   - **Canonical Identity**: Service identifiers remain stable within the systems that own them; Core services and Sites workloads use their canonical names consistently.
+   - **Core vs. Sites Taxonomy**: Platform capabilities in Core vs. independent workloads in Sites strictly maintained.
+   - **Homepage Sync Semantics**: `services.yaml` compilation matches existing schema.
+

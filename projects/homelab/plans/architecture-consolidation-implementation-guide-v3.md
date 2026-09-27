@@ -37,8 +37,16 @@ tags:
 
 ## 2. Mandatory Working Rules
 
-### Rule 1 — One Architectural Workstream at a Time
-Never combine mail infrastructure relocation, GitOps privilege modifications, and manifest schema refactors into single sweeping PRs. Keep each phase isolated on dedicated git branches (`feat/mail-topology-realignment`, `feat/gitops-authority-hardening`, etc.).
+### Rule 1 — One Production Transition at a Time (Parallel Refactoring Permitted)
+Never combine mail infrastructure relocation, GitOps privilege modifications, and manifest schema refactors into single sweeping production changes. Keep each architectural phase isolated on dedicated git branches.
+
+However, independent internal implementation refactors (specifically `appctl-v2` on branch `refactor/appctl-rework`) **may proceed concurrently in an isolated worktree**, provided they do not trigger production cutovers and strictly preserve the established architectural integration seams.
+
+```text
+Parallel development:                         YES (isolated feature / refactor branches)
+Parallel production moves:                    NO  (serialized host/service cutovers)
+Parallel changes to same integration seam:   ONLY when explicitly coordinated
+```
 
 ### Rule 2 — Absolute Preservation of Application State
 State-bearing workloads must never be modified using destructive commands (`rm -rf`, `docker compose down -v`, or unverified moves). State directory migrations require an explicit pre-flight freeze, recursive archive with preserved timestamps/permissions, and parallel staging before live cutover.
@@ -48,6 +56,37 @@ Never duplicate service definitions or trust boundaries across disparate files. 
 
 ### Rule 4 — The User Controls Production Transitions
 Per Homelab Agent Guidelines: The agent investigates, crafts local code changes, and verifies tests locally. The user reviews atomic commit proposals, merges to `main`, and runs production deployments (`nixos-rebuild switch`, container recreation).
+
+### Rule 5 — Immutable Integration Seams Across Tracks
+When multiple branches are active, the interfaces connecting them must not undergo uncoordinated drift. Specifically, the `appctl-v2` track must preserve the CLI invocation syntax, the `resolve` JSON contract, canonical service identifiers, and Homepage generation semantics until the deliberate convergence point at Milestone P3.
+
+---
+
+## 2.1 Concurrent Track Coordination: Homelab Architecture vs. appctl-v2
+
+Two major engineering tracks are active concurrently:
+- **Track A (Production Architecture)**: Based on `main` in `/home/kiskaadee/Homelab/Core`. Owns host configuration, service topology (P1 mail migration), GitOps privilege separation (P2), and platform readiness (P4).
+- **Track B (Implementation Modernization)**: Based on `refactor/appctl-rework` (commit `5fc5ad8`) in `/home/kiskaadee/Projects/active/appctl-refactor`. Replaces legacy procedural code with a typed dataclass hierarchy (`SitesApp`, `CoreService`), PyYAML ingestion, and TDD unit tests.
+
+### Operating Protocol Between Tracks
+
+1. **Seam Isolation (Do Not Cross-Merge Branches Early)**:
+   Do not continuously merge `main` into `refactor/appctl-rework` or vice versa. The refactoring branch changes file structures drastically (`scripts/appctl_engine_v2.py`); frequent cross-merging will cause severe merge conflicts.
+2. **Phase 1 Coordination (Mail Topology)**:
+   - **On `main`**: Apply the minimal required compatibility patch to legacy `scripts/appctl_engine.py`: change `stalwart` domain to `smtp.roadtotech.me`, remove `snappymail` from `get_core_services()`, and remove `snappymail` from Homepage metadata mapping.
+   - **On `refactor/appctl-rework`**: Update the typed `CoreService` list in `scripts/appctl_engine_v2.py` symmetrically (`stalwart` domain $\rightarrow$ `smtp.${HOMELAB_DOMAIN}`, remove `snappymail` and deprecated `portainer`). This requires zero branch merging.
+3. **Phase 2 Coordination (GitOps Authority)**:
+   Phase 2 operates on `Core/nixos` systemd units and `Core/scripts/gitops_dispatcher.py`. It has zero dependencies on `appctl` and can execute without touching Track B.
+4. **Phase 3 Convergence (The Controlled Integration Seam)**:
+   Phase 3 is the **deliberate join point**. To avoid branch confusion, `core_manifest.py` originates authoritatively on `main` (where it is validated against `gitops_dispatcher.py` and test suites). That atomic commit is then brought into `refactor/appctl-rework` via cherry-pick, `appctl-v2` adapts its manifest ingestion to the shared module and verifies its unit tests, and finally the fully integrated `refactor/appctl-rework` branch is merged into `main`.
+
+### The 5 Architectural Invariants Protected by appctl-v2
+
+1. **CLI Syntax**: `scripts/appctl` invocation arguments, flags, and exits remain identical.
+2. **`resolve` JSON Contract**: `cmd_resolve` emits the exact JSON schema consumed by `scripts/appctl`: required keys `name` (str), `dir_path` (str), `type` (str: `"app"` or `"core_service"`), `domain` (str), plus contextual keys `container` (str) and `env` (dict). Backed by an automated test fixture in `test_appctl_engine_v2.py`.
+3. **Canonical Identity**: Service identifiers remain stable within the systems that own them; Core services and Sites workloads use their canonical names consistently.
+4. **Core vs. Sites Taxonomy**: Strict classification between platform capabilities in Core and independent workloads in Sites.
+5. **Homepage Sync Semantics**: Compiles `Core/config/homepage/services.yaml` from Core inventory + discovered Sites manifests without schema drift.
 
 ---
 
@@ -212,14 +251,25 @@ ssh server-local "ls -laR ~/Sites/snappymail/data | head -n 30"
 2. Remove the `snappymail:` service definition from `Core/docker-compose.yml`.
 
 #### Step 1.7: Update Core Platform Tooling (`appctl_engine.py`)
-1. Remove `snappymail` from Core services list (`get_core_services()`) in `Core/scripts/appctl_engine.py`.
-2. Update `stalwart` entry in `get_core_services()`:
+
+To prevent cross-branch merge conflicts, apply the service inventory update symmetrically across both branches without merging:
+
+**Action on `main` (Legacy Engine)**:
+1. In `Core/scripts/appctl_engine.py`, remove `"snappymail"` from `get_core_services()`.
+2. Update the `"stalwart"` entry in `get_core_services()`:
 ```python
 {"name": "stalwart", "domain": "smtp.roadtotech.me", "container": "stalwart", "desc": "All-in-one Mail Server & JMAP/IMAP/SMTP"}
 ```
-3. Update Homepage metadata mapping so `stalwart` points to `smtp.roadtotech.me`.
+3. Update Homepage metadata mapping so `stalwart` maps to `smtp.roadtotech.me`.
 
-**Note**: The [appctl refactor](appctl/appctl-engine-v2-refactoring.md) is not completed (commit 5fc5ad86562e44246c2b0bb940f8626ce3311a0f (HEAD -> refactor/appctl-rework, origin/refactor/appctl-rework)). This change can be implemented in the running appctl version, and should be pinned as a task for appctl-v2.
+**Action on `refactor/appctl-rework` (V2 Engine in `~/Projects/active/appctl-refactor`)**:
+1. In `scripts/appctl_engine_v2.py`, update `get_core_services()`:
+   - Change `stalwart` domain from `f"mail.{HOMELAB_DOMAIN}"` to `f"smtp.{HOMELAB_DOMAIN}"`.
+   - Remove the `snappymail` `CoreService` entry (SnappyMail will now be discovered dynamically as a `SitesApp` in `~/Sites/snappymail`).
+   - Remove the deprecated `portainer` `CoreService` entry.
+2. Run `pytest tests/unit/test_appctl_engine_v2.py` to confirm test suite remains green.
+3. Commit to `refactor/appctl-rework` locally. **Do not merge into `main`**.
+
 #### Step 1.8: Production Cutover & Verification
 Deploy the Core update:
 ```bash
@@ -354,15 +404,16 @@ The GitOps executor processes workload-authored `docker-compose.yml` files. A wo
 
 ---
 
-## 6. Phase 3: Manifest Contract Convergence
+## 6. Phase 3: Manifest Contract Convergence & appctl-v2 Integration
 
-This requires further verification to integrate with the appctl refactor plan.
+Phase 3 is the **deliberate convergence point** between Track A (Homelab Architecture) and Track B (appctl-v2 Refactoring). At this milestone, the separate manifest models and YAML parsers converge into a single authoritative module (`core_manifest.py`), and `appctl-v2` is merged into `main`.
+
 ### Deliverable 3.1: Unified Manifest Parser (`core_manifest.py`)
 Create a shared, strictly typed Python module (`Core/scripts/core_manifest.py`) implementing:
 - Dataclass models (`WorkloadManifest`, `NetworkConfig`, `DeploymentConfig`, `HealthcheckConfig`).
-- Strict schema enforcement: Rejection of unknown fields.
+- Strict schema enforcement: Rejection of unknown top-level fields.
 - Schema version gating (`schemaVersion: "1.0"`).
-- Replaces duplicate `parse_yaml_simple()` across `appctl_engine.py` and `gitops_dispatcher.py`.
+- Replaces duplicate `parse_yaml_simple()` across `gitops_dispatcher.py` and old `appctl_engine.py`.
 
 ### Deliverable 3.2: Declarative Intent Transition
 Deprecate procedural action vectors:
@@ -374,6 +425,49 @@ NEW: deployment:
 
 ### Deliverable 3.3: Sites Manifest Migration
 Update all manifests in `~/Sites/*/app.yaml` to schema v1.0.
+
+### Deliverable 3.4: appctl-v2 Integration & Controlled Convergence
+
+To ensure reproducibility and zero merge churn between divergent branches, the convergence of Track B into Track A follows a **strict direction of integration** with a defined origin for `core_manifest.py`.
+
+#### The Origin & Direction Rule
+- **Origin**: `core_manifest.py` originates authoritatively on `main` (under Deliverables 3.1–3.3) where it is immediately tested against `gitops_dispatcher.py` and the 35 architecture invariants.
+- **Direction**: `main` $\rightarrow$ `refactor/appctl-rework` (cherry-pick contract commit) $\rightarrow$ adapt in worktree $\rightarrow$ `main` (merge refactored engine).
+
+#### The 6-Step Controlled Convergence Runbook
+1. **Lock Prerequisites on `main`**:
+   Ensure P1 (mail topology), P2 (GitOps authority & Compose security policy), and Deliverables 3.1–3.3 (`core_manifest.py` schema & Sites manifests) are committed and green on `main`.
+2. **Isolate Contract Commit**:
+   Identify the atomic commit on `main` that introduces `Core/scripts/core_manifest.py` (e.g. `feat(core): introduce unified core_manifest parser`).
+3. **Bring Contract into Worktree (`refactor/appctl-rework`)**:
+   In `/home/kiskaadee/Projects/active/appctl-refactor`, bring in the contract commit via cherry-pick:
+   ```bash
+   cd ~/Projects/active/appctl-refactor
+   git cherry-pick <commit-sha-of-core_manifest>
+   ```
+   *(Track B now has the identical, immutable manifest parser without absorbing unrelated P1/P2 host churn).*
+4. **Adapt `appctl-v2` to Shared Parser**:
+   Refactor `scripts/appctl_engine_v2.py` to ingest manifests via `core_manifest.py` instead of its standalone `load_manifest()` seam. Update `tests/unit/test_appctl_engine_v2.py` fixtures to match.
+5. **Hermetic Test Gate in Worktree**:
+   Verify 100% compliance within `~/Projects/active/appctl-refactor`:
+   ```bash
+   pytest tests/unit/test_appctl_engine_v2.py
+   ruff check .
+   pyright
+   python3 scripts/appctl_engine_v2.py resolve snappymail
+   ```
+   Ensure `cmd_resolve` emits the exact JSON schema consumed by `scripts/appctl`: required keys `name`, `dir_path`, `type`, `domain`, plus contextual keys `container` and `env`. Verify that this is guarded by an automated test fixture.
+6. **Controlled Integration Merge to `main`**:
+   - On `refactor/appctl-rework`, promote `scripts/appctl_engine_v2.py` to `scripts/appctl_engine.py` so the branch carries the full engine replacement natively.
+   - Merge `refactor/appctl-rework` into `main` (resolving only expected integration conflicts).
+   - Run full regression suite on the resulting `main`:
+     ```bash
+     cd ~/Homelab/Core
+     ./scripts/test
+     nix flake check
+     ```
+   - Verify live CLI behavior: `appctl list`, `appctl info snappymail`, `appctl sync`.
+   - Decommission the worktree and declare Milestone P3 complete.
 
 ---
 

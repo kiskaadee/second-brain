@@ -48,6 +48,7 @@ Roadmap v3 establishes a fresh architectural re-baseline, clarifies service taxo
 4. **Single Manifest Contract**: There is exactly one schema and typed parser for workload manifests (`app.yaml`). `appctl`, `gitops_dispatcher`, and dashboard generators must consume the same verified contract.
 5. **Deployment Truth**: The deployment engine must record true runtime facts: requested revision, actual checked-out revision, prior revision, execution duration, and failure stage.
 6. **Zero-Data-Loss Migration**: State-bearing components are relocated across architectural boundaries through staged, reversible migrations with verified pre-flight snapshots, non-destructive file staging, and validated cutover windows.
+7. **Concurrent Refactoring Tracks & Seam Isolation**: Internal engine refactors (such as the `appctl-v2` modernization on branch `refactor/appctl-rework`) proceed in parallel with architecture consolidation on `main`. Production transitions remain serialized. Architectural changes apply minimal compatibility patches to legacy code on `main`, while refactoring tracks preserve defined architectural seams until deliberate convergence at milestone P3.
 
 ---
 
@@ -404,7 +405,79 @@ graph TD
 
 ---
 
-## Part 7: Roadmap Execution Phases
+## Part 7: Parallel Track Coordination (Architecture vs. appctl-v2)
+
+A major source of potential friction is the concurrent development of the **appctl-v2 modernization** (tracked on branch `refactor/appctl-rework` in worktree `~/Projects/active/appctl-refactor`) alongside the **Homelab Architecture Consolidation** (tracked on `main`).
+
+These two tracks operate with fundamentally different concerns:
+- **Track A (Production Architecture)**: Alters the host and service topology (mail migration P1, GitOps privilege P2, platform lifecycle P4). It mutates production state, requires human-controlled cutover, and runs from `main`.
+- **Track B (Implementation Modernization)**: Replaces the internal engine implementation (`appctl_engine_v2.py` with typed domain objects, PyYAML, and TDD tests). It is an internal refactor that must preserve runtime contracts.
+
+Treating `appctl-v2` as a prerequisite for early consolidation would unnecessarily block P1 and P2. Conversely, continuously cross-merging the architecture branch into the refactoring branch would create destructive merge conflicts in rapidly changing files.
+
+### The Dependency & Convergence Graph
+
+```text
+                    ┌─────────────────────────┐
+                    │   appctl-v2 refactor    │
+                    │ (refactor/appctl-rework)│
+                    │  independent workstream │
+                    └────────────┬────────────┘
+                                 │
+                                 │ integration point
+                                 ▼
+                    ┌─────────────────────────┐
+                    │ Manifest / domain model │
+                    │ + Core inventory model  │
+                    └─────────────────────────┘
+
+main
+ │
+ ├── P1: Mail topology migration
+ │      └── minimal compatibility change to current appctl
+ │
+ ├── P2: GitOps authority hardening
+ │      └── does not require appctl-v2
+ │
+ └── P3: Manifest convergence
+        └── integrate appctl-v2 here (CONVERGENCE POINT)
+```
+
+### The Three Operating Rules
+
+1. **Keep `appctl-v2` isolated**: Work proceeds in its dedicated worktree toward its own deliverables. It is not rebased or merged into `main` until its seams are stable.
+2. **Keep architectural migrations rooted on `main`**: For P1 (mail migration), apply only the minimal required compatibility patch to legacy `scripts/appctl_engine.py` on `main`: change `stalwart` domain to `smtp.roadtotech.me` and remove `snappymail` from `get_core_services()`.
+3. **Do not duplicate implementation work**: When `appctl-v2` converges at P3, apply the semantic change directly to its typed registry (`CoreService`) rather than attempting a mechanical code merge of legacy `appctl_engine.py`.
+
+### The 5 Stable Integration Seams
+
+`appctl-v2` must preserve these 5 architectural seams until convergence:
+
+| Seam | Scope | Contract Guarantee |
+| :--- | :--- | :--- |
+| **1. CLI Syntax** | `scripts/appctl` | Bash caller flags, subcommands (`list`, `info`, `up`, `down`, `sync`), and exits remain identical. |
+| **2. `resolve` JSON Contract** | Emitter $\rightarrow$ Caller | `cmd_resolve` emits the exact JSON schema consumed by `scripts/appctl`: required keys `name`, `dir_path`, `type` (`"app"` or `"core_service"`), `domain`, plus contextual keys `container` and `env`. Backed by an automated test fixture. |
+| **3. Canonical Identity** | Service names | Service identifiers remain stable within the systems that own them; Core services and Sites workloads use their canonical names consistently. |
+| **4. Core vs. Sites Taxonomy** | Classification | Core services represent platform capabilities; Sites represent independent workloads. No blurred boundaries. |
+| **5. Homepage Sync Semantics** | Output generation | Compiles `Core/config/homepage/services.yaml` from Core inventory + discovered Sites manifests without schema break. |
+
+### P3 Controlled Convergence Mechanics
+
+To prevent merge churn and ambiguity over code ownership, Milestone P3 enforces a **strict direction of integration**:
+
+- **Contract Origin on `main`**: `core_manifest.py` is developed and validated on `main` first (Deliverables 3.1–3.3), ensuring direct compatibility with `gitops_dispatcher.py` and existing test suites.
+- **Direction of Integration**: `main` $\rightarrow$ `refactor/appctl-rework` $\rightarrow$ `main`.
+- **The Convergence Sequence**:
+  1. Complete P2 and author `core_manifest.py` on `main`.
+  2. Cherry-pick the isolated `core_manifest.py` commit into `refactor/appctl-rework` (`~/Projects/active/appctl-refactor`).
+  3. Adapt `appctl_engine_v2.py` to ingest via `core_manifest.py`.
+  4. Run hermetic test verification in worktree (`pytest`, `ruff`, `pyright`, `cmd_resolve` contract check).
+  5. On `refactor/appctl-rework`, promote `scripts/appctl_engine_v2.py` to `scripts/appctl_engine.py` so the branch carries the full replacement.
+  6. Merge `refactor/appctl-rework` into `main`, resolve any expected integration conflicts, run full `./scripts/test` and `nix flake check` on `main`, verify live CLI behavior, and decommission the worktree.
+
+---
+
+## Part 8: Roadmap Execution Phases
 
 ```text
 ┌─────────────────────────────────────────────────────────────┐
@@ -419,6 +492,7 @@ graph TD
 │     - Stalwart to smtp.roadtotech.me                        │
 │     - SnappyMail State Backup & Transfer to ~/Sites         │
 │     - Workload Scaffolding & mail.roadtotech.me Cutover     │
+│     - Minimal compatibility patch to legacy appctl_engine   │
 └──────────────────────────────┬──────────────────────────────┘
                                │
 ┌──────────────────────────────▼──────────────────────────────┐
@@ -431,10 +505,10 @@ graph TD
 └──────────────────────────────┬──────────────────────────────┘
                                │
 ┌──────────────────────────────▼──────────────────────────────┐
-│ P3: Manifest Contract Convergence                           │
+│ P3: Manifest Contract Convergence & appctl-v2 Integration   │
 │     - Schema v1.0 & Single Typed Parser Engine              │
 │     - Declarative Deployment Intent (strategy: compose)     │
-│     - Elimination of Procedural Action Strings              │
+│     - CONVERGENCE: appctl-v2 replaces legacy engine on main │
 │     - Core Service Inventory Normalization                  │
 └──────────────────────────────┬──────────────────────────────┘
                                │
@@ -455,7 +529,7 @@ graph TD
 
 ---
 
-## Part 8: Definition of Done
+## Part 9: Definition of Done
 
 The Roadmap v3 architectural consolidation is complete when:
 
@@ -469,9 +543,11 @@ The Roadmap v3 architectural consolidation is complete when:
    - Workload manifests cannot expand admission trust boundaries or register arbitrary aliases.
    - Webhook admission decisions rely exclusively on Core's authoritative registry.
    - `homelab-gitops` runs under dedicated systemd sandboxing with restricted filesystem access.
-4. **Contract Unification**:
+4. **Contract Unification & Engine Modernization**:
    - Exactly one parser library validates `app.yaml` across `appctl`, GitOps, and test suites.
    - All workloads declare declarative deployment intent (`strategy: compose`).
+   - `appctl-v2` is fully integrated on `main`, replacing legacy procedural code with zero regressions to the bash caller.
 5. **Operational Verification**:
    - All 35 existing architecture invariant tests pass, plus new tests enforcing Stalwart/SnappyMail separation and manifest schema invariants.
    - Pure Nix `flake check` and Gitea Actions CI pass with zero warnings.
+
