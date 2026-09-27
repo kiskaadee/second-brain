@@ -59,9 +59,9 @@ Architectural inquiries and problem statements currently under evaluation that h
 
 Implementation roadmaps currently in progress (`status: active`) that are actively being executed or scheduled for deployment:
 
-1. 🟡 [**Architecture Consolidation & Hardening Roadmap v2**](plans/architecture-consolidation-roadmap-v2.md) `[Active]`
-   - Formalizing the three-layer architectural model, closing the GitOps trust boundary, codifying `app.yaml` v1 schema contracts, and establishing machine-enforced invariants.
-   - 📋 *Execution Guide*: [**Architecture Consolidation Implementation Guide**](plans/architecture-consolidation-implementation-guide.md)
+1. 🟡 [**Architecture Consolidation & Hardening Roadmap v3**](plans/architecture-consolidation-roadmap-v3.md) `[Active]`
+   - 5-tier service taxonomy, authoritative Core repository registry, Stalwart vs. SnappyMail zero-data-loss relocation, workload Compose security policy, unified typed manifest engine, and platform readiness contracts.
+   - 📋 *Execution Guide*: [**Architecture Consolidation Implementation Guide v3**](plans/architecture-consolidation-implementation-guide-v3.md)
 2. 🟡 [**Rust Daemon Migration Plan: Standalone `dynu-monitor`**](plans/dynu-monitor-rust-daemon.md) `[Active]`
    - Implementing a standalone Rust daemon with 30-second polling and round-robin public DNS resolution across 5 independent providers (Cloudflare, Quad9, Google, OpenDNS, Dynu).
 3. 🟡 [**Custom API Security Hardening & Threat Analysis**](plans/api-security-hardening.md) `[Active]`
@@ -120,6 +120,8 @@ Archived and foundational documentation for completed milestones:
 * 🟢 [**Clean Deprecation of Portainer from Core**](plans/portainer-deprecation-plan.md)
 * 🟢 [**Stalwart Mail Server & SnappyMail Webmail Deployment**](plans/stalwart-email-server-implementation-plan.md)
 * 🟢 [**Multirepo Refactor of Homepage & Learning Hub**](plans/multirepo-refactor-homepage-courses.md)
+* 🟢 [**Architecture Consolidation & Hardening Roadmap v2**](archive/architecture-consolidation-roadmap-v2.md) (Superseded by v3; P0 GitOps trust boundary & automated invariant testing completed)
+* 🟢 [**Architecture Consolidation Implementation Guide v2**](archive/architecture-consolidation-implementation-guide-v2.md) (Superseded by v3)
 * 🟢 [**Architecture Consolidation & Hardening Roadmap v1**](archive/architecture-consolidation-roadmap.md) (Superseded by v2)
 * 🟢 [**Turn `homelab-core` into a Declarative NixOS Appliance**](archive/nixos-appliance-migration.md)
 * 🟢 [**Core & Sites Cutover and Testing Plan**](archive/core-sites-cutover-testing-plan.md)
