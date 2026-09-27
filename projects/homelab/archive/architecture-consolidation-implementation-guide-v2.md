@@ -1,6 +1,6 @@
 ---
 type: plan
-status: active
+status: completed
 project: homelab
 tags:
   - architecture
@@ -11,7 +11,10 @@ tags:
   - implementation
 ---
 
-# Homelab Core — Architecture Consolidation & Hardening Implementation Guide
+# Homelab Core — Architecture Consolidation & Hardening Implementation Guide v2
+
+> [!NOTE]
+> Superseded by [Architecture Consolidation Implementation Guide v3](../plans/architecture-consolidation-implementation-guide-v3.md).
 
 This guide turns the [Architecture Consolidation & Hardening Roadmap v2](architecture-consolidation-roadmap-v2.md) into an executable sequence of work.
 

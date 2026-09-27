@@ -1,6 +1,6 @@
 ---
 type: plan
-status: active
+status: completed
 project: homelab
 tags:
   - architecture
@@ -14,12 +14,14 @@ tags:
 
 # Architecture Consolidation & Hardening Roadmap v2
 
-> Supersedes the [original phased implementation plan](../archive/architecture-consolidation-roadmap.md).
+> [!NOTE]
+> Superseded by [Architecture Consolidation & Hardening Roadmap v3](../plans/architecture-consolidation-roadmap-v3.md).
+> Supersedes the [original phased implementation plan](architecture-consolidation-roadmap.md).
 > Integrates reviewer feedback across fourteen areas: trust model, manifest
 > contracts, privilege separation, protocol versioning, invariant testing, and
 > deployment observability.
 >
-> 📋 **Companion Execution Guide**: [Architecture Consolidation & Hardening Implementation Guide](architecture-consolidation-implementation-guide.md)
+> 📋 **Companion Execution Guide**: [Architecture Consolidation & Hardening Implementation Guide v2](architecture-consolidation-implementation-guide-v2.md)
 
 ---
 
