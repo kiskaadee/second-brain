@@ -69,4 +69,6 @@ graph TD
 
 * 🟢 **Validation & Taxonomy Foundation** — Implementation of `scripts/validate-brain.py`, pre-commit hook enforcement, and five-category semantic schema.
 * 🟢 **Multi-Agent Catalog** — Formalization of `agents/` store and operational profiles.
-* 🟢 [**Incident Debug Records & Daily Journal Workflow Reorganization**](../../01-plans/brain/incident-debug-and-journal-workflow.md) — Established first-class `type: debug` records in `records/debug/`, strictly one daily journal per date in `records/journal/YYYY-MM-DD.md`, and automated inbox curation protocol.
+* 🟢 [**Brain Taxonomy & Lifecycle Migration**](../../01-plans/brain/taxonomy-lifecycle-migration.md) — Reorganized repository from organic structure into 7 numbered lifecycle directories (`00-inbox/` through `06-projects/`), introduced declarative `DirectoryContract` validation, executed 188-file migration and 199-link rewrites, and synchronized distributed `AGENTS.md` integration surfaces.
+  - Companion Discussion: [Brain Epistemic Lifecycle Taxonomy](../../02-discussions/brain/taxonomy-and-lifecycle-architecture.md)
+* 🟢 [**Incident Debug Records & Daily Journal Workflow Reorganization**](../../01-plans/brain/incident-debug-and-journal-workflow.md) — Established first-class `type: debug` records in `03-records/debug/`, strictly one daily journal per date in `03-records/journal/YYYY-MM-DD.md`, and automated inbox curation protocol.
