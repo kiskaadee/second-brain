@@ -1,0 +1,980 @@
+[
+  {
+    "source": "AGENTS.md",
+    "destination": "AGENTS.md",
+    "type": "meta",
+    "rationale": "Root repository governance and license files."
+  },
+  {
+    "source": "README.md",
+    "destination": "README.md",
+    "type": "meta",
+    "rationale": "Root repository governance and license files."
+  },
+  {
+    "source": "agents/README.md",
+    "destination": "05-agents/README.md",
+    "type": "meta",
+    "rationale": "Catalog overview of agent profiles and operational guardrails."
+  },
+  {
+    "source": "agents/homelab-core.md",
+    "destination": "05-agents/profiles/homelab-core.md",
+    "type": "agent",
+    "rationale": "Machine-readable agent persona specification and behavioral guardrails."
+  },
+  {
+    "source": "agents/homelab-operations.md",
+    "destination": "05-agents/profiles/homelab-operations.md",
+    "type": "agent",
+    "rationale": "Machine-readable agent persona specification and behavioral guardrails."
+  },
+  {
+    "source": "agents/magnetflix.md",
+    "destination": "05-agents/profiles/magnetflix.md",
+    "type": "agent",
+    "rationale": "Machine-readable agent persona specification and behavioral guardrails."
+  },
+  {
+    "source": "agents/nekoweb.md",
+    "destination": "05-agents/profiles/nekoweb.md",
+    "type": "agent",
+    "rationale": "Machine-readable agent persona specification and behavioral guardrails."
+  },
+  {
+    "source": "agents/nixos-workstation.md",
+    "destination": "05-agents/profiles/nixos-workstation.md",
+    "type": "agent",
+    "rationale": "Machine-readable agent persona specification and behavioral guardrails."
+  },
+  {
+    "source": "agents/second-brain.md",
+    "destination": "05-agents/profiles/second-brain.md",
+    "type": "agent",
+    "rationale": "Machine-readable agent persona specification and behavioral guardrails."
+  },
+  {
+    "source": "inbox/README.md",
+    "destination": "00-inbox/README.md",
+    "type": "meta",
+    "rationale": "Staging zone entrypoint."
+  },
+  {
+    "source": "inbox/brain-taxonomy-refactor-analysis.md",
+    "destination": "00-inbox/brain-taxonomy-refactor-analysis.md",
+    "type": "inbox",
+    "rationale": "Ephemeral staging draft outside committed knowledge graph."
+  },
+  {
+    "source": "knowledge/concepts/binary-search.md",
+    "destination": "04-learning/knowledge/concepts/binary-search.md",
+    "type": "knowledge",
+    "rationale": "Durable conceptual, technological, or methodological understanding."
+  },
+  {
+    "source": "knowledge/concepts/hashmap.md",
+    "destination": "04-learning/knowledge/concepts/hashmap.md",
+    "type": "knowledge",
+    "rationale": "Durable conceptual, technological, or methodological understanding."
+  },
+  {
+    "source": "knowledge/concepts/linked-list.md",
+    "destination": "04-learning/knowledge/concepts/linked-list.md",
+    "type": "knowledge",
+    "rationale": "Durable conceptual, technological, or methodological understanding."
+  },
+  {
+    "source": "knowledge/methods/adrs.md",
+    "destination": "04-learning/knowledge/methods/adrs.md",
+    "type": "knowledge",
+    "rationale": "Durable conceptual, technological, or methodological understanding."
+  },
+  {
+    "source": "knowledge/methods/auth.md",
+    "destination": "04-learning/knowledge/methods/auth.md",
+    "type": "knowledge",
+    "rationale": "Durable conceptual, technological, or methodological understanding."
+  },
+  {
+    "source": "knowledge/methods/cicd-fundamentals-and-gitops.md",
+    "destination": "04-learning/knowledge/methods/cicd-fundamentals-and-gitops.md",
+    "type": "knowledge",
+    "rationale": "Durable conceptual, technological, or methodological understanding."
+  },
+  {
+    "source": "knowledge/methods/deterministic-tag-extraction.md",
+    "destination": "04-learning/knowledge/methods/deterministic-tag-extraction.md",
+    "type": "knowledge",
+    "rationale": "Durable conceptual, technological, or methodological understanding."
+  },
+  {
+    "source": "knowledge/methods/incident-investigation-and-journaling.md",
+    "destination": "04-learning/knowledge/methods/incident-investigation-and-journaling.md",
+    "type": "knowledge",
+    "rationale": "Durable conceptual, technological, or methodological understanding."
+  },
+  {
+    "source": "knowledge/methods/notes-to-docs.md",
+    "destination": "04-learning/knowledge/methods/notes-to-docs.md",
+    "type": "knowledge",
+    "rationale": "Durable conceptual, technological, or methodological understanding."
+  },
+  {
+    "source": "knowledge/methods/sql.md",
+    "destination": "04-learning/knowledge/methods/sql.md",
+    "type": "knowledge",
+    "rationale": "Durable conceptual, technological, or methodological understanding."
+  },
+  {
+    "source": "knowledge/methods/testing.md",
+    "destination": "04-learning/knowledge/methods/testing.md",
+    "type": "knowledge",
+    "rationale": "Durable conceptual, technological, or methodological understanding."
+  },
+  {
+    "source": "knowledge/technologies/aria2c.md",
+    "destination": "04-learning/knowledge/technologies/aria2c.md",
+    "type": "knowledge",
+    "rationale": "Durable conceptual, technological, or methodological understanding."
+  },
+  {
+    "source": "knowledge/technologies/devShell.md",
+    "destination": "04-learning/knowledge/technologies/devShell.md",
+    "type": "knowledge",
+    "rationale": "Durable conceptual, technological, or methodological understanding."
+  },
+  {
+    "source": "knowledge/technologies/docker.md",
+    "destination": "04-learning/knowledge/technologies/docker.md",
+    "type": "knowledge",
+    "rationale": "Durable conceptual, technological, or methodological understanding."
+  },
+  {
+    "source": "knowledge/technologies/environments.md",
+    "destination": "04-learning/knowledge/technologies/environments.md",
+    "type": "knowledge",
+    "rationale": "Durable conceptual, technological, or methodological understanding."
+  },
+  {
+    "source": "knowledge/technologies/printer-setup-avahi-lpinfo.md",
+    "destination": "04-learning/knowledge/technologies/printer-setup-avahi-lpinfo.md",
+    "type": "knowledge",
+    "rationale": "Durable conceptual, technological, or methodological understanding."
+  },
+  {
+    "source": "knowledge/technologies/python/enumerate.md",
+    "destination": "04-learning/knowledge/technologies/python/enumerate.md",
+    "type": "knowledge",
+    "rationale": "Durable conceptual, technological, or methodological understanding."
+  },
+  {
+    "source": "knowledge/technologies/python/pydantic.md",
+    "destination": "04-learning/knowledge/technologies/python/pydantic.md",
+    "type": "knowledge",
+    "rationale": "Durable conceptual, technological, or methodological understanding."
+  },
+  {
+    "source": "knowledge/technologies/python/pytest.md",
+    "destination": "04-learning/knowledge/technologies/python/pytest.md",
+    "type": "knowledge",
+    "rationale": "Durable conceptual, technological, or methodological understanding."
+  },
+  {
+    "source": "knowledge/technologies/python/string-methods.md",
+    "destination": "04-learning/knowledge/technologies/python/string-methods.md",
+    "type": "knowledge",
+    "rationale": "Durable conceptual, technological, or methodological understanding."
+  },
+  {
+    "source": "knowledge/technologies/python/zip.md",
+    "destination": "04-learning/knowledge/technologies/python/zip.md",
+    "type": "knowledge",
+    "rationale": "Durable conceptual, technological, or methodological understanding."
+  },
+  {
+    "source": "knowledge/technologies/tea.md",
+    "destination": "04-learning/knowledge/technologies/tea.md",
+    "type": "knowledge",
+    "rationale": "Durable conceptual, technological, or methodological understanding."
+  },
+  {
+    "source": "knowledge/technologies/tmux.md",
+    "destination": "04-learning/knowledge/technologies/tmux.md",
+    "type": "knowledge",
+    "rationale": "Durable conceptual, technological, or methodological understanding."
+  },
+  {
+    "source": "practice/LeetCode/00-practiced-patterns.md",
+    "destination": "04-learning/practice/LeetCode/00-practiced-patterns.md",
+    "type": "practice",
+    "rationale": "Deliberate algorithm exercise and LeetCode problem drill."
+  },
+  {
+    "source": "practice/LeetCode/0001-two-sum.md",
+    "destination": "04-learning/practice/LeetCode/0001-two-sum.md",
+    "type": "practice",
+    "rationale": "Deliberate algorithm exercise and LeetCode problem drill."
+  },
+  {
+    "source": "practice/LeetCode/0009-palindrome-number.md",
+    "destination": "04-learning/practice/LeetCode/0009-palindrome-number.md",
+    "type": "practice",
+    "rationale": "Deliberate algorithm exercise and LeetCode problem drill."
+  },
+  {
+    "source": "practice/LeetCode/0013-roman-to-integer.md",
+    "destination": "04-learning/practice/LeetCode/0013-roman-to-integer.md",
+    "type": "practice",
+    "rationale": "Deliberate algorithm exercise and LeetCode problem drill."
+  },
+  {
+    "source": "practice/LeetCode/0014-longest-common-prefix.md",
+    "destination": "04-learning/practice/LeetCode/0014-longest-common-prefix.md",
+    "type": "practice",
+    "rationale": "Deliberate algorithm exercise and LeetCode problem drill."
+  },
+  {
+    "source": "practice/LeetCode/0020-valid-parentheses.md",
+    "destination": "04-learning/practice/LeetCode/0020-valid-parentheses.md",
+    "type": "practice",
+    "rationale": "Deliberate algorithm exercise and LeetCode problem drill."
+  },
+  {
+    "source": "practice/LeetCode/0021-merge-two-sorted-lists.md",
+    "destination": "04-learning/practice/LeetCode/0021-merge-two-sorted-lists.md",
+    "type": "practice",
+    "rationale": "Deliberate algorithm exercise and LeetCode problem drill."
+  },
+  {
+    "source": "practice/LeetCode/0026-remove-duplicates-from-sorted-array.md",
+    "destination": "04-learning/practice/LeetCode/0026-remove-duplicates-from-sorted-array.md",
+    "type": "practice",
+    "rationale": "Deliberate algorithm exercise and LeetCode problem drill."
+  },
+  {
+    "source": "practice/LeetCode/0027-remove-element.md",
+    "destination": "04-learning/practice/LeetCode/0027-remove-element.md",
+    "type": "practice",
+    "rationale": "Deliberate algorithm exercise and LeetCode problem drill."
+  },
+  {
+    "source": "practice/LeetCode/0028-find-the-index-of-the-first-occurrence-in-a-string.md",
+    "destination": "04-learning/practice/LeetCode/0028-find-the-index-of-the-first-occurrence-in-a-string.md",
+    "type": "practice",
+    "rationale": "Deliberate algorithm exercise and LeetCode problem drill."
+  },
+  {
+    "source": "practice/LeetCode/0035-search-insert-position.md",
+    "destination": "04-learning/practice/LeetCode/0035-search-insert-position.md",
+    "type": "practice",
+    "rationale": "Deliberate algorithm exercise and LeetCode problem drill."
+  },
+  {
+    "source": "practice/LeetCode/0058-length-of-last-word.md",
+    "destination": "04-learning/practice/LeetCode/0058-length-of-last-word.md",
+    "type": "practice",
+    "rationale": "Deliberate algorithm exercise and LeetCode problem drill."
+  },
+  {
+    "source": "practice/LeetCode/1927-sum-game.md",
+    "destination": "04-learning/practice/LeetCode/1927-sum-game.md",
+    "type": "practice",
+    "rationale": "Deliberate algorithm exercise and LeetCode problem drill."
+  },
+  {
+    "source": "practice/LeetCode/3622-check-divisibility-by-digit-sum-and-product.md",
+    "destination": "04-learning/practice/LeetCode/3622-check-divisibility-by-digit-sum-and-product.md",
+    "type": "practice",
+    "rationale": "Deliberate algorithm exercise and LeetCode problem drill."
+  },
+  {
+    "source": "projects/brain/README.md",
+    "destination": "06-projects/brain/README.md",
+    "type": "project",
+    "rationale": "Canonical project topology hub, source repositories, and cross-cutting index."
+  },
+  {
+    "source": "projects/brain/plans/deterministic-term-extraction.md",
+    "destination": "01-plans/brain/deterministic-term-extraction.md",
+    "type": "plan",
+    "rationale": "Actionable project implementation roadmap."
+  },
+  {
+    "source": "projects/brain/plans/incident-debug-and-journal-workflow.md",
+    "destination": "01-plans/brain/incident-debug-and-journal-workflow.md",
+    "type": "plan",
+    "rationale": "Actionable project implementation roadmap."
+  },
+  {
+    "source": "projects/brain/plans/validate-brain-refactoring.md",
+    "destination": "01-plans/brain/validate-brain-refactoring.md",
+    "type": "plan",
+    "rationale": "Actionable project implementation roadmap."
+  },
+  {
+    "source": "projects/homelab/README.md",
+    "destination": "06-projects/homelab/README.md",
+    "type": "project",
+    "rationale": "Canonical project topology hub, source repositories, and cross-cutting index."
+  },
+  {
+    "source": "projects/homelab/archive/architecture-consolidation-implementation-guide-v2.md",
+    "destination": "01-plans/homelab/architecture-consolidation-implementation-guide-v2.md",
+    "type": "plan",
+    "rationale": "Completed implementation roadmap; archived state expressed via metadata (status: completed)."
+  },
+  {
+    "source": "projects/homelab/archive/architecture-consolidation-roadmap-v2.md",
+    "destination": "01-plans/homelab/architecture-consolidation-roadmap-v2.md",
+    "type": "plan",
+    "rationale": "Completed implementation roadmap; archived state expressed via metadata (status: completed)."
+  },
+  {
+    "source": "projects/homelab/archive/architecture-consolidation-roadmap.md",
+    "destination": "01-plans/homelab/architecture-consolidation-roadmap.md",
+    "type": "plan",
+    "rationale": "Completed implementation roadmap; archived state expressed via metadata (status: completed)."
+  },
+  {
+    "source": "projects/homelab/archive/brain-sync-and-gitea-mirroring.md",
+    "destination": "01-plans/homelab/brain-sync-and-gitea-mirroring.md",
+    "type": "plan",
+    "rationale": "Completed implementation roadmap; archived state expressed via metadata (status: completed)."
+  },
+  {
+    "source": "projects/homelab/archive/core-sites-cutover-testing-plan.md",
+    "destination": "01-plans/homelab/core-sites-cutover-testing-plan.md",
+    "type": "plan",
+    "rationale": "Completed implementation roadmap; archived state expressed via metadata (status: completed)."
+  },
+  {
+    "source": "projects/homelab/archive/domain-migration-roadtotech.md",
+    "destination": "01-plans/homelab/domain-migration-roadtotech.md",
+    "type": "plan",
+    "rationale": "Completed implementation roadmap; archived state expressed via metadata (status: completed)."
+  },
+  {
+    "source": "projects/homelab/archive/git-sync-and-lifecycle.md",
+    "destination": "01-plans/homelab/git-sync-and-lifecycle.md",
+    "type": "plan",
+    "rationale": "Completed implementation roadmap; archived state expressed via metadata (status: completed)."
+  },
+  {
+    "source": "projects/homelab/archive/nixos-appliance-migration.md",
+    "destination": "01-plans/homelab/nixos-appliance-migration.md",
+    "type": "plan",
+    "rationale": "Completed implementation roadmap; archived state expressed via metadata (status: completed)."
+  },
+  {
+    "source": "projects/homelab/archive/nixos-server-laptop-migration.md",
+    "destination": "01-plans/homelab/nixos-server-laptop-migration.md",
+    "type": "plan",
+    "rationale": "Completed implementation roadmap; archived state expressed via metadata (status: completed)."
+  },
+  {
+    "source": "projects/homelab/archive/refactor-and-metadata-sync.md",
+    "destination": "01-plans/homelab/refactor-and-metadata-sync.md",
+    "type": "plan",
+    "rationale": "Completed implementation roadmap; archived state expressed via metadata (status: completed)."
+  },
+  {
+    "source": "projects/homelab/discussions/authelia-dynamic-user-backend-lldap.md",
+    "destination": "02-discussions/homelab/authelia-dynamic-user-backend-lldap.md",
+    "type": "discussion",
+    "rationale": "Prospective architectural inquiry, trade-off analysis, and option evaluation."
+  },
+  {
+    "source": "projects/homelab/discussions/authelia-session-email-architecture.md",
+    "destination": "02-discussions/homelab/authelia-session-email-architecture.md",
+    "type": "discussion",
+    "rationale": "Prospective architectural inquiry, trade-off analysis, and option evaluation."
+  },
+  {
+    "source": "projects/homelab/discussions/chatbot-assistant-design.md",
+    "destination": "02-discussions/homelab/chatbot-assistant-design.md",
+    "type": "discussion",
+    "rationale": "Prospective architectural inquiry, trade-off analysis, and option evaluation."
+  },
+  {
+    "source": "projects/homelab/discussions/core-service-qualification-and-portainer-deprecation.md",
+    "destination": "02-discussions/homelab/core-service-qualification-and-portainer-deprecation.md",
+    "type": "discussion",
+    "rationale": "Prospective architectural inquiry, trade-off analysis, and option evaluation."
+  },
+  {
+    "source": "projects/homelab/discussions/dozzle-auth-and-storage-architecture.md",
+    "destination": "02-discussions/homelab/dozzle-auth-and-storage-architecture.md",
+    "type": "discussion",
+    "rationale": "Prospective architectural inquiry, trade-off analysis, and option evaluation."
+  },
+  {
+    "source": "projects/homelab/discussions/dual-email-schema-lldap-stalwart.md",
+    "destination": "02-discussions/homelab/dual-email-schema-lldap-stalwart.md",
+    "type": "discussion",
+    "rationale": "Prospective architectural inquiry, trade-off analysis, and option evaluation."
+  },
+  {
+    "source": "projects/homelab/discussions/dynu-monitor-polling-and-language-tradeoffs.md",
+    "destination": "02-discussions/homelab/dynu-monitor-polling-and-language-tradeoffs.md",
+    "type": "discussion",
+    "rationale": "Prospective architectural inquiry, trade-off analysis, and option evaluation."
+  },
+  {
+    "source": "projects/homelab/discussions/gitea-credentials-and-backup-strategy.md",
+    "destination": "02-discussions/homelab/gitea-credentials-and-backup-strategy.md",
+    "type": "discussion",
+    "rationale": "Prospective architectural inquiry, trade-off analysis, and option evaluation."
+  },
+  {
+    "source": "projects/homelab/discussions/gitops-dispatcher-architecture.md",
+    "destination": "02-discussions/homelab/gitops-dispatcher-architecture.md",
+    "type": "discussion",
+    "rationale": "Prospective architectural inquiry, trade-off analysis, and option evaluation."
+  },
+  {
+    "source": "projects/homelab/discussions/homelab-repo-location-analysis.md",
+    "destination": "02-discussions/homelab/homelab-repo-location-analysis.md",
+    "type": "discussion",
+    "rationale": "Prospective architectural inquiry, trade-off analysis, and option evaluation."
+  },
+  {
+    "source": "projects/homelab/discussions/hostinger-vs-stalwart-email-evaluation.md",
+    "destination": "02-discussions/homelab/hostinger-vs-stalwart-email-evaluation.md",
+    "type": "discussion",
+    "rationale": "Prospective architectural inquiry, trade-off analysis, and option evaluation."
+  },
+  {
+    "source": "projects/homelab/discussions/mail-server-evaluation-stalwart.md",
+    "destination": "02-discussions/homelab/mail-server-evaluation-stalwart.md",
+    "type": "discussion",
+    "rationale": "Prospective architectural inquiry, trade-off analysis, and option evaluation."
+  },
+  {
+    "source": "projects/homelab/discussions/multirepo-refactor-homepage-courses.md",
+    "destination": "02-discussions/homelab/multirepo-refactor-homepage-courses.md",
+    "type": "discussion",
+    "rationale": "Prospective architectural inquiry, trade-off analysis, and option evaluation."
+  },
+  {
+    "source": "projects/homelab/discussions/nixos-monorepo-decoupling.md",
+    "destination": "02-discussions/homelab/nixos-monorepo-decoupling.md",
+    "type": "discussion",
+    "rationale": "Prospective architectural inquiry, trade-off analysis, and option evaluation."
+  },
+  {
+    "source": "projects/homelab/discussions/nixos-monorepo-vs-multirepo.md",
+    "destination": "02-discussions/homelab/nixos-monorepo-vs-multirepo.md",
+    "type": "discussion",
+    "rationale": "Prospective architectural inquiry, trade-off analysis, and option evaluation."
+  },
+  {
+    "source": "projects/homelab/guides/appctl-operations-and-manifest-guide.md",
+    "destination": "04-learning/guides/homelab/appctl-operations-and-manifest-guide.md",
+    "type": "guide",
+    "rationale": "Operational SOP and standard runbook for using/maintaining system capabilities."
+  },
+  {
+    "source": "projects/homelab/guides/brain-gitops-deployment-pipeline.md",
+    "destination": "04-learning/guides/homelab/brain-gitops-deployment-pipeline.md",
+    "type": "guide",
+    "rationale": "Operational SOP and standard runbook for using/maintaining system capabilities."
+  },
+  {
+    "source": "projects/homelab/guides/dynu-ddns-troubleshooting.md",
+    "destination": "04-learning/guides/homelab/dynu-ddns-troubleshooting.md",
+    "type": "guide",
+    "rationale": "Operational SOP and standard runbook for using/maintaining system capabilities."
+  },
+  {
+    "source": "projects/homelab/guides/gitea-actions-and-cicd-pipeline-standards.md",
+    "destination": "04-learning/guides/homelab/gitea-actions-and-cicd-pipeline-standards.md",
+    "type": "guide",
+    "rationale": "Operational SOP and standard runbook for using/maintaining system capabilities."
+  },
+  {
+    "source": "projects/homelab/guides/homepage-core-reintegration.md",
+    "destination": "04-learning/guides/homelab/homepage-core-reintegration.md",
+    "type": "guide",
+    "rationale": "Operational SOP and standard runbook for using/maintaining system capabilities."
+  },
+  {
+    "source": "projects/homelab/guides/jellyfin-gpu-hardware-acceleration.md",
+    "destination": "04-learning/guides/homelab/jellyfin-gpu-hardware-acceleration.md",
+    "type": "guide",
+    "rationale": "Operational SOP and standard runbook for using/maintaining system capabilities."
+  },
+  {
+    "source": "projects/homelab/guides/lldap-authelia-integration.md",
+    "destination": "04-learning/guides/homelab/lldap-authelia-integration.md",
+    "type": "guide",
+    "rationale": "Operational SOP and standard runbook for using/maintaining system capabilities."
+  },
+  {
+    "source": "projects/homelab/guides/mail-deliverability-rdns-relay-guide.md",
+    "destination": "04-learning/guides/homelab/mail-deliverability-rdns-relay-guide.md",
+    "type": "guide",
+    "rationale": "Operational SOP and standard runbook for using/maintaining system capabilities."
+  },
+  {
+    "source": "projects/homelab/guides/managing-secrets-and-authelia-users.md",
+    "destination": "04-learning/guides/homelab/managing-secrets-and-authelia-users.md",
+    "type": "guide",
+    "rationale": "Operational SOP and standard runbook for using/maintaining system capabilities."
+  },
+  {
+    "source": "projects/homelab/guides/onboarding-a-new-service.md",
+    "destination": "04-learning/guides/homelab/onboarding-a-new-service.md",
+    "type": "guide",
+    "rationale": "Operational SOP and standard runbook for using/maintaining system capabilities."
+  },
+  {
+    "source": "projects/homelab/guides/server-maintenance-and-updates.md",
+    "destination": "04-learning/guides/homelab/server-maintenance-and-updates.md",
+    "type": "guide",
+    "rationale": "Operational SOP and standard runbook for using/maintaining system capabilities."
+  },
+  {
+    "source": "projects/homelab/guides/server-unexpected-shutdown-diagnosis.md",
+    "destination": "04-learning/guides/homelab/server-unexpected-shutdown-diagnosis.md",
+    "type": "guide",
+    "rationale": "Operational SOP and standard runbook for using/maintaining system capabilities."
+  },
+  {
+    "source": "projects/homelab/plans/api-security-hardening.md",
+    "destination": "01-plans/homelab/api-security-hardening.md",
+    "type": "plan",
+    "rationale": "Actionable homelab implementation roadmap under project subsystem."
+  },
+  {
+    "source": "projects/homelab/plans/appctl/appctl-engine-v2-refactoring.md",
+    "destination": "01-plans/homelab/appctl/appctl-engine-v2-refactoring.md",
+    "type": "plan",
+    "rationale": "Actionable homelab implementation roadmap under project subsystem."
+  },
+  {
+    "source": "projects/homelab/plans/appctl/smart-deployment-pipeline.md",
+    "destination": "01-plans/homelab/appctl/smart-deployment-pipeline.md",
+    "type": "plan",
+    "rationale": "Actionable homelab implementation roadmap under project subsystem."
+  },
+  {
+    "source": "projects/homelab/plans/architecture-consolidation-implementation-guide-v3.md",
+    "destination": "01-plans/homelab/architecture-consolidation-implementation-guide-v3.md",
+    "type": "plan",
+    "rationale": "Actionable homelab implementation roadmap under project subsystem."
+  },
+  {
+    "source": "projects/homelab/plans/architecture-consolidation-roadmap-v3.md",
+    "destination": "01-plans/homelab/architecture-consolidation-roadmap-v3.md",
+    "type": "plan",
+    "rationale": "Actionable homelab implementation roadmap under project subsystem."
+  },
+  {
+    "source": "projects/homelab/plans/dynu-monitor-rust-daemon.md",
+    "destination": "01-plans/homelab/dynu-monitor-rust-daemon.md",
+    "type": "plan",
+    "rationale": "Actionable homelab implementation roadmap under project subsystem."
+  },
+  {
+    "source": "projects/homelab/plans/gitea/deployment-and-cicd-strategy.md",
+    "destination": "01-plans/homelab/gitea/deployment-and-cicd-strategy.md",
+    "type": "plan",
+    "rationale": "Actionable homelab implementation roadmap under project subsystem."
+  },
+  {
+    "source": "projects/homelab/plans/gitea/github-to-gitea-migration-plan.md",
+    "destination": "01-plans/homelab/gitea/github-to-gitea-migration-plan.md",
+    "type": "plan",
+    "rationale": "Actionable homelab implementation roadmap under project subsystem."
+  },
+  {
+    "source": "projects/homelab/plans/multirepo-refactor-homepage-courses.md",
+    "destination": "01-plans/homelab/multirepo-refactor-homepage-courses.md",
+    "type": "plan",
+    "rationale": "Actionable homelab implementation roadmap under project subsystem."
+  },
+  {
+    "source": "projects/homelab/plans/portainer-deprecation-plan.md",
+    "destination": "01-plans/homelab/portainer-deprecation-plan.md",
+    "type": "plan",
+    "rationale": "Actionable homelab implementation roadmap under project subsystem."
+  },
+  {
+    "source": "projects/homelab/plans/server-24-7/folder-structure-reorganization.md",
+    "destination": "01-plans/homelab/server-24-7/folder-structure-reorganization.md",
+    "type": "plan",
+    "rationale": "Actionable homelab implementation roadmap under project subsystem."
+  },
+  {
+    "source": "projects/homelab/plans/server-24-7/lvm-storage-optimization-and-resizing.md",
+    "destination": "01-plans/homelab/server-24-7/lvm-storage-optimization-and-resizing.md",
+    "type": "plan",
+    "rationale": "Actionable homelab implementation roadmap under project subsystem."
+  },
+  {
+    "source": "projects/homelab/plans/stalwart-email-server-implementation-plan.md",
+    "destination": "01-plans/homelab/stalwart-email-server-implementation-plan.md",
+    "type": "plan",
+    "rationale": "Actionable homelab implementation roadmap under project subsystem."
+  },
+  {
+    "source": "projects/learning/README.md",
+    "destination": "06-projects/learning/README.md",
+    "type": "project",
+    "rationale": "Canonical project topology hub, source repositories, and cross-cutting index."
+  },
+  {
+    "source": "projects/learning/plans/learning-platform-specification-and-roadmap.md",
+    "destination": "01-plans/learning/learning-platform-specification-and-roadmap.md",
+    "type": "plan",
+    "rationale": "Actionable project implementation roadmap."
+  },
+  {
+    "source": "projects/magnetflix/README.md",
+    "destination": "06-projects/magnetflix/README.md",
+    "type": "project",
+    "rationale": "Canonical project topology hub, source repositories, and cross-cutting index."
+  },
+  {
+    "source": "projects/magnetflix/plans/browser-extension-integration.md",
+    "destination": "01-plans/magnetflix/browser-extension-integration.md",
+    "type": "plan",
+    "rationale": "Actionable project implementation roadmap."
+  },
+  {
+    "source": "projects/nekoweb/README.md",
+    "destination": "06-projects/nekoweb/README.md",
+    "type": "project",
+    "rationale": "Canonical project topology hub, source repositories, and cross-cutting index."
+  },
+  {
+    "source": "projects/nixos/README.md",
+    "destination": "06-projects/nixos/README.md",
+    "type": "project",
+    "rationale": "Canonical project topology hub, source repositories, and cross-cutting index."
+  },
+  {
+    "source": "projects/nixos/guides/channel-tarball-migration-walkthrough.md",
+    "destination": "04-learning/guides/nixos/channel-tarball-migration-walkthrough.md",
+    "type": "guide",
+    "rationale": "Operational SOP and standard runbook for using/maintaining system capabilities."
+  },
+  {
+    "source": "projects/nixos/guides/desktop-decommission-walkthrough.md",
+    "destination": "04-learning/guides/nixos/desktop-decommission-walkthrough.md",
+    "type": "guide",
+    "rationale": "Operational SOP and standard runbook for using/maintaining system capabilities."
+  },
+  {
+    "source": "projects/nixos/guides/dms-bootstrap-and-reproducibility-validation.md",
+    "destination": "04-learning/guides/nixos/dms-bootstrap-and-reproducibility-validation.md",
+    "type": "guide",
+    "rationale": "Operational SOP and standard runbook for using/maintaining system capabilities."
+  },
+  {
+    "source": "projects/nixos/guides/nix-flake-check-linters.md",
+    "destination": "04-learning/guides/nixos/nix-flake-check-linters.md",
+    "type": "guide",
+    "rationale": "Operational SOP and standard runbook for using/maintaining system capabilities."
+  },
+  {
+    "source": "projects/nixos/guides/sops-restructuring-walkthrough.md",
+    "destination": "04-learning/guides/nixos/sops-restructuring-walkthrough.md",
+    "type": "guide",
+    "rationale": "Operational SOP and standard runbook for using/maintaining system capabilities."
+  },
+  {
+    "source": "projects/nixos/guides/standalone-workstation-walkthrough.md",
+    "destination": "04-learning/guides/nixos/standalone-workstation-walkthrough.md",
+    "type": "guide",
+    "rationale": "Operational SOP and standard runbook for using/maintaining system capabilities."
+  },
+  {
+    "source": "projects/nixos/guides/terminal-workspace-subsystem.md",
+    "destination": "04-learning/guides/nixos/terminal-workspace-subsystem.md",
+    "type": "guide",
+    "rationale": "Operational SOP and standard runbook for using/maintaining system capabilities."
+  },
+  {
+    "source": "projects/nixos/new-repo/README.md",
+    "destination": "06-projects/new-repo/README.md",
+    "type": "project",
+    "rationale": "Standalone project landing hub for the new-repo automated provisioning CLI."
+  },
+  {
+    "source": "projects/nixos/new-repo/plans/provisioning-cli-plan.md",
+    "destination": "01-plans/new-repo/provisioning-cli-plan.md",
+    "type": "plan",
+    "rationale": "Actionable implementation plan for new-repo CLI."
+  },
+  {
+    "source": "projects/nixos/plans/channel-tarball-migration-plan.md",
+    "destination": "01-plans/nixos/channel-tarball-migration-plan.md",
+    "type": "plan",
+    "rationale": "Actionable project implementation roadmap."
+  },
+  {
+    "source": "projects/nixos/plans/decommission-desktop-derivation.md",
+    "destination": "01-plans/nixos/decommission-desktop-derivation.md",
+    "type": "plan",
+    "rationale": "Actionable project implementation roadmap."
+  },
+  {
+    "source": "projects/nixos/plans/dms-reproducibility-and-docs-plan.md",
+    "destination": "01-plans/nixos/dms-reproducibility-and-docs-plan.md",
+    "type": "plan",
+    "rationale": "Actionable project implementation roadmap."
+  },
+  {
+    "source": "projects/nixos/plans/secrets-architecture-and-workstation-cleanup.md",
+    "destination": "01-plans/nixos/secrets-architecture-and-workstation-cleanup.md",
+    "type": "plan",
+    "rationale": "Actionable project implementation roadmap."
+  },
+  {
+    "source": "projects/nixos/plans/server-decoupling-and-standalone-workstation.md",
+    "destination": "01-plans/nixos/server-decoupling-and-standalone-workstation.md",
+    "type": "plan",
+    "rationale": "Actionable project implementation roadmap."
+  },
+  {
+    "source": "projects/nixos/plans/sops-restructuring-plan.md",
+    "destination": "01-plans/nixos/sops-restructuring-plan.md",
+    "type": "plan",
+    "rationale": "Actionable project implementation roadmap."
+  },
+  {
+    "source": "projects/praxis/README.md",
+    "destination": "06-projects/praxis/README.md",
+    "type": "project",
+    "rationale": "Praxis project topology overview, forge repo links, and cross-cutting index."
+  },
+  {
+    "source": "projects/praxis/plans/praxis-implementation-blueprint.md",
+    "destination": "01-plans/praxis/praxis-implementation-blueprint.md",
+    "type": "plan",
+    "rationale": "Core software requirements specification and domain design baseline for Praxis."
+  },
+  {
+    "source": "projects/praxis/praxis-domain-model-v1.0.1.md",
+    "destination": "01-plans/praxis/praxis-domain-model-v1.0.1.md",
+    "type": "plan",
+    "rationale": "Core software requirements specification and domain design baseline for Praxis."
+  },
+  {
+    "source": "projects/praxis/praxis-domain-model.md",
+    "destination": "01-plans/praxis/praxis-domain-model.md",
+    "type": "plan",
+    "rationale": "Core software requirements specification and domain design baseline for Praxis."
+  },
+  {
+    "source": "projects/praxis/praxis-srs-v1.0.2.md",
+    "destination": "01-plans/praxis/praxis-srs-v1.0.2.md",
+    "type": "plan",
+    "rationale": "Core software requirements specification and domain design baseline for Praxis."
+  },
+  {
+    "source": "projects/praxis/praxis-srs.md",
+    "destination": "01-plans/praxis/praxis-srs.md",
+    "type": "plan",
+    "rationale": "Core software requirements specification and domain design baseline for Praxis."
+  },
+  {
+    "source": "projects/supervisor/README.md",
+    "destination": "06-projects/supervisor/README.md",
+    "type": "project",
+    "rationale": "Canonical project topology hub, source repositories, and cross-cutting index."
+  },
+  {
+    "source": "projects/supervisor/plans/supervisor-system-specification.md",
+    "destination": "01-plans/supervisor/supervisor-system-specification.md",
+    "type": "plan",
+    "rationale": "Actionable project implementation roadmap."
+  },
+  {
+    "source": "records/debug/2026-09-14-server-unexpected-shutdown-rca.md",
+    "destination": "03-records/debug/2026-09-14-server-unexpected-shutdown-rca.md",
+    "type": "debug",
+    "rationale": "Empirical root-cause analysis and post-mortem of an operational incident/failure."
+  },
+  {
+    "source": "records/debug/2026-09-18-gitea-actions-nix-runner-fix.md",
+    "destination": "03-records/debug/2026-09-18-gitea-actions-nix-runner-fix.md",
+    "type": "debug",
+    "rationale": "Empirical root-cause analysis and post-mortem of an operational incident/failure."
+  },
+  {
+    "source": "records/debug/2026-09-18-gitea-github-mirror-dns-resolution-failure.md",
+    "destination": "03-records/debug/2026-09-18-gitea-github-mirror-dns-resolution-failure.md",
+    "type": "debug",
+    "rationale": "Empirical root-cause analysis and post-mortem of an operational incident/failure."
+  },
+  {
+    "source": "records/debug/2026-09-21-gitea-actions-fhs-nix-container-fix.md",
+    "destination": "03-records/debug/2026-09-21-gitea-actions-fhs-nix-container-fix.md",
+    "type": "debug",
+    "rationale": "Empirical root-cause analysis and post-mortem of an operational incident/failure."
+  },
+  {
+    "source": "records/debug/2026-09-21-gitops-webhook-payload-signature-mismatch.md",
+    "destination": "03-records/debug/2026-09-21-gitops-webhook-payload-signature-mismatch.md",
+    "type": "debug",
+    "rationale": "Empirical root-cause analysis and post-mortem of an operational incident/failure."
+  },
+  {
+    "source": "records/debug/2026-09-22-diun-socket-proxy-integration-and-stalwart-alerting.md",
+    "destination": "03-records/debug/2026-09-22-diun-socket-proxy-integration-and-stalwart-alerting.md",
+    "type": "debug",
+    "rationale": "Empirical root-cause analysis and post-mortem of an operational incident/failure."
+  },
+  {
+    "source": "records/debug/2026-09-24-diun-workload-isolation-and-load-shaping.md",
+    "destination": "03-records/debug/2026-09-24-diun-workload-isolation-and-load-shaping.md",
+    "type": "debug",
+    "rationale": "Empirical root-cause analysis and post-mortem of an operational incident/failure."
+  },
+  {
+    "source": "records/debug/2026-09-26-validate-brain-refactor.md",
+    "destination": "03-records/debug/2026-09-26-validate-brain-refactor.md",
+    "type": "debug",
+    "rationale": "Empirical root-cause analysis and post-mortem of an operational incident/failure."
+  },
+  {
+    "source": "records/debug/2026-09-27-laptop-memory-exhaustion-postmortem.md",
+    "destination": "03-records/debug/2026-09-27-laptop-memory-exhaustion-postmortem.md",
+    "type": "debug",
+    "rationale": "Empirical root-cause analysis and post-mortem of an operational incident/failure."
+  },
+  {
+    "source": "records/decisions/antigravity-flake-packaging.md",
+    "destination": "03-records/decisions/antigravity-flake-packaging.md",
+    "type": "decision",
+    "rationale": "Immutable Architectural Decision Record (ADR) capturing commitment and rationale."
+  },
+  {
+    "source": "records/decisions/terminal-workspace-architecture.md",
+    "destination": "03-records/decisions/terminal-workspace-architecture.md",
+    "type": "decision",
+    "rationale": "Immutable Architectural Decision Record (ADR) capturing commitment and rationale."
+  },
+  {
+    "source": "records/discussions/2026-09-26-validate-brain-refactor-architecture.md",
+    "destination": "02-discussions/brain/validate-brain-refactor-architecture.md",
+    "type": "discussion",
+    "rationale": "Prospective design trade-off and refactoring option evaluation for validate-brain.py."
+  },
+  {
+    "source": "records/journal/2026-06-25.md",
+    "destination": "03-records/journal/2026-06-25.md",
+    "type": "journal",
+    "rationale": "Chronological daily engineering log and retrospective."
+  },
+  {
+    "source": "records/journal/2026-06-26.md",
+    "destination": "03-records/journal/2026-06-26.md",
+    "type": "journal",
+    "rationale": "Chronological daily engineering log and retrospective."
+  },
+  {
+    "source": "records/journal/2026-06-29.md",
+    "destination": "03-records/journal/2026-06-29.md",
+    "type": "journal",
+    "rationale": "Chronological daily engineering log and retrospective."
+  },
+  {
+    "source": "records/journal/2026-06-30.md",
+    "destination": "03-records/journal/2026-06-30.md",
+    "type": "journal",
+    "rationale": "Chronological daily engineering log and retrospective."
+  },
+  {
+    "source": "records/journal/2026-07-01.md",
+    "destination": "03-records/journal/2026-07-01.md",
+    "type": "journal",
+    "rationale": "Chronological daily engineering log and retrospective."
+  },
+  {
+    "source": "records/journal/2026-08-10.md",
+    "destination": "03-records/journal/2026-08-10.md",
+    "type": "journal",
+    "rationale": "Chronological daily engineering log and retrospective."
+  },
+  {
+    "source": "records/journal/2026-08-16.md",
+    "destination": "03-records/journal/2026-08-16.md",
+    "type": "journal",
+    "rationale": "Chronological daily engineering log and retrospective."
+  },
+  {
+    "source": "records/journal/2026-09-11.md",
+    "destination": "03-records/journal/2026-09-11.md",
+    "type": "journal",
+    "rationale": "Chronological daily engineering log and retrospective."
+  },
+  {
+    "source": "records/journal/2026-09-13.md",
+    "destination": "03-records/journal/2026-09-13.md",
+    "type": "journal",
+    "rationale": "Chronological daily engineering log and retrospective."
+  },
+  {
+    "source": "records/journal/2026-09-14.md",
+    "destination": "03-records/journal/2026-09-14.md",
+    "type": "journal",
+    "rationale": "Chronological daily engineering log and retrospective."
+  },
+  {
+    "source": "records/journal/2026-09-15.md",
+    "destination": "03-records/journal/2026-09-15.md",
+    "type": "journal",
+    "rationale": "Chronological daily engineering log and retrospective."
+  },
+  {
+    "source": "records/journal/2026-09-18.md",
+    "destination": "03-records/journal/2026-09-18.md",
+    "type": "journal",
+    "rationale": "Chronological daily engineering log and retrospective."
+  },
+  {
+    "source": "records/journal/2026-09-21.md",
+    "destination": "03-records/journal/2026-09-21.md",
+    "type": "journal",
+    "rationale": "Chronological daily engineering log and retrospective."
+  },
+  {
+    "source": "records/journal/2026-09-22.md",
+    "destination": "03-records/journal/2026-09-22.md",
+    "type": "journal",
+    "rationale": "Chronological daily engineering log and retrospective."
+  },
+  {
+    "source": "records/journal/2026-09-23.md",
+    "destination": "03-records/journal/2026-09-23.md",
+    "type": "journal",
+    "rationale": "Chronological daily engineering log and retrospective."
+  },
+  {
+    "source": "records/journal/2026-09-24.md",
+    "destination": "03-records/journal/2026-09-24.md",
+    "type": "journal",
+    "rationale": "Chronological daily engineering log and retrospective."
+  },
+  {
+    "source": "records/journal/2026-09-25.md",
+    "destination": "03-records/journal/2026-09-25.md",
+    "type": "journal",
+    "rationale": "Chronological daily engineering log and retrospective."
+  },
+  {
+    "source": "records/journal/2026-09-26.md",
+    "destination": "03-records/journal/2026-09-26.md",
+    "type": "journal",
+    "rationale": "Chronological daily engineering log and retrospective."
+  },
+  {
+    "source": "records/journal/2026-09-27.md",
+    "destination": "03-records/journal/2026-09-27.md",
+    "type": "journal",
+    "rationale": "Chronological daily engineering log and retrospective."
+  }
+]

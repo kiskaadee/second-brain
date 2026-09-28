@@ -12,7 +12,7 @@
 __pycache__
 
 # Uncommitted Capture & Drafts (Staging Area)
-inbox/*
-!inbox/README.md
+00-inbox/*
+!00-inbox/README.md
 
 

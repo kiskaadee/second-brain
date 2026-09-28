@@ -29,22 +29,30 @@ ROOT = pathlib.Path(__file__).parent.parent.resolve()
 
 VALID_TYPES: frozenset[str] = frozenset({
     "knowledge", "project", "plan", "guide", "decision",
-    "journal", "discussion", "experiment", "practice", "inbox", "reference",
+    "journal", "discussion", "experiment", "practice", "reference",
     "agent", "debug",
 })
 
-DEPRECATED_DIRS: tuple[str, ...] = (
-    "homelab", "journal", "learning", "docs",
-    "knowledge/dsa", "knowledge/python", "knowledge/tools",
-    "knowledge/devenv", "knowledge/skills",
-)
-
 REQUIRED_ROOT_FILES: tuple[str, ...] = ("README.md", "AGENTS.md", "LICENSE")
+
+# Deprecated paths are exact repository-relative paths, NEVER substring greps
+DEPRECATED_ROOT_DIRS: frozenset[str] = frozenset({
+    "homelab", "journal", "learning", "docs", "practice",
+    "projects", "records", "agents", "knowledge", "inbox",
+})
+
+DEPRECATED_NESTED_PATHS: frozenset[str] = frozenset({
+    "knowledge/dsa", "knowledge/python", "knowledge/tools",
+    "knowledge/devenv", "knowledge/skills", "projects/homelab/archive",
+    "records/discussions",
+})
 
 # Paths (or path substrings) excluded entirely from validation.
 EXEMPT_PATTERNS: tuple[str, ...] = (
     ".obsidian",
+    "00-inbox",
     "inbox",
+    "04-learning/practice/LeetCode/Solutions",
     "practice/LeetCode/Solutions",
     "scripts",
     ".git",
@@ -55,7 +63,9 @@ EXEMPT_PATTERNS: tuple[str, ...] = (
 FRONTMATTER_EXEMPT_FILES: frozenset[pathlib.Path] = frozenset({
     ROOT / "README.md",
     ROOT / "AGENTS.md",
+    ROOT / "00-inbox" / "README.md",
     ROOT / "inbox" / "README.md",
+    ROOT / "05-agents" / "README.md",
     ROOT / "agents" / "README.md",
 })
 
@@ -66,9 +76,57 @@ MERMAID_TYPES: frozenset[str] = frozenset({
     "block-beta", "packet-beta", "architecture-beta",
 })
 
-# ── Types ──────────────────────────────────────────────────────────────────────
+# ── Types & Contracts ─────────────────────────────────────────────────────────
 
 Severity = Literal["error", "warning"]
+
+
+class DirectoryContract(NamedTuple):
+    prefix: str
+    expected_type: str | None
+    max_depth: int | None = None
+    require_filename: str | None = None
+    filename_regex: re.Pattern[str] | None = None
+    allow_unclassified: bool = False
+
+
+DIRECTORY_CONTRACTS: tuple[DirectoryContract, ...] = (
+    # 00-inbox: Staging zone, completely exempt from frontmatter validation
+    DirectoryContract(prefix="00-inbox", expected_type=None, allow_unclassified=True),
+
+    # 01-plans: Intent (allows max_depth=3 for project subsystems e.g. homelab/appctl/*.md)
+    DirectoryContract(prefix="01-plans", expected_type="plan", max_depth=3),
+
+    # 02-discussions: Prospective option explorations (max_depth=2: project/*.md)
+    DirectoryContract(prefix="02-discussions", expected_type="discussion", max_depth=2),
+
+    # 03-records: Historical Memory
+    DirectoryContract(
+        prefix="03-records/journal",
+        expected_type="journal",
+        max_depth=2,
+        filename_regex=re.compile(r"^\d{4}-\d{2}-\d{2}\.md$"),
+    ),
+    DirectoryContract(prefix="03-records/debug", expected_type="debug", max_depth=2),
+    DirectoryContract(prefix="03-records/decisions", expected_type="decision", max_depth=2),
+
+    # 04-learning: Durable understanding & practice
+    DirectoryContract(prefix="04-learning/knowledge", expected_type="knowledge"),
+    DirectoryContract(prefix="04-learning/guides", expected_type="guide", max_depth=3),
+    DirectoryContract(prefix="04-learning/practice", expected_type="practice"),
+
+    # 05-agents: Agent persona profiles & reusable skills
+    DirectoryContract(prefix="05-agents/profiles", expected_type="agent", max_depth=2),
+    DirectoryContract(prefix="05-agents/skills", expected_type="agent", max_depth=2),
+
+    # 06-projects: System topology hubs strictly at depth 2 named README.md
+    DirectoryContract(
+        prefix="06-projects",
+        expected_type="project",
+        max_depth=2,
+        require_filename="README.md",
+    ),
+)
 
 
 class Document(NamedTuple):
@@ -183,11 +241,16 @@ def _line_of(content: str, pos: int) -> int:
 # ── Repository checks ──────────────────────────────────────────────────────────
 
 def check_deprecated_dirs(root: pathlib.Path) -> list[Issue]:
-    return [
-        Issue("error", root / d, None, f"Deprecated directory still exists: {d}/")
-        for d in DEPRECATED_DIRS
-        if (root / d).exists()
-    ]
+    issues: list[Issue] = []
+    for d in sorted(DEPRECATED_ROOT_DIRS):
+        target = root / d
+        if target.is_dir() and not target.is_symlink():
+            issues.append(Issue("error", target, None, f"Deprecated root directory still exists: {d}/"))
+    for p in sorted(DEPRECATED_NESTED_PATHS):
+        target = root / p
+        if target.exists():
+            issues.append(Issue("error", target, None, f"Deprecated nested path still exists: {p}"))
+    return issues
 
 
 def check_required_files(root: pathlib.Path) -> list[Issue]:
@@ -199,6 +262,70 @@ def check_required_files(root: pathlib.Path) -> list[Issue]:
 
 
 # ── Document checks ────────────────────────────────────────────────────────────
+
+def check_directory_contracts(doc: Document) -> list[Issue]:
+    if not doc.validates_frontmatter:
+        return []
+
+    rel_str = str(doc.rel)
+    matched_contract: DirectoryContract | None = None
+    for contract in DIRECTORY_CONTRACTS:
+        if rel_str.startswith(contract.prefix + "/") or rel_str == contract.prefix:
+            matched_contract = contract
+            break
+
+    if matched_contract is None:
+        return [Issue("error", doc.rel, 1, f"Document outside target taxonomy: {doc.rel}")]
+
+    if matched_contract.allow_unclassified:
+        return []
+
+    issues: list[Issue] = []
+
+    # Check filename requirement
+    if matched_contract.require_filename and doc.path.name != matched_contract.require_filename:
+        issues.append(Issue(
+            "error", doc.rel, 1,
+            f"Structural violation: {doc.rel} must be named '{matched_contract.require_filename}'",
+        ))
+
+    # Check filename regex
+    if matched_contract.filename_regex and not matched_contract.filename_regex.match(doc.path.name):
+        issues.append(Issue(
+            "error", doc.rel, 1,
+            f"Structural violation: {doc.rel} does not match required pattern '{matched_contract.filename_regex.pattern}'",
+        ))
+
+    # Check max depth relative to contract prefix
+    if matched_contract.max_depth is not None:
+        sub_path = rel_str[len(matched_contract.prefix):].strip("/")
+        depth = len([p for p in sub_path.split("/") if p])
+        if depth > matched_contract.max_depth:
+            issues.append(Issue(
+                "error", doc.rel, 1,
+                f"Nesting violation: {doc.rel} exceeds max depth {matched_contract.max_depth} for {matched_contract.prefix}",
+            ))
+
+    # Check frontmatter type against expected_type
+    content = doc.content
+    doc_type = None
+    type_line = 1
+    if content.startswith("---"):
+        end = content.find("\n---", 3)
+        if end != -1:
+            fm_block = content[3:end]
+            type_match = re.search(r'^type:\s*(\S+)', fm_block, re.MULTILINE)
+            if type_match:
+                doc_type = type_match.group(1)
+                type_line = _line_of(content, 3 + type_match.start())
+
+    if matched_contract.expected_type is not None and doc_type != matched_contract.expected_type:
+        issues.append(Issue(
+            "error", doc.rel, type_line,
+            f"Directory/type contract violation: {doc.rel} has type '{doc_type}', expected '{matched_contract.expected_type}'",
+        ))
+
+    return issues
 
 def check_frontmatter(doc: Document) -> list[Issue]:
     if not doc.validates_frontmatter:
@@ -351,8 +478,11 @@ def run_pyright(root: pathlib.Path) -> list[Issue]:
     if not shutil.which("pyright"):
         print("  ℹ Pyright not in PATH — type check skipped.")
         return []
+    practice_dir = root / "04-learning" / "practice"
+    if not practice_dir.exists():
+        practice_dir = root / "practice"
     res = subprocess.run(
-        ["pyright", str(root / "scripts"), str(root / "practice")],
+        ["pyright", str(root / "scripts"), str(practice_dir)],
         capture_output=True, text=True, check=False,
     )
     if res.returncode != 0:
@@ -412,6 +542,7 @@ def main() -> int:
 
     document_checks = (
         check_frontmatter,
+        check_directory_contracts,
         check_links,
         check_code_fences,
         check_mermaid,
