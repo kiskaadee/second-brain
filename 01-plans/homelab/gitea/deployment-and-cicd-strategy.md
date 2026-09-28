@@ -57,6 +57,6 @@ Rather than relying on continuous image polling via Watchtower, the homelab adop
 ---
 
 ## 🔗 Production Guides & Specifications
-* [Dynamic Decentralized GitOps Dispatcher Architecture](../../discussions/gitops-dispatcher-architecture.md)
-* [Brain GitOps & Auto-Sync Deployment Pipeline](../../guides/brain-gitops-deployment-pipeline.md)
+* [Dynamic Decentralized GitOps Dispatcher Architecture](../../../02-discussions/homelab/gitops-dispatcher-architecture.md)
+* [Brain GitOps & Auto-Sync Deployment Pipeline](../../../04-learning/guides/homelab/brain-gitops-deployment-pipeline.md)
 * [GitHub to Gitea Automated Batch Migration Plan](github-to-gitea-migration-plan.md)

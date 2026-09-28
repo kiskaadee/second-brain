@@ -95,4 +95,4 @@ appctl update --all
 ---
 
 ## 🔗 Production Guide
-* [Homelab Architecture: Appctl & Decentralized Repositories](../guides/appctl-operations-and-manifest-guide.md)
+* [Homelab Architecture: Appctl & Decentralized Repositories](../../04-learning/guides/homelab/appctl-operations-and-manifest-guide.md)

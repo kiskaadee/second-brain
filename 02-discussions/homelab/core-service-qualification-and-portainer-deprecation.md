@@ -90,5 +90,5 @@ Both Gitea and the Gitea Runner will remain separate from `Core` for the present
 
 ## Related Documentation & Plans
 
-* Implementation Plan: [portainer-deprecation-plan.md](../plans/portainer-deprecation-plan.md)
+* Implementation Plan: [portainer-deprecation-plan.md](../../01-plans/homelab/portainer-deprecation-plan.md)
 * Security Invariants: `Core/tests/security/test_security_invariants.py`

@@ -14,7 +14,7 @@ tags:
 
 # Architecture Consolidation & Hardening Roadmap v3
 
-> **Supersedes**: [Architecture Consolidation & Hardening Roadmap v2](../archive/architecture-consolidation-roadmap-v2.md)
+> **Supersedes**: [Architecture Consolidation & Hardening Roadmap v2](architecture-consolidation-roadmap-v2.md)
 >
 > **Current Platform Baseline**: Commit `246b587` (NixOS standalone appliance, consolidated docs, Portainer deprecated, Stalwart mail & SMTPS submission, Dozzle auth, Diun jitter/worker pool, Gitea Actions CI).
 >

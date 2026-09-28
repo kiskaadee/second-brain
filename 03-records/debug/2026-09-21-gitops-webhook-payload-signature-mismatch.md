@@ -225,7 +225,7 @@ Ran the repository pre-commit test suite and Nix flake evaluation:
 ## 8. References
 * [`Core/scripts/gitops_dispatcher.py`](https://gitea.roadtotech.me/kiskaadee/homelab-core/src/branch/main/scripts/gitops_dispatcher.py)
 * [`Core/nixos/modules/homeserver.nix`](https://gitea.roadtotech.me/kiskaadee/homelab-core/src/branch/main/nixos/modules/homeserver.nix)
-* [Brain GitOps & Auto-Sync Deployment Pipeline](../../projects/homelab/guides/brain-gitops-deployment-pipeline.md)
-* [Scientific Incident Investigation & Epistemic Journaling](../../knowledge/methods/incident-investigation-and-journaling.md)
+* [Brain GitOps & Auto-Sync Deployment Pipeline](../../04-learning/guides/homelab/brain-gitops-deployment-pipeline.md)
+* [Scientific Incident Investigation & Epistemic Journaling](../../04-learning/knowledge/methods/incident-investigation-and-journaling.md)
 * [adnanh/webhook Hook Parameters Documentation](https://github.com/adnanh/webhook#hook-parameters)
 * [RFC 2104: HMAC: Keyed-Hashing for Message Authentication](https://datatracker.ietf.org/doc/html/rfc2104)

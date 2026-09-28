@@ -102,6 +102,6 @@ Every task must be verified before declaring completion:
 
 ## 3. Related Resources & Context
 
-* [MagNetFlix Project Landing Page](../projects/magnetflix/README.md)
-* [FastAPI & Modern Python Technologies Guide](../knowledge/technologies/python/pydantic.md)
-* [SQL & Relational Storage Methods](../knowledge/methods/sql.md)
+* [MagNetFlix Project Landing Page](../../06-projects/magnetflix/README.md)
+* [FastAPI & Modern Python Technologies Guide](../../04-learning/knowledge/technologies/python/pydantic.md)
+* [SQL & Relational Storage Methods](../../04-learning/knowledge/methods/sql.md)

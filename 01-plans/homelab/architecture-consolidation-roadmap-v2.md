@@ -15,7 +15,7 @@ tags:
 # Architecture Consolidation & Hardening Roadmap v2
 
 > [!NOTE]
-> Superseded by [Architecture Consolidation & Hardening Roadmap v3](../plans/architecture-consolidation-roadmap-v3.md).
+> Superseded by [Architecture Consolidation & Hardening Roadmap v3](architecture-consolidation-roadmap-v3.md).
 > Supersedes the [original phased implementation plan](architecture-consolidation-roadmap.md).
 > Integrates reviewer feedback across fourteen areas: trust model, manifest
 > contracts, privilege separation, protocol versioning, invariant testing, and

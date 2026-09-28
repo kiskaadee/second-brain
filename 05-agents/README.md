@@ -19,11 +19,11 @@ Rather than treating agent rulebooks (`AGENTS.md`) as transient, untracked local
 
 | Agent | Target Workspace | Primary Role | Status |
 | :--- | :--- | :--- | :--- |
-| [Homelab Operations](homelab-operations.md) | `/home/kiskaadee/Homelab` | Local-first server diagnostics, non-destructive triage, and post-incident journaling | `active` |
-| [Homelab Core Platform](homelab-core.md) | `ssh://git@gitea.roadtotech.me:2223/kiskaadee/homelab-core` | Core platform foundation, NixOS server services, GitOps boundaries, Docker isolation | `active` |
-| [NixOS Mobile Workstation](nixos-workstation.md) | `ssh://git@gitea.roadtotech.me:2223/kiskaadee/nixos-config` | Declarative NixOS/Home Manager laptop configuration with strict build-only safety barrier | `active` |
-| [MagNetFlix Media Pipeline](magnetflix.md) | `git@github.com:kiskaadee/MagNetFlix.git` | Media acquisition backend (FastAPI, gRPC, Protobuf, SQLite3 WAL, UV workspaces) | `active` |
-| [NekoWeb Manga Platform](nekoweb.md) | `git@github.com:kiskaadee/nekoweb.git` | Self-hosted manga web platform (FastAPI, UV, React/TanStack, HakuNeko Daemon) | `active` |
-| [Second Brain Knowledge Graph](second-brain.md) | `ssh://git@gitea.roadtotech.me:2223/kiskaadee/second-brain` | Personal knowledge graph curation, epistemic validation, and artifact management | `active` |
+| [Homelab Operations](profiles/homelab-operations.md) | `/home/kiskaadee/Homelab` | Local-first server diagnostics, non-destructive triage, and post-incident journaling | `active` |
+| [Homelab Core Platform](profiles/homelab-core.md) | `ssh://git@gitea.roadtotech.me:2223/kiskaadee/homelab-core` | Core platform foundation, NixOS server services, GitOps boundaries, Docker isolation | `active` |
+| [NixOS Mobile Workstation](profiles/nixos-workstation.md) | `ssh://git@gitea.roadtotech.me:2223/kiskaadee/nixos-config` | Declarative NixOS/Home Manager laptop configuration with strict build-only safety barrier | `active` |
+| [MagNetFlix Media Pipeline](profiles/magnetflix.md) | `git@github.com:kiskaadee/MagNetFlix.git` | Media acquisition backend (FastAPI, gRPC, Protobuf, SQLite3 WAL, UV workspaces) | `active` |
+| [NekoWeb Manga Platform](profiles/nekoweb.md) | `git@github.com:kiskaadee/nekoweb.git` | Self-hosted manga web platform (FastAPI, UV, React/TanStack, HakuNeko Daemon) | `active` |
+| [Second Brain Knowledge Graph](profiles/second-brain.md) | `ssh://git@gitea.roadtotech.me:2223/kiskaadee/second-brain` | Personal knowledge graph curation, epistemic validation, and artifact management | `active` |
 
 ---

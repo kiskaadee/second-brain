@@ -91,6 +91,6 @@ Every task must be verified before declaring completion:
 
 ## 3. Related Resources & Context
 
-* [NekoWeb Project Landing Page](../projects/nekoweb/README.md)
-* [Testing & Quality Assurance Guide](../knowledge/methods/testing.md)
-* [SQL & Relational Persistence Methods](../knowledge/methods/sql.md)
+* [NekoWeb Project Landing Page](../../06-projects/nekoweb/README.md)
+* [Testing & Quality Assurance Guide](../../04-learning/knowledge/methods/testing.md)
+* [SQL & Relational Persistence Methods](../../04-learning/knowledge/methods/sql.md)

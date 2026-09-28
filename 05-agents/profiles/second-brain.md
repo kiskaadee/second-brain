@@ -35,12 +35,12 @@ The following specification represents the active behavioral contract configured
 [Consult the live, root-level AGENTS.md for the authoritative version-controlled repository rules.]
 ````
 
-For the full detailed rules, see [Root AGENTS.md](../AGENTS.md).
+For the full detailed rules, see [Root AGENTS.md](../../AGENTS.md).
 
 ---
 
 ## 3. Related Resources & Context
 
-* [Second Brain Root Index](../README.md)
-* [Second Brain Governance & Agent Guide](../AGENTS.md)
-* [Scientific Incident Investigation & Epistemic Journaling](../knowledge/methods/incident-investigation-and-journaling.md)
+* [Second Brain Root Index](../../README.md)
+* [Second Brain Governance & Agent Guide](../../AGENTS.md)
+* [Scientific Incident Investigation & Epistemic Journaling](../../04-learning/knowledge/methods/incident-investigation-and-journaling.md)

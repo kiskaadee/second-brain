@@ -215,7 +215,7 @@ When reporting back after a task, summarize:
 
 ## 3. Related Resources & Context
 
-* [NixOS Fleet & Workstation Project Overview](../projects/nixos/README.md)
-* [NixOS Standalone Workstation Walkthrough](../projects/nixos/guides/standalone-workstation-walkthrough.md)
-* [Server Decoupling & Standalone Workstation Plan](../projects/nixos/plans/server-decoupling-and-standalone-workstation.md)
+* [NixOS Fleet & Workstation Project Overview](../../06-projects/nixos/README.md)
+* [NixOS Standalone Workstation Walkthrough](../../04-learning/guides/nixos/standalone-workstation-walkthrough.md)
+* [Server Decoupling & Standalone Workstation Plan](../../01-plans/nixos/server-decoupling-and-standalone-workstation.md)
 * [Homelab Operations Agent](homelab-operations.md)

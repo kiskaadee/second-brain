@@ -464,6 +464,6 @@ flowchart TD
 
 ## Related Documentation
 
-* [Second Brain Platform Overview](../README.md)
-* [Deterministic Tag & Key Term Extraction Methodology](../../../knowledge/methods/deterministic-tag-extraction.md)
-* [Second Brain Curation Agent Specification](../../../agents/second-brain.md)
+* [Second Brain Platform Overview](../../06-projects/brain/README.md)
+* [Deterministic Tag & Key Term Extraction Methodology](../../04-learning/knowledge/methods/deterministic-tag-extraction.md)
+* [Second Brain Curation Agent Specification](../../05-agents/profiles/second-brain.md)

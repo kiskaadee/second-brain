@@ -198,7 +198,7 @@ Do not duplicate entire repository documentation in the Brain Vault.
 
 ## 3. Related Resources & Context
 
-* [Homelab Architecture & Landing Page](../projects/homelab/README.md)
+* [Homelab Architecture & Landing Page](../../06-projects/homelab/README.md)
 * [Homelab Operations & Troubleshooting Agent](homelab-operations.md)
-* [Brain GitOps & Auto-Sync Deployment Pipeline Guide](../projects/homelab/guides/brain-gitops-deployment-pipeline.md)
-* [CI/CD Fundamentals & GitOps Knowledge Note](../knowledge/methods/cicd-fundamentals-and-gitops.md)
+* [Brain GitOps & Auto-Sync Deployment Pipeline Guide](../../04-learning/guides/homelab/brain-gitops-deployment-pipeline.md)
+* [CI/CD Fundamentals & GitOps Knowledge Note](../../04-learning/knowledge/methods/cicd-fundamentals-and-gitops.md)

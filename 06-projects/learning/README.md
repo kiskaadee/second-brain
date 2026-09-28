@@ -53,7 +53,7 @@ graph TD
 
 ## 🚧 Work in Progress (Active Plans)
 
-1. 🟡 [**Specification & Roadmap: Personal Engineering Learning Platform**](plans/learning-platform-specification-and-roadmap.md) `[Active]`
+1. 🟡 [**Specification & Roadmap: Personal Engineering Learning Platform**](../../01-plans/learning/learning-platform-specification-and-roadmap.md) `[Active]`
    - Full system architecture, repo transition from legacy `Sites/dashboard`, 4 core pillars (DSA gym, curriculum engine, SRS flashcards, supervisor integration), and phased rollout roadmap.
 
 ---

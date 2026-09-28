@@ -42,47 +42,47 @@ graph TD
 
 ## 📑 Plans & Execution Roadmaps
 
-1. 🟢 [**Decoupling Homelab Server & Standalone Workstation Architecture**](plans/server-decoupling-and-standalone-workstation.md) `[Completed]`
+1. 🟢 [**Decoupling Homelab Server & Standalone Workstation Architecture**](../../01-plans/nixos/server-decoupling-and-standalone-workstation.md) `[Completed]`
    - Architectural blueprint and phased plan for removing `hosts/server/` from `Config`, eliminating the "multi-host tax", and re-aligning the repository as a dedicated Niri workstation.
-2. 🟢 [**Secrets Management Architecture & Workstation Boundary Refinement**](plans/secrets-architecture-and-workstation-cleanup.md) `[Completed]`
+2. 🟢 [**Secrets Management Architecture & Workstation Boundary Refinement**](../../01-plans/nixos/secrets-architecture-and-workstation-cleanup.md) `[Completed]`
    - Clean removal of `sops-nix` host stubs from `Config`, operator authoring vs runtime consumer key architecture, compositor cleanup, and filesystem decoupling.
-3. 🟡 [**Adopting Official channels.nixos.org Tarballs**](plans/channel-tarball-migration-plan.md) `[Active]`
+3. 🟡 [**Adopting Official channels.nixos.org Tarballs**](../../01-plans/nixos/channel-tarball-migration-plan.md) `[Active]`
    - Transitioning from GitHub-hosted Nixpkgs flake inputs to official `channels.nixos.org` zstd-compressed archives.
    - Flake registry pinning and evaluation speedup analysis.
-4. 🟢 [**Decommission Legacy Desktop Derivation**](plans/decommission-desktop-derivation.md) `[Completed]`
+4. 🟢 [**Decommission Legacy Desktop Derivation**](../../01-plans/nixos/decommission-desktop-derivation.md) `[Completed]`
    - Pruned `hosts/desktop/` and `nixosConfigurations.desktop` to standardize on a 2-host fleet (`server` and `laptop`).
-5. 🟢 [**SOPS Secrets Restructuring & Multi-User Authelia Support**](plans/sops-restructuring-plan.md) `[Completed]`
+5. 🟢 [**SOPS Secrets Restructuring & Multi-User Authelia Support**](../../01-plans/nixos/sops-restructuring-plan.md) `[Completed]`
    - Migrated flat SOPS secrets to service-scoped namespaces and added declarative Nix user database rendering.
-6. 🟢 [**DMS Runtime Ownership & Workstation Operations Manual**](plans/dms-reproducibility-and-docs-plan.md) `[Completed]`
+6. 🟢 [**DMS Runtime Ownership & Workstation Operations Manual**](../../01-plans/nixos/dms-reproducibility-and-docs-plan.md) `[Completed]`
    - Documented DMS session invariants, runtime mutation boundaries, containerized reproducibility, and operational workflows.
 
 ---
 
 ## 📑 Guides & Reference Documentation
 
-1. [**Standalone Workstation Architecture & Secrets Decoupling Walkthrough**](guides/standalone-workstation-walkthrough.md)
+1. [**Standalone Workstation Architecture & Secrets Decoupling Walkthrough**](../../04-learning/guides/nixos/standalone-workstation-walkthrough.md)
    - Workstation refactor execution, Niri compositor cleanup, filesystem path decoupling, and verification results.
-2. [**Transitioning to Official channels.nixos.org Tarballs Walkthrough**](guides/channel-tarball-migration-walkthrough.md)
+2. [**Transitioning to Official channels.nixos.org Tarballs Walkthrough**](../../04-learning/guides/nixos/channel-tarball-migration-walkthrough.md)
    - Flake input migration, base registry pinning, and dry-build verification.
-3. [**Decommissioning the Legacy Desktop Derivation Walkthrough**](guides/desktop-decommission-walkthrough.md)
+3. [**Decommissioning the Legacy Desktop Derivation Walkthrough**](../../04-learning/guides/nixos/desktop-decommission-walkthrough.md)
    - Host removal validation, architecture doc sync, and dry builds.
-4. [**SOPS Secrets Restructuring & Multi-User Authelia Walkthrough**](guides/sops-restructuring-walkthrough.md)
+4. [**SOPS Secrets Restructuring & Multi-User Authelia Walkthrough**](../../04-learning/guides/nixos/sops-restructuring-walkthrough.md)
    - Secret hierarchy re-encryption, template generation, and host dry-build verification.
-5. [**DMS Desktop Bootstrap & Container Reproducibility Validation**](guides/dms-bootstrap-and-reproducibility-validation.md)
+5. [**DMS Desktop Bootstrap & Container Reproducibility Validation**](../../04-learning/guides/nixos/dms-bootstrap-and-reproducibility-validation.md)
    - Containerized flake check, one-time bootstrap behavior, and runtime mutation model verification.
-6. [**Terminal Workspace Subsystem Architecture & Navigation**](guides/terminal-workspace-subsystem.md)
+6. [**Terminal Workspace Subsystem Architecture & Navigation**](../../04-learning/guides/nixos/terminal-workspace-subsystem.md)
    - Niri compositor window bindings, Alacritty terminal integration, and `tmux-sessionizer` (`ts`) workspace switching.
-7. [**Integrated Linters & Quality Checks in Nix Flake Check**](guides/nix-flake-check-linters.md)
+7. [**Integrated Linters & Quality Checks in Nix Flake Check**](../../04-learning/guides/nixos/nix-flake-check-linters.md)
    - CI static analysis and linting (`ruff-lint`, `statix`, `deadnix`, `nixfmt`, `luacheck`) declared in `flake.nix`.
 
 ---
 
 ## 🏛️ Architectural Discussions & Records
 
-* [ADR: Unified Antigravity Flake Packaging](../../records/decisions/antigravity-flake-packaging.md)
-* [ADR: Terminal Workspace Subsystem Architecture](../../records/decisions/terminal-workspace-architecture.md)
-* [Discussion: NixOS Monorepo vs. Multi-Repo Architecture for Homelab & Workstations](../homelab/discussions/nixos-monorepo-vs-multirepo.md)
-* [Discussion: Decoupling `nixos-config` and `homelab-core`](../homelab/discussions/nixos-monorepo-decoupling.md)
+* [ADR: Unified Antigravity Flake Packaging](../../03-records/decisions/antigravity-flake-packaging.md)
+* [ADR: Terminal Workspace Subsystem Architecture](../../03-records/decisions/terminal-workspace-architecture.md)
+* [Discussion: NixOS Monorepo vs. Multi-Repo Architecture for Homelab & Workstations](../../02-discussions/homelab/nixos-monorepo-vs-multirepo.md)
+* [Discussion: Decoupling `nixos-config` and `homelab-core`](../../02-discussions/homelab/nixos-monorepo-decoupling.md)
 
 ---
 

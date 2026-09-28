@@ -154,5 +154,5 @@ Final state: exit 0, Pyright 0 errors, 0 warnings.
 
 ## Related
 
-- [Architecture Discussion](../discussions/2026-09-26-validate-brain-refactor-architecture.md)
+- [Architecture Discussion](../../02-discussions/brain/validate-brain-refactor-architecture.md)
 - [Daily Journal](../journal/2026-09-26.md)

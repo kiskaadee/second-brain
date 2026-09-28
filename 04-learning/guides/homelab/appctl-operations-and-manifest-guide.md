@@ -136,6 +136,6 @@ jellyfin           🟢 Running (1)    ✓ Synced         jellyfin.roadtotech.me
 ---
 
 ## 🔗 Related Plans & Implementation Runbooks
-- [Core & Sites Cutover and Testing Plan](../archive/core-sites-cutover-testing-plan.md) — Completed zero-downtime cutover runbook from `~/Deployments` to `~/Core` and `~/Sites`.
-- [appctl Refactor & Metadata Sync Plan](../archive/refactor-and-metadata-sync.md) — Architectural design for `app.yaml` manifests and Homepage auto-compilation.
-- [appctl Git Synchronization & Lifecycle Plan](../archive/git-sync-and-lifecycle.md) — Design specification for Git tracking badges, `--fetch`, and `appctl update`.
+- [Core & Sites Cutover and Testing Plan](../../../01-plans/homelab/core-sites-cutover-testing-plan.md) — Completed zero-downtime cutover runbook from `~/Deployments` to `~/Core` and `~/Sites`.
+- [appctl Refactor & Metadata Sync Plan](../../../01-plans/homelab/refactor-and-metadata-sync.md) — Architectural design for `app.yaml` manifests and Homepage auto-compilation.
+- [appctl Git Synchronization & Lifecycle Plan](../../../01-plans/homelab/git-sync-and-lifecycle.md) — Design specification for Git tracking badges, `--fetch`, and `appctl update`.

@@ -62,7 +62,7 @@ Following the initial Diun setup and routine operational monitoring, several dis
 
 * **Investigation**: Grepping the variable name across the server environment revealed it originated from `PORTAINER_ADMIN_PASSWORD` in `/run/secrets/rendered/homeserver.env`. Portainer's bcrypt string (`$2y$05$...`) contained three `$` delimiters. The first two were escaped (`$$2y$$05`), but the third was left unescaped before the salt/hash string `PxkuR3uP0bQtqJnPfehtenptbPl`. Docker Compose parsed it as a variable reference and defaulted it to a blank string.
 * **Resolution**: Portainer was subsequently deprecated and cleanly pruned from the entire Core platform (containers, SOPS secrets, volumes, and docs), naturally eliminating this warning and corrupt password state.
-  - See: [Core Service Qualification & Portainer Deprecation](../../projects/homelab/discussions/core-service-qualification-and-portainer-deprecation.md)
+  - See: [Core Service Qualification & Portainer Deprecation](../../02-discussions/homelab/core-service-qualification-and-portainer-deprecation.md)
 
 ### 2. High-Concurrency Registry Scan vs. DNS Blip
 
@@ -187,6 +187,6 @@ Following the initial Diun setup and routine operational monitoring, several dis
 
 ## Related
 
-* [Diun Initial Integration & Socket Proxy RCA (2026-09-22)](../debug/2026-09-22-diun-socket-proxy-integration-and-stalwart-alerting.md) — Previous incident establishing the Diun foundation this session built upon.
+* [Diun Initial Integration & Socket Proxy RCA (2026-09-22)](2026-09-22-diun-socket-proxy-integration-and-stalwart-alerting.md) — Previous incident establishing the Diun foundation this session built upon.
 * [Diun Documentation](https://crazymax.dev/diun/)
 * [Stalwart Mail Server Docs](https://stalw.art/docs/)

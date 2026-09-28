@@ -90,11 +90,11 @@ flowchart TD
 
 Implementation roadmaps and specifications currently active (`status: active`):
 
-1. 🟡 [**Praxis Software Requirements Specification (SRS) v1.0.2**](praxis-srs-v1.0.2.md) `[Active]`
+1. 🟡 [**Praxis Software Requirements Specification (SRS) v1.0.2**](../../01-plans/praxis/praxis-srs-v1.0.2.md) `[Active]`
    - Baseline requirements defining the Three-Layer Temporal Model, multi-modal logging, session snapshot lifecycle, set-intent completion policies, and factual adherence metrics.
-2. 🟡 [**Praxis Domain Model & OOP Design Specification v1.0.1**](praxis-domain-model-v1.0.1.md) `[Active]`
+2. 🟡 [**Praxis Domain Model & OOP Design Specification v1.0.1**](../../01-plans/praxis/praxis-domain-model-v1.0.1.md) `[Active]`
    - Approved domain aggregates (`Routine`, `WorkoutSession`, `Exercise`), value objects, behavioral contracts, state transition matrices, and hexagonal port interfaces (`AuthProvider`, SQL repositories).
-3. 🟡 [**Praxis Implementation Blueprint (v0.2.0 — Phase 0 Complete)**](plans/praxis-implementation-blueprint.md) `[Active — Phase 1 Start]`
+3. 🟡 [**Praxis Implementation Blueprint (v0.2.0 — Phase 0 Complete)**](../../01-plans/praxis/praxis-implementation-blueprint.md) `[Active — Phase 1 Start]`
    - Concrete Python decisions translating SRS + Domain Model: package structure, dependency direction, immutability strategy, ID representation, resolved ambiguities, toolchain configuration (ruff, pyright, pytest, 90% coverage gate), Git hooks, and Phase 1 implementation order.
 
 ---
@@ -110,5 +110,5 @@ Implementation roadmaps and specifications currently active (`status: active`):
 
 Archived baseline drafts preserved for historical reference and comparison:
 
-- [Praxis Software Requirements Specification v1.0.0 (Archived Baseline)](praxis-srs.md) — Initial draft prior to snapshot mutability refinement and activity formalization.
-- [Praxis Domain Model & OOP Design Specification v1.0.0 (Archived Baseline)](praxis-domain-model.md) — Initial domain model draft prior to exercise aggregate root promotion and snapshot consolidation.
+- [Praxis Software Requirements Specification v1.0.0 (Archived Baseline)](../../01-plans/praxis/praxis-srs.md) — Initial draft prior to snapshot mutability refinement and activity formalization.
+- [Praxis Domain Model & OOP Design Specification v1.0.0 (Archived Baseline)](../../01-plans/praxis/praxis-domain-model.md) — Initial domain model draft prior to exercise aggregate root promotion and snapshot consolidation.

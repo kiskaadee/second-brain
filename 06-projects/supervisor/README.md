@@ -63,7 +63,7 @@ flowchart TB
 
 | Target | Location / URL | Description |
 | :--- | :--- | :--- |
-| **Brain Plans** | [`projects/supervisor/plans/`](plans/) | Authoritative specifications and architectural designs |
+| **Brain Plans** | [`01-plans/supervisor/`](../../01-plans/supervisor/) | Authoritative specifications and architectural designs |
 | **Agent Customizations** | `~/.gemini/config/skills/` / `.agents/skills/` | Skill definitions and supervisor heuristics |
 | **Active Target Repos** | `/home/kiskaadee/Projects/active/` | Monitored repositories (Core, MagNetFlix, nekoweb, etc.) |
 
@@ -81,7 +81,7 @@ Architectural inquiries and problem statements currently under evaluation that h
 
 Implementation roadmaps currently in progress (`status: active`) that are actively being executed or scheduled for deployment:
 
-1. 🟡 [**Personal Engineering Progress & Implementation Supervisor Specification**](plans/supervisor-system-specification.md) `[Active]`
+1. 🟡 [**Personal Engineering Progress & Implementation Supervisor Specification**](../../01-plans/supervisor/supervisor-system-specification.md) `[Active]`
    - Foundational requirements specification defining the problem, global goals, functional/non-functional requirements, and system boundaries.
 
 ---

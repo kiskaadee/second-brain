@@ -213,5 +213,5 @@ If an unexpected regression occurs in the Core compose stack:
 
 ## Related Documentation & Cross-References
 
-* Discussion: [Core Service Qualification & Portainer Deprecation](../discussions/core-service-qualification-and-portainer-deprecation.md)
-* Daily Journal: [Daily Journal: 2026-09-23](../../../records/journal/2026-09-23.md)
+* Discussion: [Core Service Qualification & Portainer Deprecation](../../02-discussions/homelab/core-service-qualification-and-portainer-deprecation.md)
+* Daily Journal: [Daily Journal: 2026-09-23](../../03-records/journal/2026-09-23.md)

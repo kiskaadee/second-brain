@@ -139,7 +139,7 @@ No open architectural discussions at this time.
 
 Implementation roadmaps currently in progress (`status: active`) that are actively being executed or scheduled for deployment:
 
-1. 🟡 [**MagNetFlix Cross-Browser Extension Integration**](plans/browser-extension-integration.md) `[Active]`
+1. 🟡 [**MagNetFlix Cross-Browser Extension Integration**](../../01-plans/magnetflix/browser-extension-integration.md) `[Active]`
    - Actionable implementation plan for evolving the working proof-of-concept into a production-grade cross-browser extension with web dashboard handoff and Traefik/Authelia SSO integration.
 
 ### Phased Roadmap Overview

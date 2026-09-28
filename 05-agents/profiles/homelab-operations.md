@@ -345,8 +345,8 @@ When instructions appear to conflict, stop and surface the conflict rather than 
 
 ## 4. Related Resources & Context
 
-* [Homelab Architecture & Topology Overview](../projects/homelab/README.md)
+* [Homelab Architecture & Topology Overview](../../06-projects/homelab/README.md)
 * [Homelab Core Platform Agent](homelab-core.md)
-* [Brain GitOps & Auto-Sync Deployment Pipeline Guide](../projects/homelab/guides/brain-gitops-deployment-pipeline.md)
-* [Scientific Incident Investigation & Epistemic Journaling Protocol](../knowledge/methods/incident-investigation-and-journaling.md)
-* [Webhook HMAC Signature Mismatch RCA](../records/debug/2026-09-21-gitops-webhook-payload-signature-mismatch.md)
+* [Brain GitOps & Auto-Sync Deployment Pipeline Guide](../../04-learning/guides/homelab/brain-gitops-deployment-pipeline.md)
+* [Scientific Incident Investigation & Epistemic Journaling Protocol](../../04-learning/knowledge/methods/incident-investigation-and-journaling.md)
+* [Webhook HMAC Signature Mismatch RCA](../../03-records/debug/2026-09-21-gitops-webhook-payload-signature-mismatch.md)

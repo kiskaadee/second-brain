@@ -56,13 +56,13 @@ flowchart TD
 
 ### 1. Second Brain Governance & Validator (`~/Brain`)
 - **First-Class `type: debug`**:
-  - Added `"debug"` to `VALID_TYPES` in [`scripts/validate-brain.py`](../../../scripts/validate-brain.py).
-  - Documented `records/debug/` in the semantic contract table and directory definitions of [`AGENTS.md`](../../../AGENTS.md).
+  - Added `"debug"` to `VALID_TYPES` in [`scripts/validate-brain.py`](../../scripts/validate-brain.py).
+  - Documented `records/debug/` in the semantic contract table and directory definitions of [`AGENTS.md`](../../AGENTS.md).
   - Added `# debug` frontmatter template and documented the `debug` commit type.
   - Formalized inbox curation processing rules for `*-debug.md` files.
 - **Methodology & Agent Profiles**:
-  - Updated [`knowledge/methods/incident-investigation-and-journaling.md`](../../../knowledge/methods/incident-investigation-and-journaling.md) to reference `records/debug/YYYY-MM-DD-<slug>.md` with `type: debug`.
-  - Updated [`agents/homelab-operations.md`](../../../agents/homelab-operations.md) to reflect the operational staging workflow into `inbox/YYYY-MM-DD-<slug>-debug.md`.
+  - Updated [`knowledge/methods/incident-investigation-and-journaling.md`](../../04-learning/knowledge/methods/incident-investigation-and-journaling.md) to reference `records/debug/YYYY-MM-DD-<slug>.md` with `type: debug`.
+  - Updated [`agents/homelab-operations.md`](../../05-agents/profiles/homelab-operations.md) to reflect the operational staging workflow into `inbox/YYYY-MM-DD-<slug>-debug.md`.
 
 ### 2. Homelab Operations Contract (`~/Homelab`)
 - **Operational Staging**:
@@ -71,24 +71,24 @@ flowchart TD
 
 ### 3. Records Migration & Partitioning (`~/Brain/records/`)
 - **Migrated Incident Reports to `records/debug/` (`type: debug`)**:
-  1. [`records/debug/2026-09-14-server-unexpected-shutdown-rca.md`](../../../records/debug/2026-09-14-server-unexpected-shutdown-rca.md)
-  2. [`records/debug/2026-09-18-gitea-actions-nix-runner-fix.md`](../../../records/debug/2026-09-18-gitea-actions-nix-runner-fix.md)
-  3. [`records/debug/2026-09-18-gitea-github-mirror-dns-resolution-failure.md`](../../../records/debug/2026-09-18-gitea-github-mirror-dns-resolution-failure.md)
-  4. [`records/debug/2026-09-21-gitea-actions-fhs-nix-container-fix.md`](../../../records/debug/2026-09-21-gitea-actions-fhs-nix-container-fix.md)
-  5. [`records/debug/2026-09-21-gitops-webhook-payload-signature-mismatch.md`](../../../records/debug/2026-09-21-gitops-webhook-payload-signature-mismatch.md)
-  6. [`records/debug/2026-09-22-diun-socket-proxy-integration-and-stalwart-alerting.md`](../../../records/debug/2026-09-22-diun-socket-proxy-integration-and-stalwart-alerting.md)
+  1. [`records/debug/2026-09-14-server-unexpected-shutdown-rca.md`](../../03-records/debug/2026-09-14-server-unexpected-shutdown-rca.md)
+  2. [`records/debug/2026-09-18-gitea-actions-nix-runner-fix.md`](../../03-records/debug/2026-09-18-gitea-actions-nix-runner-fix.md)
+  3. [`records/debug/2026-09-18-gitea-github-mirror-dns-resolution-failure.md`](../../03-records/debug/2026-09-18-gitea-github-mirror-dns-resolution-failure.md)
+  4. [`records/debug/2026-09-21-gitea-actions-fhs-nix-container-fix.md`](../../03-records/debug/2026-09-21-gitea-actions-fhs-nix-container-fix.md)
+  5. [`records/debug/2026-09-21-gitops-webhook-payload-signature-mismatch.md`](../../03-records/debug/2026-09-21-gitops-webhook-payload-signature-mismatch.md)
+  6. [`records/debug/2026-09-22-diun-socket-proxy-integration-and-stalwart-alerting.md`](../../03-records/debug/2026-09-22-diun-socket-proxy-integration-and-stalwart-alerting.md)
 
 - **Unified Daily Journals Created in `records/journal/` (`type: journal`, strictly `YYYY-MM-DD.md`)**:
-  1. [`records/journal/2026-09-11.md`](../../../records/journal/2026-09-11.md) — NixOS appliance cutover and documentation overhaul.
-  2. [`records/journal/2026-09-13.md`](../../../records/journal/2026-09-13.md) — Milestone P0: GitOps Trust Boundary Implementation deliverables and invariant proofs.
-  3. [`records/journal/2026-09-14.md`](../../../records/journal/2026-09-14.md) — Milestone P0 closure & P1 transition (Wins) + Server Unexpected Shutdown RCA link.
-  4. [`records/journal/2026-09-15.md`](../../../records/journal/2026-09-15.md) — Stalwart email infrastructure, deliverability architecture, Brevo relay, and webmail deployment.
-  5. [`records/journal/2026-09-18.md`](../../../records/journal/2026-09-18.md) — Daily wins + links to Nix runner hang and Docker mirror DNS failure debug records.
-  6. [`records/journal/2026-09-21.md`](../../../records/journal/2026-09-21.md) — appctl Engine V2 rework & TDD scaffold (Wins) + links to Gitea Actions FHS container fix and Webhook signature mismatch RCAs.
-  7. [`records/journal/2026-09-22.md`](../../../records/journal/2026-09-22.md) — Diun socket proxy integration and Stalwart alerting (Wins) + link to Diun provider RCA.
+  1. [`records/journal/2026-09-11.md`](../../03-records/journal/2026-09-11.md) — NixOS appliance cutover and documentation overhaul.
+  2. [`records/journal/2026-09-13.md`](../../03-records/journal/2026-09-13.md) — Milestone P0: GitOps Trust Boundary Implementation deliverables and invariant proofs.
+  3. [`records/journal/2026-09-14.md`](../../03-records/journal/2026-09-14.md) — Milestone P0 closure & P1 transition (Wins) + Server Unexpected Shutdown RCA link.
+  4. [`records/journal/2026-09-15.md`](../../03-records/journal/2026-09-15.md) — Stalwart email infrastructure, deliverability architecture, Brevo relay, and webmail deployment.
+  5. [`records/journal/2026-09-18.md`](../../03-records/journal/2026-09-18.md) — Daily wins + links to Nix runner hang and Docker mirror DNS failure debug records.
+  6. [`records/journal/2026-09-21.md`](../../03-records/journal/2026-09-21.md) — appctl Engine V2 rework & TDD scaffold (Wins) + links to Gitea Actions FHS container fix and Webhook signature mismatch RCAs.
+  7. [`records/journal/2026-09-22.md`](../../03-records/journal/2026-09-22.md) — Diun socket proxy integration and Stalwart alerting (Wins) + link to Diun provider RCA.
 
 - **Cross-References Updated**:
-  - [`projects/homelab/guides/brain-gitops-deployment-pipeline.md`](../../../projects/homelab/guides/brain-gitops-deployment-pipeline.md)
+  - [`projects/homelab/guides/brain-gitops-deployment-pipeline.md`](../../04-learning/guides/homelab/brain-gitops-deployment-pipeline.md)
   - [`projects/brain/plans/deterministic-term-extraction.md`](deterministic-term-extraction.md)
 
 ---

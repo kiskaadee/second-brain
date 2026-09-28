@@ -121,4 +121,4 @@ flowchart TD
 ## Related Knowledge & Documentation
 
 * [From Notes to Technical Documentation](notes-to-docs.md)
-* [Second Brain Governance & Agent Guide](../../AGENTS.md)
+* [Second Brain Governance & Agent Guide](../../../AGENTS.md)

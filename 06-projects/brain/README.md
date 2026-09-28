@@ -40,7 +40,7 @@ graph TD
 | :--- | :--- | :--- |
 | **Local Workspace** | `/home/kiskaadee/Brain` | Version-controlled knowledge repository and tooling scripts |
 | **Gitea Forge** | `ssh://git@gitea.roadtotech.me:2223/kiskaadee/second-brain` | Canonical remote Git repository on Homelab Core |
-| **Agent Spec** | [Second Brain Agent Spec](../../agents/second-brain.md) | Behavioral contract and curation protocol for Brain agents |
+| **Agent Spec** | [Second Brain Agent Spec](../../05-agents/profiles/second-brain.md) | Behavioral contract and curation protocol for Brain agents |
 
 ---
 
@@ -52,16 +52,16 @@ graph TD
 
 ## 🚧 Work in Progress (Active Plans)
 
-1. 🟡 [**Deterministic Term Extraction for Brain Documents**](plans/deterministic-term-extraction.md) `[Active]`
+1. 🟡 [**Deterministic Term Extraction for Brain Documents**](../../01-plans/brain/deterministic-term-extraction.md) `[Active]`
    - Cheap, reproducible, auditable lexical extraction pipeline (`scripts/extract-terms.py`, `scripts/patch-terms.py`, `scripts/stopwords.txt`) to replace non-deterministic tag generation with structural AST weighting.
-2. 🟡 [**Structural Refactoring for validate-brain.py Pipeline**](plans/validate-brain-refactoring.md) `[Active]`
+2. 🟡 [**Structural Refactoring for validate-brain.py Pipeline**](../../01-plans/brain/validate-brain-refactoring.md) `[Active]`
    - Multi-phase refactoring of the pre-commit integrity validator into a single-pass `Document`/`Issue` pipeline with line-numbered diagnostics and robust Markdown fence handling. (Phase 1 complete).
 
 ---
 
 ## 🛠️ Canonical Guides & Runbooks
 
-* [**Deterministic Tag & Key Term Extraction Guide**](../../knowledge/methods/deterministic-tag-extraction.md) — Algorithmic approaches and architectural comparison across statistical heuristics, AST parsers, and taxonomy matchers.
+* [**Deterministic Tag & Key Term Extraction Guide**](../../04-learning/knowledge/methods/deterministic-tag-extraction.md) — Algorithmic approaches and architectural comparison across statistical heuristics, AST parsers, and taxonomy matchers.
 
 ---
 
@@ -69,4 +69,4 @@ graph TD
 
 * 🟢 **Validation & Taxonomy Foundation** — Implementation of `scripts/validate-brain.py`, pre-commit hook enforcement, and five-category semantic schema.
 * 🟢 **Multi-Agent Catalog** — Formalization of `agents/` store and operational profiles.
-* 🟢 [**Incident Debug Records & Daily Journal Workflow Reorganization**](plans/incident-debug-and-journal-workflow.md) — Established first-class `type: debug` records in `records/debug/`, strictly one daily journal per date in `records/journal/YYYY-MM-DD.md`, and automated inbox curation protocol.
+* 🟢 [**Incident Debug Records & Daily Journal Workflow Reorganization**](../../01-plans/brain/incident-debug-and-journal-workflow.md) — Established first-class `type: debug` records in `records/debug/`, strictly one daily journal per date in `records/journal/YYYY-MM-DD.md`, and automated inbox curation protocol.

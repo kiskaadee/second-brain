@@ -13,7 +13,7 @@ tags:
 
 # Praxis Implementation Blueprint
 
-Blueprint translating [SRS v1.0.2](../praxis-srs-v1.0.2.md) + [Domain Model v1.0.1](../praxis-domain-model-v1.0.1.md) into concrete Python decisions.
+Blueprint translating [SRS v1.0.2](praxis-srs-v1.0.2.md) + [Domain Model v1.0.1](praxis-domain-model-v1.0.1.md) into concrete Python decisions.
 
 > [!NOTE]
 > This document is the canonical Phase 0 deliverable (v0.2.0 — Phase 0 Complete). All Phase-1-blocking ambiguities are resolved. Remaining open questions are explicitly deferred to the phases indicated below.

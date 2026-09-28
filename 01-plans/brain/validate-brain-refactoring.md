@@ -92,7 +92,7 @@ Even a simple `NamedTuple(severity, path, line, message)` enables structured rep
 
 ## Target Architecture
 
-Architecture implemented in [`scripts/validate-brain.py`](../../../scripts/validate-brain.py):
+Architecture implemented in [`scripts/validate-brain.py`](../../scripts/validate-brain.py):
 
 ```
 validate-brain.py
