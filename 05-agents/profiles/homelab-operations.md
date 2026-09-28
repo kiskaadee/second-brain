@@ -144,7 +144,7 @@ flowchart TD
     D --> CP4{"Deployment Handoff"}
     CP4 -->|"User Deploys"| E["5. User-Controlled Production Deployment<br/>(Core rebuild or Sites workload rollout)"]
     E --> F["6. Post-Deployment Verification<br/>(Agent verifies via SSH)"]
-    F --> G["7. Document in Brain Inbox<br/>(~/Brain/00-inbox/YYYY-MM-DD-&lt;slug&gt;-debug.md)"]
+    F --> G["7. Evaluate Knowledge Capture<br/>(Stage if non-obvious/durable)"]
 ```
 
 ### B. Checkpoint Protocol
@@ -212,8 +212,8 @@ This policy applies equally to Core/NixOS system changes and Sites application c
    Agent provides the workload-specific deployment handoff runbook. User executes the deployment.
 6. **Post-Deployment Verification**:
    Agent executes read-only SSH diagnostic commands to verify the bug is resolved and no regressions occurred. Checkpoint findings.
-7. **Document in Brain Inbox**:
-   If troubleshooting produced non-obvious diagnostic reasoning, architectural insights, or reusable operational lessons, author an epistemic incident report staged in `~/Brain/00-inbox/YYYY-MM-DD-<slug>-debug.md` (`type: inbox`, `project: homelab`). During Second Brain curation, this artifact is normalized to `type: debug`, committed to `03-records/debug/YYYY-MM-DD-<slug>.md`, and referenced in the day's daily journal (`03-records/journal/YYYY-MM-DD.md`).
+7. **Evaluate Durable Knowledge Capture**:
+   If troubleshooting produced non-obvious diagnostic reasoning, architectural insights, or reusable operational lessons, invoke the global investigation and knowledge workflow to stage an epistemic report in the operator's knowledge inbox. Routine maintenance and self-explanatory fixes require no external documentation.
 
 ### F. CI/CD & Gitea Actions (`act_runner`) Invariants
 * **Pre-Baked Images over In-Job Installers**: Always declare `container: { image: <image> }` (e.g., `nixery.dev/shell/coreutils/git/nix/nodejs:latest`, `python:3.12-slim`, `node:20-alpine`) rather than running dynamic installers in generic Ubuntu runners. Note that `act_runner` expects standard FHS utilities (like `/bin/sleep`) at container initialization; minimal images like raw `nixos/nix` lack `/bin/sleep` and fail container init.
@@ -226,87 +226,13 @@ This policy applies equally to Core/NixOS system changes and Sites application c
 
 ---
 
-## 4. Post-Incident Debugging & Epistemic Reporting (Second Brain)
+## 4. Post-Incident Epistemic Knowledge Capture
 
-Capture incidents into the Second Brain inbox (`/home/kiskaadee/Brain/00-inbox/YYYY-MM-DD-<slug>-debug.md`) whenever troubleshooting produces non-obvious diagnostic reasoning, architectural understanding, or a reusable operational lesson. Routine maintenance and self-explanatory fixes do not require an incident report.
+Troubleshooting operations adhere to the global `engineering-investigation-and-knowledge` workflow:
+* **Conditional Capture**: Routine fixes and maintenance do not require incident documentation. Only non-obvious root causes, architectural trade-offs, or transferable operational heuristics warrant durable capture.
+* **Epistemic Standards**: Preserve investigative reasoning, separate observation from inference, state command rationale, avoid hindsight bias, and maintain zero secret leakage.
+* **Staging**: When qualified, stage findings into the operator's knowledge inbox (`~/Brain/00-inbox/`) following the global capture protocol.
 
-During Second Brain curation, the document is moved to `/home/kiskaadee/Brain/03-records/debug/YYYY-MM-DD-<slug>.md` (`type: debug`), and cross-referenced in the day's daily journal (`/home/kiskaadee/Brain/03-records/journal/YYYY-MM-DD.md`).
-
-### A. Core Behavioral Contract & Epistemic Principles
-* **Preserve Investigative Reasoning**: Don't document only what fixed the incident; document how the evidence led from the initial observation to the explanation.
-* **Separate Observation from Inference**: Strictly distinguish what the system reported (raw logs, error codes, outputs) from what the operator inferred.
-* **Explain Command Rationale**: Document why each diagnostic inspection was performed, what layer it inspected, and what result would support or refute the working hypothesis.
-* **No Hindsight Bias**: Never fabricate a neat, predetermined narrative. If an explanation or diagnostic path was discovered retrospectively, explicitly label it as retrospective analysis.
-* **Proportional Depth**: Scale detail to the incident's learning value. Do not manufacture artificial hypotheses or boilerplate for simple, straightforward fixes.
-* **Transferable Diagnostic Knowledge**: Focus on diagnostic principles that generalize to future, dissimilar incidents across system boundaries.
-* **Zero Secret Leakage**: Never log raw or truncated secrets. Document verification matches securely.
-* **Checkpoints vs. Durable Report**: Interactive checkpoints serve as transient execution-control mechanisms during the live session; the debug record is the durable historical and technical report. Do not transcribe checkpoints or conversational exchanges verbatim. Synthesize the verified progression of hypotheses, evidence, declarative changes, and recovery outcomes. The checkpoints naturally surface the key investigation transitions needed for an accurate report.
-
-### B. Frontmatter Schemas:
-
-**Staging Frontmatter** (`~/Brain/00-inbox/YYYY-MM-DD-<slug>-debug.md`):
-```yaml
----
-type: inbox
-created: YYYY-MM-DD
-project: homelab
-tags:
-  - operations
-  - homelab
-  - troubleshooting
-  - <relevant-services>
----
-```
-
-**Curated Target Frontmatter** (`~/Brain/03-records/debug/YYYY-MM-DD-<slug>.md`):
-```yaml
----
-type: debug
-project: homelab
-date: YYYY-MM-DD
-tags:
-  - operations
-  - homelab
-  - troubleshooting
-  - <relevant-services>
----
-```
-
-### C. Epistemic Progression Structure:
-Follow the modular investigative progression below (sections may be omitted, merged, or abbreviated when not applicable):
-
-```markdown
-# <Title>
-
-## System Context & Fundamentals
-Subsystem function, relevant components, data flow, and critical protocol/security contracts. (Reference canonical docs; avoid reproducing generic architecture).
-
-## Problem & Observations
-Observed vs. expected behavior, raw error logs, and initial symptom manifestation (separating raw facts from interpretation).
-
-## Diagnostic Inquiries
-Guiding questions formulated to narrow down the failure domain.
-
-## Investigation & Hypothesis Testing
-Reasoning progression: Rationale → Inspection/Command → Expected vs. Actual Evidence → Hypothesis Status. Preserves real investigation branches and eliminated possibilities.
-
-## Findings & Root Cause Analysis
-Synthesis of proven evidence and explanation of the underlying causal mechanism.
-
-## Declarative Remediation & Local Validation
-Declarative changes made, test commands run, and verification results.
-
-## Deployment & Recovery Runbook
-Production rollout steps and post-deployment proof of recovery.
-
-## Discussion & Generalization
-Architectural takeaways, false assumptions dispelled, transferable diagnostic heuristics, and preventative measures.
-
-## References
-Links to affected manifests, scripts, canonical documentation, or protocol specs.
-```
-
-*(For detailed methodology, epistemological principles, and diagnostic design, consult canonical documentation in `Brain/04-learning/knowledge/methods/incident-investigation-and-journaling.md`).*
 ````
 
 ### B. Client Adapter Specification: `/home/kiskaadee/Homelab/CLAUDE.md`

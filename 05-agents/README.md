@@ -26,4 +26,8 @@ Rather than treating agent rulebooks (`AGENTS.md`) as transient, untracked local
 | [NekoWeb Manga Platform](profiles/nekoweb.md) | `git@github.com:kiskaadee/nekoweb.git` | Self-hosted manga web platform (FastAPI, UV, React/TanStack, HakuNeko Daemon) | `active` |
 | [Second Brain Knowledge Graph](profiles/second-brain.md) | `ssh://git@gitea.roadtotech.me:2223/kiskaadee/second-brain` | Personal knowledge graph curation, epistemic validation, and artifact management | `active` |
 
----
+## Catalog of Operational Skills
+
+| Skill | Target Workspace | Primary Capability | Status |
+| :--- | :--- | :--- | :--- |
+| [Engineering Investigation & Knowledge](skills/engineering-investigation-and-knowledge.md) | Global (`~/.gemini/config/skills/`) | Scientific investigation lifecycle, 6-part checkpoints, RCA, and conditional Brain staging | `active` |
