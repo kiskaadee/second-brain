@@ -183,14 +183,15 @@ and the live documentation viewer.
 
 Capture significant:
 
-- Architectural decisions
-- Security/threat-model changes
-- Debugging discoveries
-- Implementation lessons
+- Implementation roadmaps & plans (`~/Brain/01-plans/homelab/`)
+- Design trade-offs & inquiries (`~/Brain/02-discussions/homelab/`)
+- Incident post-mortems & RCAs (`~/Brain/03-records/debug/`)
+- Architectural decisions (ADRs) (`~/Brain/03-records/decisions/`)
+- Operational guides & runbooks (`~/Brain/04-learning/guides/homelab/`)
+- Engineering methodologies & durable knowledge (`~/Brain/04-learning/knowledge/`)
+- Staging captures (`~/Brain/00-inbox/`)
 
-in the appropriate `/home/kiskaadee/Brain/homelab/` or
-`/home/kiskaadee/Brain/learning/` location.
-
+Refer to the project topology hub at `~/Brain/06-projects/homelab/README.md`.
 Do not duplicate entire repository documentation in the Brain Vault.
 ````
 

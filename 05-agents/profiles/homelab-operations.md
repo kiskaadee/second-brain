@@ -27,7 +27,7 @@ tags:
   * **Mandatory Execution Boundaries**: The agent must **never autonomously** create Git commits, push to any remote, merge branches, deploy to production, execute `nixos-rebuild`, or perform service restarts to roll out changes.
   * **Proposal-Only Commits & Deployment Runbooks**: When local validation passes, the agent proposes atomic commits with rationale and validation proof, and provides structured deployment runbooks with rollback steps. The user owns all commit, branch merge, and production rollout transitions.
   * **Interactive Execution Harness**: Follows a 6-part checkpoint review protocol (Current State, Reasoning, Changes, Validation, Next Action, Recovery) at meaningful milestones, pausing before crossing user-controlled boundaries.
-  * **Incident Debugging Invariant**: Directs investigative findings, hypothesis testing, and non-obvious troubleshooting lessons into the Second Brain inbox for staging and subsequent curation into `records/debug/`.
+  * **Incident Debugging Invariant**: Directs investigative findings, hypothesis testing, and non-obvious troubleshooting lessons into the Second Brain inbox for staging and subsequent curation into `03-records/debug/`.
 
 ---
 
@@ -56,7 +56,7 @@ Branching policy is decoupled from diagnostic reasoning:
 
 ### D. Checkpoints vs. Durable Debug Record
 * **Checkpoints**: Transient execution-control mechanisms during the live session that keep the operator aligned on current state, reasoning, and upcoming actions.
-* **Debug Record (`records/debug/`)**: The durable historical, technical, and epistemic artifact. Checkpoints are not transcribed verbatim; rather, the verified progression of hypotheses, evidence, declarative changes, and recovery outcomes is synthesized into the permanent Second Brain knowledge base under `records/debug/` and cross-referenced in daily journals (`records/journal/`).
+* **Debug Record (`03-records/debug/`)**: The durable historical, technical, and epistemic artifact. Checkpoints are not transcribed verbatim; rather, the verified progression of hypotheses, evidence, declarative changes, and recovery outcomes is synthesized into the permanent Second Brain knowledge base under `03-records/debug/` and cross-referenced in daily journals (`03-records/journal/`).
 
 ---
 
@@ -144,7 +144,7 @@ flowchart TD
     D --> CP4{"Deployment Handoff"}
     CP4 -->|"User Deploys"| E["5. User-Controlled Production Deployment<br/>(Core rebuild or Sites workload rollout)"]
     E --> F["6. Post-Deployment Verification<br/>(Agent verifies via SSH)"]
-    F --> G["7. Document in Brain Inbox<br/>(~/Brain/inbox/YYYY-MM-DD-&lt;slug&gt;-debug.md)"]
+    F --> G["7. Document in Brain Inbox<br/>(~/Brain/00-inbox/YYYY-MM-DD-&lt;slug&gt;-debug.md)"]
 ```
 
 ### B. Checkpoint Protocol
@@ -213,7 +213,7 @@ This policy applies equally to Core/NixOS system changes and Sites application c
 6. **Post-Deployment Verification**:
    Agent executes read-only SSH diagnostic commands to verify the bug is resolved and no regressions occurred. Checkpoint findings.
 7. **Document in Brain Inbox**:
-   If troubleshooting produced non-obvious diagnostic reasoning, architectural insights, or reusable operational lessons, author an epistemic incident report staged in `~/Brain/inbox/YYYY-MM-DD-<slug>-debug.md` (`type: inbox`, `project: homelab`). During Second Brain curation, this artifact is normalized to `type: debug`, committed to `records/debug/YYYY-MM-DD-<slug>.md`, and referenced in the day's daily journal (`records/journal/YYYY-MM-DD.md`).
+   If troubleshooting produced non-obvious diagnostic reasoning, architectural insights, or reusable operational lessons, author an epistemic incident report staged in `~/Brain/00-inbox/YYYY-MM-DD-<slug>-debug.md` (`type: inbox`, `project: homelab`). During Second Brain curation, this artifact is normalized to `type: debug`, committed to `03-records/debug/YYYY-MM-DD-<slug>.md`, and referenced in the day's daily journal (`03-records/journal/YYYY-MM-DD.md`).
 
 ### F. CI/CD & Gitea Actions (`act_runner`) Invariants
 * **Pre-Baked Images over In-Job Installers**: Always declare `container: { image: <image> }` (e.g., `nixery.dev/shell/coreutils/git/nix/nodejs:latest`, `python:3.12-slim`, `node:20-alpine`) rather than running dynamic installers in generic Ubuntu runners. Note that `act_runner` expects standard FHS utilities (like `/bin/sleep`) at container initialization; minimal images like raw `nixos/nix` lack `/bin/sleep` and fail container init.
@@ -228,9 +228,9 @@ This policy applies equally to Core/NixOS system changes and Sites application c
 
 ## 4. Post-Incident Debugging & Epistemic Reporting (Second Brain)
 
-Capture incidents into the Second Brain inbox (`/home/kiskaadee/Brain/inbox/YYYY-MM-DD-<slug>-debug.md`) whenever troubleshooting produces non-obvious diagnostic reasoning, architectural understanding, or a reusable operational lesson. Routine maintenance and self-explanatory fixes do not require an incident report.
+Capture incidents into the Second Brain inbox (`/home/kiskaadee/Brain/00-inbox/YYYY-MM-DD-<slug>-debug.md`) whenever troubleshooting produces non-obvious diagnostic reasoning, architectural understanding, or a reusable operational lesson. Routine maintenance and self-explanatory fixes do not require an incident report.
 
-During Second Brain curation, the document is moved to `/home/kiskaadee/Brain/records/debug/YYYY-MM-DD-<slug>.md` (`type: debug`), and cross-referenced in the day's daily journal (`/home/kiskaadee/Brain/records/journal/YYYY-MM-DD.md`).
+During Second Brain curation, the document is moved to `/home/kiskaadee/Brain/03-records/debug/YYYY-MM-DD-<slug>.md` (`type: debug`), and cross-referenced in the day's daily journal (`/home/kiskaadee/Brain/03-records/journal/YYYY-MM-DD.md`).
 
 ### A. Core Behavioral Contract & Epistemic Principles
 * **Preserve Investigative Reasoning**: Don't document only what fixed the incident; document how the evidence led from the initial observation to the explanation.
@@ -244,7 +244,7 @@ During Second Brain curation, the document is moved to `/home/kiskaadee/Brain/re
 
 ### B. Frontmatter Schemas:
 
-**Staging Frontmatter** (`~/Brain/inbox/YYYY-MM-DD-<slug>-debug.md`):
+**Staging Frontmatter** (`~/Brain/00-inbox/YYYY-MM-DD-<slug>-debug.md`):
 ```yaml
 ---
 type: inbox
@@ -258,7 +258,7 @@ tags:
 ---
 ```
 
-**Curated Target Frontmatter** (`~/Brain/records/debug/YYYY-MM-DD-<slug>.md`):
+**Curated Target Frontmatter** (`~/Brain/03-records/debug/YYYY-MM-DD-<slug>.md`):
 ```yaml
 ---
 type: debug
@@ -306,7 +306,7 @@ Architectural takeaways, false assumptions dispelled, transferable diagnostic he
 Links to affected manifests, scripts, canonical documentation, or protocol specs.
 ```
 
-*(For detailed methodology, epistemological principles, and diagnostic design, consult canonical documentation in `Brain/knowledge/methods/incident-investigation-and-journaling.md`).*
+*(For detailed methodology, epistemological principles, and diagnostic design, consult canonical documentation in `Brain/04-learning/knowledge/methods/incident-investigation-and-journaling.md`).*
 ````
 
 ### B. Client Adapter Specification: `/home/kiskaadee/Homelab/CLAUDE.md`

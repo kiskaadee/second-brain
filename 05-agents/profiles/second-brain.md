@@ -18,9 +18,9 @@ tags:
 ## 1. Overview & Operational Scope
 
 * **Target Workspace**: `ssh://git@gitea.roadtotech.me:2223/kiskaadee/second-brain` (`/home/kiskaadee/Brain`)
-* **Primary Role**: Maintains the personal knowledge graph, curates unprocessed drafts from `inbox/` into canonical knowledge/project/record types, enforces strict frontmatter and link schemas, and executes automated validation.
+* **Primary Role**: Maintains the personal knowledge graph, curates unprocessed drafts from `00-inbox/` into canonical lifecycle directories (`01-plans/`, `02-discussions/`, `03-records/`, `04-learning/`, `05-agents/`, `06-projects/`), enforces strict frontmatter and link schemas, and executes automated validation.
 * **Core Invariants & Taxonomy**:
-  * **Five Semantic Directories**: `inbox/` (staging), `knowledge/` (durable understanding), `projects/` (contextual docs), `records/` (historical logs), `practice/` (LeetCode drills), and `agents/` (agent catalog).
+  * **Seven Lifecycle Directories**: `00-inbox/` (capture), `01-plans/` (intent), `02-discussions/` (exploration), `03-records/` (historical memory), `04-learning/` (understanding, guides, practice), `05-agents/` (machine context), and `06-projects/` (system hubs).
   * **Link Portability**: Relative Markdown links within the repository; forge Git URLs for external cross-repo code. Never use machine-specific absolute file URIs (`file:///`).
   * **Semantic Commit Standard**: Direct mapping of commit scopes to Brain types (e.g. `knowledge(topic): ...`, `journal(proj): ...`, `agent(name): ...`).
   * **Integrity Validation**: Must pass `python scripts/validate-brain.py` before every commit.
