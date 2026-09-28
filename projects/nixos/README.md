@@ -79,6 +79,8 @@ graph TD
 
 ## 🏛️ Architectural Discussions & Records
 
+* [ADR: Unified Antigravity Flake Packaging](../../records/decisions/antigravity-flake-packaging.md)
+* [ADR: Terminal Workspace Subsystem Architecture](../../records/decisions/terminal-workspace-architecture.md)
 * [Discussion: NixOS Monorepo vs. Multi-Repo Architecture for Homelab & Workstations](../homelab/discussions/nixos-monorepo-vs-multirepo.md)
 * [Discussion: Decoupling `nixos-config` and `homelab-core`](../homelab/discussions/nixos-monorepo-decoupling.md)
 
