@@ -32,3 +32,4 @@ Rather than treating agent rulebooks (`AGENTS.md`) as transient, untracked local
 | :--- | :--- | :--- | :--- |
 | [Engineering Investigation](skills/engineering-investigation.md) | Global (`~/.gemini/config/skills/`) | Scientific investigation lifecycle, 6-part interactive checkpoints, and runtime verification | `active` |
 | [Documentation Router](skills/documentation-router.md) | Global (`~/.gemini/config/skills/`) | Second-order knowledge evaluation, epistemic classification, anti-overlap invariants, and authoring modules | `active` |
+| [Engineering Tutor](skills/engineering-tutor.md) | Global (`~/.gemini/config/skills/`) | Practice mode, Socratic graduated assistance, learner-as-primary-agent, and transfer verification | `active` |
