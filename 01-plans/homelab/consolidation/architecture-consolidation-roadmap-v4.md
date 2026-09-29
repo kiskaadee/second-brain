@@ -19,7 +19,9 @@ tags:
 >
 > **Current Platform Baseline**: Commit `246b587` (NixOS standalone appliance, consolidated docs, Portainer deprecated, Stalwart mail & SMTPS submission, Dozzle auth, Diun jitter/worker pool, Gitea Actions CI).
 >
-> **Architectural Decision Record**: [`03-records/decisions/homelab-3tier-architecture-and-provenance.md`](../../03-records/decisions/homelab-3tier-architecture-and-provenance.md)
+> **Architectural Decision Record**: [`03-records/decisions/homelab-3tier-architecture-and-provenance.md`](../../../03-records/decisions/homelab-3tier-architecture-and-provenance.md)
+>
+> **Architectural Discussion & Rationale**: [`02-discussions/homelab/architecture-migration-v3-to-v4.md`](../../../02-discussions/homelab/architecture-migration-v3-to-v4.md)
 >
 > **Target System**: `roadtotech.me` (NixOS appliance `Core/`, application workloads `Sites/`)
 
@@ -27,18 +29,9 @@ tags:
 
 ## Executive Summary
 
-Roadmap v3 established a rigorous operational baseline: clarifying controller authority, inverting GitOps trust boundaries, isolating mail capabilities, and establishing parallel seams for the `appctl-v2` modernization.
+Roadmap v4 formalizes the **3-Tier Architecture**, introduces **declarative source provenance**, defines **two workload deployment classes** (Source-Backed vs. Image-Only), and establishes **two operational inspection axes with three independent revision identities**.
 
-However, Roadmap v3 still inherited an obsolete assumption from early homelab prototypes: **it treated each workload directory in `~/Sites/<app>` as an individual Git repository cloned directly from Gitea**. 
-
-This coupled model created three fundamental architectural liabilities:
-1. **Source Repository Pollution**: In-house applications (e.g., `doc2site`, `bitetrack`) carried Homelab-specific Traefik labels, Docker bridge network names, and host path mounts directly inside their application source trees.
-2. **Repository Inflation**: Off-the-shelf applications (e.g., `jellyfin`, `stirling`) required their own standalone Git repositories merely to store a 20-line `docker-compose.yml` and a minimal `app.yaml`.
-3. **Ambiguous Freshness Semantics**: `appctl`'s Git status inspection was coupled to `Sites/<app>/.git`. It could only report whether local deployment files had uncommitted edits or differed from their origin branch; it could not report whether the running container was built from the latest upstream source code.
-
-**Roadmap v4 decouples software development from deployment configuration and platform orchestration.** It formalizes a clean **3-Tier Architecture**, introduces **declarative source provenance**, defines **two workload deployment classes** (Source-Backed vs. Image-Only), and establishes **two operational inspection axes with three independent revision identities**.
-
-Furthermore, this unified document consolidates both the architectural specifications and the step-by-step phased execution deliverables (P0 through P5) into a single, cohesive source of truth.
+This document serves as the authoritative implementation specification and phased execution roadmap (P0 through P5) for the homelab architecture consolidation. For the deep-dive analysis of legacy multirepo friction and rejected alternatives, see the companion [Architectural Discussion](../../../02-discussions/homelab/architecture-migration-v3-to-v4.md); for the architectural commitments and trade-offs, see the [ADR](../../../03-records/decisions/homelab-3tier-architecture-and-provenance.md).
 
 ---
 
@@ -217,26 +210,19 @@ The `source.ref` field governs how `appctl` and GitOps evaluate software freshne
 
 ---
 
-## Part 4: Ancestry Analysis Trade-Off & `git ls-remote` Downgrade
+## Part 4: Remote Revision Verification & `git ls-remote` Constraint
 
-Early designs considered calculating exact "ahead/behind" commit distances for source-backed applications. However, evaluating Git history requires a full local clone of the application source tree.
-
-### Architectural Decision: Commit Equality via `git ls-remote`
-To prevent the Platform Host from cloning full Git repositories or storing local copies of application source trees, `appctl` explicitly downgrades ancestry evaluation to **commit equality verification**:
+Remote provenance inspection MUST evaluate commit equality using `git ls-remote` rather than performing on-host source cloning or commit-distance traversal.
 
 ```text
 git ls-remote <source.url> refs/heads/<source.ref>
 ```
 
-- **Answers**: *"Does the remote ref point to the exact commit SHA stamped into the running container's `org.opencontainers.image.revision` label?"*
-- **Equality (`==`)**: Running container is up to date (`✓ Up to date (<sha>)`).
-- **Inequality (`!=`)**: Running container is stale (`⚡ Revision Changed (deployed: <d_sha>, remote: <r_sha>)`).
-- **Trade-off Accepted**: The platform foregoes commit distance counts (`"3 commits behind"`) in exchange for zero disk bloat, zero repository cloning, and minimal network overhead.
-
-### Transport Security & Timeouts
-1. **Permitted Schemes**: `source.url` must strictly use `https://`, `ssh://`, or `git@`.
-2. **Prohibited Schemes**: `file://`, `ext::`, or relative filesystem paths are rejected with `ManifestError`.
-3. **Execution Timeout**: Any network call invoking `git ls-remote` must be wrapped in a strict timeout (maximum 10 seconds). Failure to reach remote upstream degrades gracefully to an error badge without hanging the CLI.
+- **Resolution Invariant**:
+  - `Remote SHA == Deployed SHA`: Running container is up to date (`✓ Up to date (<sha>)`).
+  - `Remote SHA != Deployed SHA`: Running container is stale (`⚡ Revision Changed (deployed: <d_sha>, remote: <r_sha>)`).
+- **Transport Security**: `source.url` MUST strictly use `https://`, `ssh://`, or `git@`. Schemes such as `file://`, `ext::`, or relative paths are rejected with `ManifestError`.
+- **Execution Timeout**: Any network call invoking `git ls-remote` MUST be bounded by a strict 10-second timeout and degrade gracefully to an error badge on failure without blocking CLI execution.
 
 ---
 

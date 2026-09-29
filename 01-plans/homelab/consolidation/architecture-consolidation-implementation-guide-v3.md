@@ -521,7 +521,7 @@ Update `~/.local/state/homelab/gitops/<repo>.status` to record complete revision
 
 ### Deliverable 5.2: `appctl` Status & History Subcommand
 
-**Note**: Requires completion of the [appctl refactor](appctl/appctl-engine-v2-refactoring.md).
+**Note**: Requires completion of the [appctl refactor](../appctl/appctl-engine-v2-refactoring.md).
 
 Expose deployment state directly through CLI:
 
