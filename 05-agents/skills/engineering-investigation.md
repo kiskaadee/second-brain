@@ -1,7 +1,7 @@
 ---
 type: agent
 status: active
-name: engineering-investigation-and-knowledge
+name: engineering-investigation
 kind: skill
 project: brain
 tags:
@@ -9,15 +9,14 @@ tags:
   - debugging
   - troubleshooting
   - scientific-method
-  - epistemic-reporting
-  - rca
+  - checkpoints
 ---
 
-# Engineering Investigation & Epistemic Knowledge Skill
+# Engineering Investigation Skill
 
-Canonical store of the global agent skill for engineering investigations, diagnostic checkpoint reviews, and conditional epistemic knowledge capture.
+Canonical store of the global agent skill for disciplined engineering investigations, scientific method progression, and interactive checkpoint reviews.
 
-* **Runtime Customization Path**: `~/.gemini/config/skills/engineering-investigation-and-knowledge/SKILL.md`
+* **Runtime Customization Path**: `~/.gemini/config/skills/engineering-investigation/SKILL.md`
 * **Applicable Workspaces**: Global (workstation-wide across all repositories and directories).
 
 ---
@@ -34,10 +33,8 @@ flowchart TD
     Narrow --> RCA["5. Root Cause Determination<br/>(Underlying causal mechanism proven)"]
     RCA --> Fix["6. Declarative Remediation<br/>(Minimal, isolated, reversible fix)"]
     Fix --> Val["7. Local & Environment Validation<br/>(Tests, linters, flake checks)"]
-    Val --> Deploy["8. Handoff / Deployment & Verification<br/>(Verify fix in runtime environment)"]
-    Deploy --> Decision{"Evaluate Durable Learning"}
-    Decision -->|"Routine / Self-explanatory"| Done["Close Investigation<br/>(Standard commit/PR docs)"]
-    Decision -->|"Non-obvious / Architectural"| Capture["9. Stage Epistemic Artifact<br/>(~/Brain/00-inbox/)"]
+    Val --> Deploy["8. Handoff / Deployment & Verification<br/>(Verify recovery in runtime environment)"]
+    Deploy --> Done["Investigation Concluded<br/>(Handoff to Documentation Router if warranted)"]
 ```
 
 ### Core Epistemic Principles
@@ -45,7 +42,7 @@ flowchart TD
 * **Separate Observation from Inference**: Strictly distinguish what the system reported (raw logs, error outputs, exit codes) from what the operator inferred.
 * **Explain Diagnostic Command Rationale**: Before running inspections, be clear on why the command is run, what layer of the stack it tests, and what result supports or refutes the working hypothesis.
 * **No Hindsight Bias**: Avoid fabricating a tidy, linear narrative after the fact. Distinguish working hypotheses held during the investigation from insights discovered retrospectively.
-* **Proportional Depth**: Scale the depth of investigation and reporting to the learning value. Do not manufacture complex hypotheses or ceremonial boilerplate for trivial syntax errors or routine typos.
+* **Proportional Depth**: Scale the depth of investigation to the complexity and learning value of the issue. Do not manufacture complex hypotheses or ceremonial boilerplate for trivial syntax errors or routine typos.
 * **Transferable Diagnostic Knowledge**: Surface heuristics, architectural invariants, and debugging techniques that generalize across system boundaries.
 * **Zero Secret Leakage**: Never log credentials, API tokens, HMAC keys, or raw secrets. Verify security matches via redacted signatures or non-sensitive metadata.
 
@@ -63,7 +60,7 @@ To maintain human-in-the-loop alignment and prevent unchecked autonomous diverge
 * A production or deployment step is ready for user execution.
 * Post-deployment evidence confirms recovery or reveals regressions.
 
-### The 6-Part Checkpoint Format:
+### The 6-Part Checkpoint Format
 1. **Current State**: What is empirically known from evidence; what remains uncertain.
 2. **Reasoning**: Current working hypothesis, why the evidence supports it, and what alternatives have been eliminated.
 3. **Changes**: What has been changed locally, which files are affected, and what invariant the change establishes.
@@ -71,47 +68,13 @@ To maintain human-in-the-loop alignment and prevent unchecked autonomous diverge
 5. **Next Action**: What should happen next, why it is appropriate, and what evidence is expected.
 6. **Recovery**: How the change or deployment can be rolled back if validation fails.
 
-*Rule*: Present the checkpoint concisely, and **pause before crossing user-controlled state boundaries** (such as committing, merging, pushing, or executing production deployments).
+> **Rule**: Present the checkpoint concisely, and **pause before crossing user-controlled state boundaries** (such as committing, merging, pushing, or executing production deployments).
 
 ---
 
-## 3. Conditional Knowledge Capture Decision
+## 3. Investigation Completion & Documentation Boundary
 
-> **Rule: Investigation is procedural; documentation is conditional.**
+Investigation is purely procedural and terminates upon post-deployment verification or recovery.
 
-Routine maintenance, straightforward typos, and self-explanatory fixes **do not require an external knowledge artifact**. They should be documented normally in Git commit messages or repository-local comments.
-
-Capture an incident into the knowledge system only when troubleshooting produces:
-* Non-obvious diagnostic reasoning or surprising failure modes.
-* Architectural insights or incorrect system assumptions dispelled.
-* A reusable operational or troubleshooting lesson applicable across systems.
-* A security posture or threat model clarification.
-
----
-
-## 4. Staging & Epistemic Reporting Protocol
-
-When an incident qualifies for durable capture, stage an epistemic incident report in the knowledge inbox:
-
-### Staging Destination:
-`~/Brain/00-inbox/YYYY-MM-DD-<slug>-debug.md`
-
-### Staging Frontmatter:
-```yaml
----
-type: inbox
-created: YYYY-MM-DD
-project: <project-name>
-tags:
-  - operations
-  - troubleshooting
-  - debugging
-  - <relevant-subsystems>
----
-```
-
-### Subsequent Curation (Second Brain Lifecycle):
-During subsequent knowledge vault curation:
-1. The artifact is validated and normalized to `type: debug`.
-2. Moved to its permanent location: `~/Brain/03-records/debug/YYYY-MM-DD-<slug>.md`.
-3. Cross-referenced in the day's engineering journal: `~/Brain/03-records/journal/YYYY-MM-DD.md`.
+* Routine maintenance, straightforward typos, and self-explanatory fixes require **no external documentation**—document them normally in Git commit messages or repository-local comments.
+* If the investigation yielded architectural insights, unexpected failure modes, false system assumptions dispelled, or reusable operational heuristics, hand off to the global skill **`documentation-router`** to evaluate which, if any, durable documentation artifact is justified.

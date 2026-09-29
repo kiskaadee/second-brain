@@ -30,4 +30,5 @@ Rather than treating agent rulebooks (`AGENTS.md`) as transient, untracked local
 
 | Skill | Target Workspace | Primary Capability | Status |
 | :--- | :--- | :--- | :--- |
-| [Engineering Investigation & Knowledge](skills/engineering-investigation-and-knowledge.md) | Global (`~/.gemini/config/skills/`) | Scientific investigation lifecycle, 6-part checkpoints, RCA, and conditional Brain staging | `active` |
+| [Engineering Investigation](skills/engineering-investigation.md) | Global (`~/.gemini/config/skills/`) | Scientific investigation lifecycle, 6-part interactive checkpoints, and runtime verification | `active` |
+| [Documentation Router](skills/documentation-router.md) | Global (`~/.gemini/config/skills/`) | Second-order knowledge evaluation, epistemic classification, anti-overlap invariants, and authoring modules | `active` |

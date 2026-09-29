@@ -62,6 +62,7 @@ graph TD
 ## 🛠️ Canonical Guides & Runbooks
 
 * [**Deterministic Tag & Key Term Extraction Guide**](../../04-learning/knowledge/methods/deterministic-tag-extraction.md) — Algorithmic approaches and architectural comparison across statistical heuristics, AST parsers, and taxonomy matchers.
+* [**Global Documentation Router & Investigation Skills Walkthrough**](../../04-learning/guides/brain/documentation-and-investigation-skills-walkthrough.md) — Operational walkthrough covering procedural investigation, documentation router gatekeeping, anti-overlap invariants, and authoring reference modules.
 
 ---
 
@@ -72,3 +73,4 @@ graph TD
 * 🟢 [**Brain Taxonomy & Lifecycle Migration**](../../01-plans/brain/taxonomy-lifecycle-migration.md) — Reorganized repository from organic structure into 7 numbered lifecycle directories (`00-inbox/` through `06-projects/`), introduced declarative `DirectoryContract` validation, executed 188-file migration and 199-link rewrites, and synchronized distributed `AGENTS.md` integration surfaces.
   - Companion Discussion: [Brain Epistemic Lifecycle Taxonomy](../../02-discussions/brain/taxonomy-and-lifecycle-architecture.md)
 * 🟢 [**Incident Debug Records & Daily Journal Workflow Reorganization**](../../01-plans/brain/incident-debug-and-journal-workflow.md) — Established first-class `type: debug` records in `03-records/debug/`, strictly one daily journal per date in `03-records/journal/YYYY-MM-DD.md`, and automated inbox curation protocol.
+* 🟢 [**Documentation Router & Engineering Investigation Skills Decoupling**](../../01-plans/brain/documentation-and-investigation-skills-decoupling.md) — Decoupled procedural troubleshooting (scientific method, interactive checkpoints) from documentation evaluation and routing; introduced second-order documentation router with modular authoring specifications.
