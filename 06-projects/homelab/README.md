@@ -114,6 +114,7 @@ Archived and foundational documentation for completed milestones:
 * [**Dynu DDNS Polling Frequency and Rust Migration**](../../02-discussions/homelab/dynu-monitor-polling-and-language-tradeoffs.md) — Investigated polling intervals and language trade-offs; resolved via `dynu-monitor-rust-daemon.md` plan.
 * [**Dozzle Forward-Proxy Authentication & Persistent Volume Architecture**](../../02-discussions/homelab/dozzle-auth-and-storage-architecture.md) — Evaluated Dozzle v2 login prompt vs ForwardAuth SSO; resolved via `DOZZLE_AUTH_PROVIDER=forward-proxy` and persistent `/data` volume.
 * [**Core Service Qualification & Portainer Deprecation**](../../02-discussions/homelab/core-service-qualification-and-portainer-deprecation.md) — Evaluated platform service qualification criteria; resolved via complete deprecation of Portainer and retaining Gitea and CI runner decoupled.
+* [**Migrating from Legacy Multirepo (v3) to 3-Tier Provenance Architecture (v4)**](../../02-discussions/homelab/architecture-migration-v3-to-v4.md) — Evaluated multirepo friction (source pollution, repo inflation, state co-location) vs 3-tier decoupling; resolved via Roadmap v4 adoption.
 
 ### Completed Plans
 * 🟢 [**Architecture Consolidation & Hardening Roadmap v3**](../../01-plans/homelab/architecture-consolidation-roadmap-v3.md) (Superseded by v4; established controller authority, mail relocation plan, and manifest convergence)
