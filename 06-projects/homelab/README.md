@@ -59,9 +59,10 @@ Architectural inquiries and problem statements currently under evaluation that h
 
 Implementation roadmaps currently in progress (`status: active`) that are actively being executed or scheduled for deployment:
 
-1. 🟡 [**Architecture Consolidation & Hardening Roadmap & Execution Plan v4**](../../01-plans/homelab/architecture-consolidation-roadmap-v4.md) `[Active]`
+1. 🟡 [**Architecture Consolidation & Hardening Roadmap & Execution Plan v4**](../../01-plans/homelab/consolidation/architecture-consolidation-roadmap-v4.md) `[Active]`
    - Unified roadmap and execution blueprint: 3-tier architecture (Software vs. Deployment vs. Platform), OCI provenance model, two workload deployment classes, authoritative Core registry, Stalwart vs. SnappyMail zero-data-loss relocation, workload Compose security policy, unified typed manifest engine, linear control path (KISS), and two operational inspection axes with three revision identities.
    - 🏛️ *Architectural Decision Record*: [**Homelab 3-Tier Architecture & Provenance**](../../03-records/decisions/homelab-3tier-architecture-and-provenance.md)
+   - 💬 *Architectural Discussion*: [**Legacy Multirepo to 3-Tier Migration Rationale**](../../02-discussions/homelab/architecture-migration-v3-to-v4.md)
 2. 🟡 [**Rust Daemon Migration Plan: Standalone `dynu-monitor`**](../../01-plans/homelab/dynu-monitor-rust-daemon.md) `[Active]`
    - Implementing a standalone Rust daemon with 30-second polling and round-robin public DNS resolution across 5 independent providers (Cloudflare, Quad9, Google, OpenDNS, Dynu).
 3. 🟡 [**Custom API Security Hardening & Threat Analysis**](../../01-plans/homelab/api-security-hardening.md) `[Active]`
@@ -92,6 +93,7 @@ Operational runbooks and procedures for daily administration:
 * [**Brain GitOps & Auto-Sync Deployment Pipeline**](../../04-learning/guides/homelab/brain-gitops-deployment-pipeline.md) — Technical runbook on how Brain commits automatically validate and publish to `docs.roadtotech.me`.
 * [**Dynu DDNS Domain Configuration Troubleshooting Runbook**](../../04-learning/guides/homelab/dynu-ddns-troubleshooting.md) — Diagnostic and recovery steps for WAN address synchronization issues.
 * [**Diagnosing Unexpected Server Shutdowns Runbook**](../../04-learning/guides/homelab/server-unexpected-shutdown-diagnosis.md) — Diagnostic procedure and checklist for investigating hardware thermal trips, power loss, and unexpected crashes.
+* [**Homelab Architecture Consolidation Documents Reorganization Walkthrough**](../../04-learning/guides/homelab/architecture-docs-reorganization-walkthrough.md) — Operational walkthrough covering MADR 4.0 standardization, narrative discussion expansion, authoritative plan framing, and consolidation lineage reorganization.
 
 ---
 
@@ -117,15 +119,16 @@ Archived and foundational documentation for completed milestones:
 * [**Migrating from Legacy Multirepo (v3) to 3-Tier Provenance Architecture (v4)**](../../02-discussions/homelab/architecture-migration-v3-to-v4.md) — Evaluated multirepo friction (source pollution, repo inflation, state co-location) vs 3-tier decoupling; resolved via Roadmap v4 adoption.
 
 ### Completed Plans
-* 🟢 [**Architecture Consolidation & Hardening Roadmap v3**](../../01-plans/homelab/architecture-consolidation-roadmap-v3.md) (Superseded by v4; established controller authority, mail relocation plan, and manifest convergence)
-* 🟢 [**Architecture Consolidation Implementation Guide v3**](../../01-plans/homelab/architecture-consolidation-implementation-guide-v3.md) (Superseded by v4)
+* 🟢 [**Homelab Architecture Consolidation Documents Reorganization**](../../01-plans/homelab/architecture-docs-reorganization.md) — Reorganized consolidation documentation across the epistemic triad (ADR MADR 4.0, narrative Discussion, authoritative Plan) and created `01-plans/homelab/consolidation/` lineage directory.
+* 🟢 [**Architecture Consolidation & Hardening Roadmap v3**](../../01-plans/homelab/consolidation/architecture-consolidation-roadmap-v3.md) (Superseded by v4; established controller authority, mail relocation plan, and manifest convergence)
+* 🟢 [**Architecture Consolidation Implementation Guide v3**](../../01-plans/homelab/consolidation/architecture-consolidation-implementation-guide-v3.md) (Superseded by v4)
 * 🟢 [**Diun Load-Shaping, Workload Exemption & Authenticated SMTPS Delivery (2026-09-24)**](../../03-records/debug/2026-09-24-diun-workload-isolation-and-load-shaping.md) — Resolved 6 post-deployment issues: Portainer bcrypt `$` interpolation, high-concurrency DNS load mitigated via `WORKERS=6` + `JITTER=30s`, local-build exemptions decentralized to `Sites/*`, and Diun migrated to port 465 SMTPS with dedicated service account. 19 images clean, mail delivered authenticated.
 * 🟢 [**Clean Deprecation of Portainer from Core**](../../01-plans/homelab/portainer-deprecation-plan.md)
 * 🟢 [**Stalwart Mail Server & SnappyMail Webmail Deployment**](../../01-plans/homelab/stalwart-email-server-implementation-plan.md)
 * 🟢 [**Multirepo Refactor of Homepage & Learning Hub**](../../01-plans/homelab/multirepo-refactor-homepage-courses.md)
-* 🟢 [**Architecture Consolidation & Hardening Roadmap v2**](../../01-plans/homelab/architecture-consolidation-roadmap-v2.md) (Superseded by v3; P0 GitOps trust boundary & automated invariant testing completed)
-* 🟢 [**Architecture Consolidation Implementation Guide v2**](../../01-plans/homelab/architecture-consolidation-implementation-guide-v2.md) (Superseded by v3)
-* 🟢 [**Architecture Consolidation & Hardening Roadmap v1**](../../01-plans/homelab/architecture-consolidation-roadmap.md) (Superseded by v2)
+* 🟢 [**Architecture Consolidation & Hardening Roadmap v2**](../../01-plans/homelab/consolidation/architecture-consolidation-roadmap-v2.md) (Superseded by v3; P0 GitOps trust boundary & automated invariant testing completed)
+* 🟢 [**Architecture Consolidation Implementation Guide v2**](../../01-plans/homelab/consolidation/architecture-consolidation-implementation-guide-v2.md) (Superseded by v3)
+* 🟢 [**Architecture Consolidation & Hardening Roadmap v1**](../../01-plans/homelab/consolidation/architecture-consolidation-roadmap.md) (Superseded by v2)
 * 🟢 [**Turn `homelab-core` into a Declarative NixOS Appliance**](../../01-plans/homelab/nixos-appliance-migration.md)
 * 🟢 [**Core & Sites Cutover and Testing Plan**](../../01-plans/homelab/core-sites-cutover-testing-plan.md)
 * 🟢 [**appctl Refactor & Decentralized `app.yaml` Metadata Architecture**](../../01-plans/homelab/refactor-and-metadata-sync.md)
