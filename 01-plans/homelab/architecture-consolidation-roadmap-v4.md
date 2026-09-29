@@ -13,13 +13,15 @@ tags:
   - provenance
 ---
 
-# Architecture Consolidation & Hardening Roadmap v4
+# Architecture Consolidation & Hardening Roadmap & Execution Plan v4
 
-> **Supersedes**: [Architecture Consolidation & Hardening Roadmap v3](architecture-consolidation-roadmap-v3.md)
+> **Supersedes**: [Architecture Consolidation & Hardening Roadmap v3](architecture-consolidation-roadmap-v3.md) and [Architecture Consolidation Implementation Guide v3](architecture-consolidation-implementation-guide-v3.md)
 >
 > **Current Platform Baseline**: Commit `246b587` (NixOS standalone appliance, consolidated docs, Portainer deprecated, Stalwart mail & SMTPS submission, Dozzle auth, Diun jitter/worker pool, Gitea Actions CI).
 >
-> 📋 **Companion Execution Guide**: [`architecture-consolidation-implementation-guide-v4.md`](architecture-consolidation-implementation-guide-v4.md)
+> **Architectural Decision Record**: [`03-records/decisions/homelab-3tier-architecture-and-provenance.md`](../../03-records/decisions/homelab-3tier-architecture-and-provenance.md)
+>
+> **Target System**: `roadtotech.me` (NixOS appliance `Core/`, application workloads `Sites/`)
 
 ---
 
@@ -36,6 +38,8 @@ This coupled model created three fundamental architectural liabilities:
 
 **Roadmap v4 decouples software development from deployment configuration and platform orchestration.** It formalizes a clean **3-Tier Architecture**, introduces **declarative source provenance**, defines **two workload deployment classes** (Source-Backed vs. Image-Only), and establishes **two operational inspection axes with three independent revision identities**.
 
+Furthermore, this unified document consolidates both the architectural specifications and the step-by-step phased execution deliverables (P0 through P5) into a single, cohesive source of truth.
+
 ---
 
 ## Core Architectural Principles
@@ -48,7 +52,7 @@ This coupled model created three fundamental architectural liabilities:
 3. **Pure Git Provenance Over Forge Coupling**: Manifests declare canonical Git URLs and refs (`source.url`, `source.ref`). Manifests remain forge-agnostic; platform-level forge integrations (API tokens, webhooks) belong strictly to Core.
 4. **Explicit Ref Semantics**: Moving branches (e.g. `ref: main`) track upstream development; pinned tags (`ref: v1.4.2`) or commit SHAs declare intentional release locks.
 5. **Two Workload Deployment Classes**: Source-backed workloads declare upstream provenance; off-the-shelf workloads declare no `source` block and rely on registry image tags/digests.
-6. **Platform Legibility Over Elaboration (Minimal Control Paths & KISS)**: Simplicity is defined by the fewest independent concepts and control paths. Delivery remains strictly linear (`source push -> CI -> GitOps -> appctl update -> Compose`), avoiding secondary orchestration subsystems, message queues, or deployment databases.
+6. **Platform Legibility Over Elaboration (Minimal Control Paths & KISS)**: Simplicity is defined by the fewest independent concepts and control paths, not fewest files. Delivery remains strictly linear (`source push -> CI -> GitOps -> appctl update -> Compose`), avoiding secondary orchestration subsystems, message queues, or deployment databases.
 7. **Core Registry Authority**: The repository being admitted must never define its own admission trust boundary. Core authoritatively owns admission paths and alias resolution.
 8. **Single Manifest Contract**: Exactly one typed schema and parser (`core_manifest.py`) is consumed across `appctl`, `gitops_dispatcher`, and dashboard sync tooling.
 9. **Two Operational Inspection Axes with Three Revision Identities**: Operational inspection is evaluated across two orthogonal axes: **Deployment Configuration State** (Sites checkout freshness) and **Software Provenance State** (upstream source vs. deployed container). The system ledger records three distinct, independent identity facts: `deployment_config_revision` (Sites commit SHA), `source_revision` (upstream source commit SHA), and `artifact_digest` (immutable OCI image SHA256 digest).
@@ -98,160 +102,57 @@ flowchart TB
 
         subgraph SEC_CAP["Core Capabilities"]
             STAL["Stalwart Mail Server (smtp.roadtotech.me)"]
+            GIT["Gitea Forge (Internal Git & OCI)"]
         end
 
-        subgraph SEC_OPS["Operations & Controllers"]
-            direction LR
-            CTL_SYS["NixOS / systemd (Host)"]
-            CTL_GOP["homelab-gitops (Deployer)"]
-            CTL_APP["appctl CLI (Reconciliation & Diagnostics)"]
-            CTL_OBS["Diun / Watchtower / Dozzle"]
+        subgraph SEC_OPS["Operational Controllers"]
+            ACT["appctl (Reconciliation & Diagnostics)"]
+            GOP["GitOps Dispatcher (Admission & Serialization)"]
         end
     end
 
-    CI --> OCI
-    SRC_OTS --> OCI
-    OCI -.->|"Image Pull"| TIER3
-    SITE_CATALOG -->|"Deployment Intent"| CTL_GOP
-    SITE_CATALOG -.->|"Metadata & Ingress"| CTL_APP
-    STATE -.->|"Bind Mount"| TIER3
-    CTL_APP -.->|"Inspects Labels"| TIER3
+    CI -->|Pushes Artifact| OCI
+    OCI -->|Referenced By| SITE_CATALOG
+    SITE_CATALOG -->|Mounted Into| APP_STATE
+    GOP -->|Triggers| ACT
+    ACT -->|Reconciles Deployment| SITE_CATALOG
+    SITE_CATALOG -.->|Exposed Via| TR
+    TR --> AUTH
+    AUTH --> LDAP
 ```
 
-### The Two Workload Deployment Classes
+### The Seven Platform Primitives
 
-| Workload Class | Manifest Contract (`app.yaml`) | Upstream Tracking Strategy | Freshness Indicator | Example Workloads |
-| :--- | :--- | :--- | :--- | :--- |
-| **Class A: Source-Backed** | `source:` block present (`type: git`, `url`, `ref`) | `git ls-remote <url> <ref>` compared against container OCI label `org.opencontainers.image.revision` | Exact match vs. Remote Revision Changed | `bitetrack`, `doc2site`, `courses` |
-| **Class B: Image-Only (Off-the-shelf)** | `source:` block omitted | Image tag and SHA256 digest tracked via Docker daemon and Diun/Watchtower | Registry tag update / Digest drift | `jellyfin`, `stirling`, `snappymail`, `mongodb` |
-
----
-
-## Part 2: Controller Authority Matrix
-
-With decoupled software repositories and deployment descriptors, the controller matrix explicitly defines authority across the entire build, admission, and deployment lifecycle:
-
-| Resource / Lifecycle Stage | Authoritative Controller | Permitted Secondary Actors | Prohibited Actors | Conflict Resolution Policy |
-| :--- | :--- | :--- | :--- | :--- |
-| **Application Software & Tests** | Developer Git (`main`) | CI Runner (`act_runner`) | GitOps, `appctl` | Software repo is source of truth. Homelab cannot alter source code. |
-| **Container Image Building** | CI Engine (Gitea Actions) | Operator manual `docker build` | Runtime GitOps receiver | CI publishes immutable tagged image with OCI revision label. |
-| **Host System Configuration** | NixOS (`configuration.nix`) | Manual `nixos-rebuild` by operator | `appctl`, GitOps, containers | Git repository is desired state; local rebuild applies. Direct editing of `/etc` prohibited. |
-| **Host Secrets** | SOPS (`secrets.yaml`) | `sops` CLI with host age key | Unprivileged users, CI runners | Secrets decrypted directly to `/run/secrets/` via `sops-nix`. |
-| **Core Compose Stack** | Core Git (`main` branch) | Operator via `appctl --core` / `docker compose` | GitOps webhook (auto-deploy disabled for Core) | Core updates require human operator validation. |
-| **Workload Deployment Intent** | Sites Git (`main` branch) | Operator via `appctl` | Direct container modification over SSH | Sites repository owns Compose and `app.yaml`. |
-| **Workload Runtime Execution** | `homelab-gitops` & `appctl` | Docker daemon (auto-restart) | Watchtower (for pinned workloads) | Per-target filesystem lock (`.gitops.lock`) serializes `appctl` and GitOps. |
-| **Workload Persistent State** | Workload Container / System | Backup automation | Git tracking | Runtime state lives in `~/var/lib/homelab/<app>/`; excluded from Sites Git. |
-| **Dashboard Catalog** | `appctl sync` / engine | Homepage container (consumes config) | Direct edits to Homepage YAML | Generated deterministically from Core inventory + discovered Sites manifests. |
-
-### Resource & State Ownership Matrix
-
-| Resource | Owner | Location | Desired State Source | Runtime State Form |
-| :--- | :--- | :--- | :--- | :--- |
-| **Application Source** | Dev / Git | External Git repo | Upstream Git | Git commit graph |
-| **Application Artifact** | Registry | OCI Registry / Local Cache | CI build of Source | Docker image with `org.opencontainers.image.revision` |
-| **Deployment Compose** | Sites | `Sites/<app>/docker-compose.yml` | Sites Git | Container runtime |
-| **Workload Manifest** | Sites | `Sites/<app>/app.yaml` | Sites Git | Parsed by `core_manifest.py` at deployment |
-| **Workload Persistent State** | Workload | `~/var/lib/homelab/<app>/` | — (runtime-generated) | Filesystem / persistent storage |
-| **Stalwart mail store** | Stalwart | `Core/config/stalwart/data` | — (runtime-generated) | Filesystem |
-| **SnappyMail client state**| SnappyMail | `~/var/lib/homelab/snappymail/` | — (runtime-generated) | Workload filesystem |
-| **NixOS host config** | Core | `Core/nixos/` | Core Git | Applied via `nixos-rebuild` |
-| **SOPS secrets** | Core | `Core/nixos/secrets.yaml` | Core Git (encrypted) | `/run/secrets/` (decrypted) |
+| Primitive | Epistemic Role | Operational Responsibility |
+| :--- | :--- | :--- |
+| **Software Repository** | Source | Application code, unit tests, `Dockerfile`, CI workflows. Zero Homelab coupling. |
+| **CI Engine (Gitea Actions)** | Build | Compiles code, runs tests, injects `org.opencontainers.image.revision`, publishes OCI images. |
+| **OCI Container Image** | Artifact | Immutable intermediate build product and provenance object linking commit SHA to image digest. |
+| **Sites Catalog (`~/Sites`)** | Desired Deployment | Environment-specific manifests (`app.yaml`) and Compose definitions (`docker-compose.yml`). |
+| **GitOps Dispatcher** | Ingress & Admission | HMAC webhook authentication, Core registry admission control, and deployment serialization. |
+| **`appctl` Engine** | Inspection & Reconciliation | Manifest parsing, two-axis inspection, and declarative deployment reconciliation (`appctl update`). |
+| **Core Appliance (`~/Core`)** | Platform & Runtime | Declarative NixOS host, edge ingress (Traefik), Docker API proxy, SSO (Authelia/LLDAP), and shared capabilities (Stalwart). |
 
 ---
 
-## Part 3: Mail Architecture Rework & Zero-Data-Loss Relocation
+## Part 2: Declarative Source Provenance & Workload Classes
 
-### Topology Separation
+The manifest contract (`app.yaml`) formalizes the relationship between the deployment declaration and the software source code via an explicit `source:` block.
 
-Stalwart remains in Core as a platform capability (`smtp.roadtotech.me`); SnappyMail moves to `~/Sites/snappymail` as an **Image-Only Class B Workload** (`mail.roadtotech.me`).
-
-```text
-                     HOMELAB CORE
-                          │
-                  ┌───────▼────────┐
-                  │    Stalwart    │
-                  │  Mail Platform │
-                  │ smtp.roadtotech.me
-                  └───────┬────────┘
-                          │
-         ┌────────────────┴────────────────┐
-         │ (SMTP 465 / SMTPS)              │ (IMAP 993 / TLS)
-         ▼                                 ▼
-   HOMELAB CORE                      SITES WORKLOAD
-┌─────────────────┐               ┌─────────────────┐
-│      Diun       │               │   SnappyMail    │
-│ Platform Alerts │               │  Webmail Client │
-│                 │               │ mail.roadtotech.me
-└─────────────────┘               └─────────────────┘
-```
-
-Persistent mailbox data (`Core/config/stalwart/data`) remains in Core. SnappyMail user settings (`/var/lib/snappymail/_data_`) migrate to `~/var/lib/homelab/snappymail/` under verified pre-flight archive, hash verification, and a 14-day rollback retention window.
-
----
-
-## Part 4: GitOps Trust Boundary, CI Triggers & Deployment Reconciliation
-
-### The Source-Build $\to$ Deployment Reconciliation Pipeline
-
-Under the decoupled 3-tier model, the platform formalizes an authoritative end-to-end event chain from software commit to running container:
-
-```mermaid
-flowchart TD
-    subgraph CI_FLOW["1. SOFTWARE BUILD LIFECYCLE (Developer & CI)"]
-        SRC_PUSH["Push to Upstream Source<br/>(e.g., git.roadtotech.me/kiskaadee/bitetrack:main)"]
-        CI_JOB["Gitea Actions CI (act_runner)<br/>• Run tests & linters<br/>• Build OCI image<br/>• Embed org.opencontainers.image.revision<br/>• Push image to OCI registry"]
-        SRC_PUSH --> CI_JOB
-    end
-
-    subgraph TRIGGER["2. DEPLOYMENT TRIGGER"]
-        HOOK["CI Deployment Webhook<br/>(Authenticated POST /webhook/deploy/<app>)"]
-        CI_JOB -->|"On Image Publish Success"| HOOK
-    end
-
-    subgraph RECONCILE["3. DEPLOYMENT RECONCILIATION (GitOps & appctl)"]
-        GOP["homelab-gitops Dispatcher<br/>• Verify HMAC & Core registry<br/>• Acquire .gitops.lock<br/>• Delegate execution"]
-        UPDATE["appctl update <app><br/>• Pull Sites deployment state<br/>• docker compose pull (latest published artifact)<br/>• docker compose up -d (recreate container)<br/>• Verify health readiness<br/>• Record deployment truth ledger"]
-        HOOK --> GOP --> UPDATE
-    end
-```
-
-### The Invariant Contract for `appctl update`
-
-`appctl update` is authoritatively defined as a **Deployment Reconciliation Operation**:
-- **Role**: Reconciles a deployed workload with its declared desired state and the newest available container artifact.
-- **Actions Performed**:
-  1. Pulls the latest deployment configuration from the Sites repository.
-  2. Executes `docker compose pull` to retrieve the latest published container image.
-  3. Executes `docker compose up -d` to recreate containers with updated images/configurations.
-  4. Runs post-deployment health probes.
-  5. Records the 3-axis deployment truth ledger (`deployment_config_revision`, `source_revision`, `artifact_digest`).
-- **Prohibited Behavior**: `appctl update` **never** clones application source code or compiles software on the Homelab appliance host. All source code compilation belongs 100% to CI runners (`act_runner`).
-
-### Trust Boundary Invariants
-
-1. **Inverted Registry Authority**: Workload manifests cannot expand admission trust boundaries or register arbitrary aliases. All routing decisions rely strictly on Core's authoritative registry (`Core/config/deployments.yaml`).
-2. **Systemd Sandboxing**: `homelab-gitops.service` runs under dedicated sandboxing (`ProtectSystem=strict`, `NoNewPrivileges=true`, restricted `ReadWritePaths`).
-3. **Pre-Deployment Compose Policy**: GitOps validates `docker-compose.yml` against strict security invariants (no privileged mode, no host networking, no Docker socket mounts) before execution.
-
----
-
-## Part 5: Manifest Contract Convergence (Schema v1.0)
-
-### Manifest Specification
-
-`app.yaml` declares workload metadata, source provenance, and deployment policy:
+### Class A: Source-Backed Workloads
+Used for custom backend projects, internal utilities, and forked codebases where upstream Git revisions must be tracked directly:
 
 ```yaml
 schemaVersion: "1.0"
 name: "bitetrack"
 displayName: "BiteTrack"
-description: "Nutritional tracking and pantry inventory"
+description: "Nutrition & Recipe Management API"
 category: "Productivity"
 
-# Optional: Present for Source-Backed workloads, omitted for Image-Only
+# Declarative Upstream Software Provenance
 source:
   type: git
-  url: "https://git.roadtotech.me/kiskaadee/bitetrack.git"
+  url: "https://gitea.roadtotech.me/kiskaadee/bitetrack.git"
   ref: "main"
 
 network:
@@ -267,34 +168,103 @@ deployment:
       - docker-compose.yml
   healthcheck:
     type: http
-    path: "/api/health"
+    path: "/healthz"
     expectedStatus: 200
     timeoutSeconds: 30
 ```
 
-### Explicit `source.ref` Tracking Semantics
+### Class B: Image-Only Workloads
+Used for standard off-the-shelf applications (e.g. Jellyfin, SnappyMail, Stirling PDF) where Homelab is strictly deploying third-party container images:
 
-| `source.ref` Pattern | Semantic Meaning | `appctl` Remote Inspection Behavior |
-| :--- | :--- | :--- |
-| **Branch** (`main`, `stable`, `refs/heads/*`) | Moving upstream line of development | Queries remote ref SHA on `--fetch` via `git ls-remote`. Compares with deployed container's revision label. |
-| **Tag** (`v1.4.2`, `refs/tags/*`) | Pinned release tag | Treated as a pinned version. Deployed container revision must match the tag's commit SHA; moving branch HEADs are ignored. |
-| **Commit SHA** (40-char hex string) | Immutable commit pin | Static pin. No remote network checks needed. |
+```yaml
+schemaVersion: "1.0"
+name: "snappymail"
+displayName: "SnappyMail"
+description: "Lightweight Webmail Client"
+category: "Communication"
 
-### Transport Security & Remote Timeout Invariants
+# source: omitted entirely
 
-To prevent protocol injection, SSRF, or denial of service during inspection:
-1. **Permitted Git Transport Schemes**: `source.url` must strictly match one of:
-   - `https://` (e.g. `https://git.roadtotech.me/user/repo.git`)
-   - `ssh://` (e.g. `ssh://git@git.roadtotech.me:2223/user/repo.git`)
-   - `git@` (SCP syntax, e.g. `git@git.roadtotech.me:user/repo.git`)
-2. **Prohibited Schemes**: `file://`, `ext::`, custom helper schemes, or relative filesystem paths are rejected with `ManifestError`.
+network:
+  ingress: true
+  domain: "mail.roadtotech.me"
+  publishedPort: 8888
+  internalOnly: false
+
+deployment:
+  strategy: compose
+  preflight:
+    filesRequired:
+      - docker-compose.yml
+  healthcheck:
+    type: http
+    path: "/"
+    expectedStatus: 200
+    timeoutSeconds: 30
+```
+
+---
+
+## Part 3: Explicit `source.ref` Semantics
+
+The `source.ref` field governs how `appctl` and GitOps evaluate software freshness:
+
+| `source.ref` Value | Target Semantic | Freshness Evaluation (`--fetch`) | Intended Use Case |
+| :--- | :--- | :--- | :--- |
+| `main`, `master`, `develop` | **Moving Branch** | Resolves remote branch HEAD commit via `git ls-remote`. Reports `⚡ Revision Changed` if remote SHA != container label SHA. | Active internal projects under continuous deployment. |
+| `v1.2.3`, `release-2026.09` | **Release Tag** | Resolves tag target commit SHA. Pinned release; reports `📌 Pinned (<tag>)`. | Production services tracking stable release milestones. |
+| `a1b2c3d4e5...` (40-char SHA) | **Immutable Commit** | Validates exact commit SHA against container label. Static lock; no remote queries performed. | Strict reproducible testing and forensic debugging. |
+
+---
+
+## Part 4: Ancestry Analysis Trade-Off & `git ls-remote` Downgrade
+
+Early designs considered calculating exact "ahead/behind" commit distances for source-backed applications. However, evaluating Git history requires a full local clone of the application source tree.
+
+### Architectural Decision: Commit Equality via `git ls-remote`
+To prevent the Platform Host from cloning full Git repositories or storing local copies of application source trees, `appctl` explicitly downgrades ancestry evaluation to **commit equality verification**:
+
+```text
+git ls-remote <source.url> refs/heads/<source.ref>
+```
+
+- **Answers**: *"Does the remote ref point to the exact commit SHA stamped into the running container's `org.opencontainers.image.revision` label?"*
+- **Equality (`==`)**: Running container is up to date (`✓ Up to date (<sha>)`).
+- **Inequality (`!=`)**: Running container is stale (`⚡ Revision Changed (deployed: <d_sha>, remote: <r_sha>)`).
+- **Trade-off Accepted**: The platform foregoes commit distance counts (`"3 commits behind"`) in exchange for zero disk bloat, zero repository cloning, and minimal network overhead.
+
+### Transport Security & Timeouts
+1. **Permitted Schemes**: `source.url` must strictly use `https://`, `ssh://`, or `git@`.
+2. **Prohibited Schemes**: `file://`, `ext::`, or relative filesystem paths are rejected with `ManifestError`.
 3. **Execution Timeout**: Any network call invoking `git ls-remote` must be wrapped in a strict timeout (maximum 10 seconds). Failure to reach remote upstream degrades gracefully to an error badge without hanging the CLI.
 
 ---
 
-## Part 6: Two Operational Inspection Axes & Source Provenance
+## Part 5: Clean Persistent State Root (`~/var/lib/homelab/<app>/`)
 
-### The Inspection Contract in `appctl`
+To prevent accidental Git commits of SQLite databases, session tokens, or uploaded assets, **all mutable application runtime state is isolated from version-controlled directories**:
+
+```text
+~/Sites/<app>/                      --> Version-Controlled Git Deployment Directory
+    ├── app.yaml                    --> Pure Manifest
+    └── docker-compose.yml          --> Declarative Compose Spec
+
+~/var/lib/homelab/<app>/            --> Host State Root (Outside Git)
+    ├── data/                       --> Workload SQLite / Data Files
+    └── config/                     --> Dynamic Runtime Configuration
+```
+
+Docker Compose files reference host state explicitly via:
+```yaml
+services:
+  app:
+    volumes:
+      - /home/kiskaadee/var/lib/homelab/snappymail/data:/var/lib/snappymail/_data_
+```
+
+---
+
+## Part 6: Two Operational Inspection Axes & Source Provenance
 
 `appctl` separates local deployment configuration checks from upstream software provenance checks:
 
@@ -321,9 +291,24 @@ Axis 2: Software Provenance State (Upstream Source vs. Runtime Container)
 
 ---
 
-## Part 7: Parallel Track Coordination (Architecture vs. appctl-v2)
+## Part 7: Mandatory Working Rules & Parallel Track Coordination
 
-Track A (Architecture Consolidation on `main`) and Track B (`appctl-v2` in worktree `~/Projects/active/appctl-refactor` on `refactor/appctl-rework`) coordinate via five stable integration seams:
+### Mandatory Working Rules
+
+1. **Rule 1 — One Production Transition at a Time**: Never combine mail infrastructure relocation, GitOps privilege modifications, and manifest schema refactors into single sweeping production changes. Keep each architectural phase isolated on dedicated git branches.
+2. **Rule 2 — Absolute Preservation of Application State**: State-bearing workloads must never be modified using destructive commands (`rm -rf`, `docker compose down -v`, or unverified moves). State directory migrations require an explicit pre-flight freeze, recursive archive with preserved timestamps/permissions, and parallel staging before live cutover.
+3. **Rule 3 — Single Source of Truth**: Never duplicate service definitions or trust boundaries across disparate files. Core owns the platform catalog; the authoritative registry owns admission paths; `core_manifest.py` owns workload manifest parsing.
+4. **Rule 4 — The User Controls Production Transitions**: The agent investigates, crafts local code changes, and verifies tests locally. The user reviews atomic commit proposals, merges to `main`, and runs production deployments (`nixos-rebuild switch`, container recreation).
+5. **Rule 5 — Immutable Integration Seams Across Tracks**: The interfaces connecting Track A (`main`) and Track B (`appctl-v2`) must not undergo uncoordinated drift: CLI syntax, `resolve` JSON contract, canonical service identifiers, and Homepage generation semantics remain stable until Milestone P3 convergence.
+6. **Rule 6 — Minimal Control Path & Orchestrator Restraint (KISS)**: The deployment delivery pipeline must remain strictly linear and minimal:
+   $$\text{Source Push} \longrightarrow \text{CI Build} \longrightarrow \text{GitOps Ingress} \longrightarrow \text{appctl update} \longrightarrow \text{Compose Up}$$
+   Do not introduce secondary orchestration systems, message brokers, queues, deployment databases, or rollback controllers around `appctl`. `appctl update` operates strictly as a declarative, standalone deployment reconciliation primitive.
+
+### Parallel Track Coordination (Architecture vs. appctl-v2)
+
+Two major engineering tracks are active concurrently:
+- **Track A (Production Architecture)**: Based on `main` in `/home/kiskaadee/Homelab/Core`. Owns host configuration, service topology (P1 mail migration), GitOps privilege separation (P2), and platform readiness (P4).
+- **Track B (Implementation Modernization)**: Based on `refactor/appctl-rework` in `/home/kiskaadee/Projects/active/appctl-refactor`. Implements typed domain hierarchy (`SitesApp`, `CoreService`, `SourceConfig`), PyYAML ingestion, Docker label inspection, and TDD unit tests.
 
 ```text
                     ┌─────────────────────────┐
@@ -352,71 +337,166 @@ main
         └── integrate appctl-v2 here (CONVERGENCE POINT)
 ```
 
-### The 5 Stable Seams
-1. **CLI Invocation Syntax**: Preserved identically.
-2. **`resolve` JSON Contract**: `cmd_resolve` output schema unchanged.
-3. **Canonical Identity**: Workload identifiers remain stable.
-4. **Taxonomy**: Strict classification between Core platform capabilities and Sites workloads.
-5. **Homepage Sync Semantics**: Compiles `services.yaml` from Core inventory + discovered Sites manifests without schema breaks.
+---
+
+## Part 8: Phased Implementation Plan & Technical Execution
+
+### Phase Status Overview
+
+| Phase / Workstream | Status | Target Scope / Key Deliverables | Verification Gates |
+| :--- | :--- | :--- | :--- |
+| **P0: Architecture Re-Baseline** | **📐 DRAFTED** | 3-Tier taxonomy, source vs image-only workload classes, controller authority matrix, resource ownership matrix, dependency graphs. | Documentation reviews, structural linting. |
+| **P1: Mail Topology Realignment** | **🎯 UP NEXT** | Move Stalwart to `smtp.roadtotech.me`; move SnappyMail to `~/Sites/snappymail` (`mail.roadtotech.me`) with zero data loss. | Verified rollback archive, state parity proof, IMAP/SMTP auth, address book survival, Diun delivery test. |
+| **P2: GitOps Privilege & Authority** | **⏳ PENDING** | Authoritative Core repository registry, decoupled CI vs deploy webhook routing, Brain pull-only policy, workload Compose security policy, systemd sandboxing. | Flake check, unit tests for admission and containment, path traversal tests, Compose policy validation tests. |
+| **P3: Manifest Convergence** | **⏳ PENDING** | Schema v1.0, single typed parser library (`core_manifest.py`), `SourceConfig` domain model & ref semantics, integrate `appctl-v2`. | Manifest validation in CI, schema lint tests, unit tests for `SourceConfig`. |
+| **P4: Platform Lifecycle & Health** | **⏳ PENDING** | Service readiness probes in Core Compose, `condition: service_healthy` startup gating, image update policy. | Docker health inspects, dependency startup ordering tests. |
+| **P5: Deployment Truth & Ledger** | **⏳ PENDING** | Two operational inspection axes with three revision identities (`deployment_config_revision`, `source_revision`, `artifact_digest`), atomic status record, `appctl history`. | Dispatcher status test fixtures, ledger serialization accuracy tests. |
 
 ---
 
-## Part 8: Roadmap Execution Phases
+### Phase 0: Architecture Re-Baseline & Structural Catalog
 
-```text
-┌─────────────────────────────────────────────────────────────┐
-┌ P0: Architecture Re-Baseline & 3-Tier Separation            │
-│     - Formalize 3-Tier Taxonomy & Ownership Matrices        │
-│     - Define Source-Backed vs Image-Only Workload Classes   │
-│     - Establish Provenance Contract & OCI Label Standard    │
-└──────────────────────────────┬──────────────────────────────┘
-                               │
-┌──────────────────────────────▼──────────────────────────────┐
-│ P1: Mail Topology Realignment & Zero-Data-Loss Migration    │
-│     - Stalwart to smtp.roadtotech.me (Core Platform)        │
-│     - SnappyMail State Backup & Transfer to ~/Sites         │
-│     - SnappyMail as Image-Only Class B Workload             │
-│     - Minimal compatibility patch to legacy appctl_engine   │
-└──────────────────────────────┬──────────────────────────────┘
-                               │
-┌──────────────────────────────▼──────────────────────────────┐
-│ P2: GitOps Privilege & Authority Hardening                  │
-│     - Authoritative Repository Registry (Core-owned)        │
-│     - Decoupled CI Build Webhooks vs GitOps Deploy Webhooks │
-│     - Second Brain Read-Only Data-Vault Policy              │
-│     - Workload Compose Security Policy Enforcement          │
-│     - Systemd Service Confinement & Sandboxing              │
-└──────────────────────────────┬──────────────────────────────┘
-                               │
-┌──────────────────────────────▼──────────────────────────────┐
-│ P3: Manifest Contract Convergence & appctl-v2 Integration   │
-│     - Schema v1.0 & Single Typed Parser (core_manifest.py)  │
-│     - SourceConfig Domain Model & Manifest Validation       │
-│     - CONVERGENCE: appctl-v2 replaces legacy engine on main │
-│     - Core Service Inventory Normalization                  │
-└──────────────────────────────┬──────────────────────────────┘
-                               │
-┌──────────────────────────────▼──────────────────────────────┐
-│ P4: Platform Lifecycle & Readiness Contracts                │
-│     - Service Healthchecks & condition: service_healthy     │
-│     - Diun / Stalwart / LLDAP Startup Serialization         │
-│     - Watchtower / Image Update Governance                  │
-└──────────────────────────────┬──────────────────────────────┘
-                               │
-┌──────────────────────────────▼──────────────────────────────┐
-│ P5: Deployment Truth & Historical Ledger                    │
-│     - Two Inspection Axes & Three Revision Identities:      │
-│       * deployment_config_revision (Sites Git commit)       │
-│       * source_revision (org.opencontainers.image.revision) │
-│       * artifact_digest (immutable OCI RepoDigest sha256)   │
-│     - Atomic Status Ledger (duration, phase, failure cause) │
-│     - appctl deployment status & history views              │
-└─────────────────────────────────────────────────────────────┘
-```
+- **Deliverable 0.1: Service Taxonomy & 3-Tier Architecture**:
+  Update `Core/docs/architecture.md` formalizing Tier 1 (Software), Intermediate Artifacts (OCI), Tier 2 (Sites Deployment), and Tier 3 (Platform Core), along with Class A (Source-Backed) and Class B (Image-Only) classifications.
+- **Deliverable 0.2: Controller Authority Matrix**:
+  Document authoritative control loops across systemd, Docker Compose, GitOps, CI runners, and `appctl`.
+- **Deliverable 0.3: Resource & State Ownership Matrix**:
+  Formalize persistent state ownership for every component: owner, filesystem location (`~/var/lib/homelab/<app>/`), desired state source, and runtime state form.
 
-> [!NOTE]
-> **Authoritative Definition of `artifact_digest`**:
-> `artifact_digest` is defined as the immutable OCI registry digest (`sha256:...`) of the exact image manifest from which the running container was created. In Docker inspect, it corresponds to the container image's `RepoDigests` entry, distinctly separating it from local daemon image IDs or mutable release tags.
+---
+
+### Phase 1: Mail Topology Realignment & Zero-Data-Loss Migration Runbook
+
+#### Architectural Invariants
+- **Stalwart**: Remains in Core as platform capability. Public endpoint moves to `smtp.roadtotech.me`. Persistent mail store (`Core/config/stalwart/data`) is never moved.
+- **SnappyMail**: Moves from `Core/docker-compose.yml` to `~/Sites/snappymail` as an **Image-Only Class B Workload** (`mail.roadtotech.me`). Persistent state (`Core/config/snappymail/data`) is migrated to `~/var/lib/homelab/snappymail/`.
+
+#### Execution Runbook
+1. **Pre-Migration Health Audit**:
+   ```bash
+   docker ps --filter "name=stalwart" --filter "name=snappymail" --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+   ```
+2. **State Freeze**: Halt SnappyMail to prevent database mutation during backup:
+   ```bash
+   docker stop snappymail
+   ```
+3. **Verified Pre-Cutover Backup Archive**:
+   ```bash
+   mkdir -p ~/backups/pre-mail-cutover-$(date +%F)
+   tar -czpf ~/backups/pre-mail-cutover-$(date +%F)/snappymail-data.tar.gz -C ~/Homelab/Core/config/snappymail data
+   sha256sum ~/backups/pre-mail-cutover-$(date +%F)/snappymail-data.tar.gz > ~/backups/pre-mail-cutover-$(date +%F)/snappymail-data.tar.gz.sha256
+   tar -tzf ~/backups/pre-mail-cutover-$(date +%F)/snappymail-data.tar.gz | head -n 10
+   ```
+4. **Workload Scaffolding & State Directory Provisioning**:
+   - Provision isolated persistent state root:
+     ```bash
+     mkdir -p ~/var/lib/homelab/snappymail
+     ```
+   - Create `~/Sites/snappymail/app.yaml` declaring schema v1.0 (Class B Image-Only).
+   - Create `~/Sites/snappymail/docker-compose.yml` mounting `/home/kiskaadee/var/lib/homelab/snappymail:/var/lib/snappymail/_data_`, connected to `proxy-net`, with Traefik ingress labels for `mail.roadtotech.me`.
+5. **Non-Destructive State Replication & Parity Proof**:
+   ```bash
+   cp -a ~/Homelab/Core/config/snappymail/data/* ~/var/lib/homelab/snappymail/
+   diff -r ~/Homelab/Core/config/snappymail/data ~/var/lib/homelab/snappymail
+   ```
+6. **Stalwart Endpoint Cutover in Core**:
+   - Update `Core/docker-compose.yml`: Change Stalwart domain Traefik labels from `mail.roadtotech.me` to `smtp.roadtotech.me`, set `STALWART_PUBLIC_URL=https://smtp.roadtotech.me`, and remove SnappyMail service block.
+   - Apply Core changes:
+     ```bash
+     cd ~/Homelab/Core && docker compose up -d stalwart
+     ```
+7. **Workload Launch & Live Verification**:
+   - Launch SnappyMail:
+     ```bash
+     cd ~/Sites/snappymail && docker compose up -d
+     ```
+   - Verify webmail at `https://mail.roadtotech.me`, user logins, contact address books, IMAP/SMTP connectivity to Stalwart, and Diun SMTPS alert delivery on port 465.
+
+---
+
+### Phase 2: GitOps Privilege & Authority Hardening
+
+- **Deliverable 2.1: Authoritative Core Repository Registry**:
+  Establish `Core/config/deployments.yaml` as the sole authority for admitted deployment repositories. Manifests in `Sites` cannot declare aliases or alter admission paths.
+- **Deliverable 2.2: The CI-to-Deployment Reconciliation Pipeline**:
+  Formalize the authoritative event flow from software build to live runtime:
+  1. Pushes to Application Source repositories trigger Gitea Actions CI to test and build container images, embedding `org.opencontainers.image.revision`.
+  2. On successful image publishing, CI emits an authenticated deployment event to GitOps (`POST /webhook/deploy/<app>`).
+  3. GitOps verifies HMAC admission against Core's registry, acquires `.gitops.lock`, and invokes `appctl update <app>`.
+  4. `appctl update` reconciles the deployment: pulls Sites deployment descriptors, pulls the published image (`docker compose pull`), recreates containers (`docker compose up -d`), runs healthchecks, and writes the ledger.
+  5. *Prohibited*: Host appliance never compiles code or clones application source trees.
+- **Deliverable 2.3: Second Brain Read-Only Data-Vault Policy**:
+  Designate `~/Brain` as a read-only vault with `strategy: pull-only`, isolated from Docker socket access.
+- **Deliverable 2.4: Workload Compose Security Policy**:
+  Implement pre-flight Compose AST validation in `Core/scripts/gitops_dispatcher.py` to reject:
+  - `privileged: true`
+  - Direct Docker socket bind mounts (`/var/run/docker.sock`)
+  - `network_mode: host` or `pid: host`
+  - Host root mounts outside `~/var/lib/homelab/<app>/`
+- **Deliverable 2.5: Systemd Service Sandboxing**:
+  Update `Core/nixos/modules/gitops.nix` with strict systemd execution constraints (`ProtectSystem=strict`, `NoNewPrivileges=true`, restricted `ReadWritePaths`).
+
+---
+
+### Phase 3: Manifest Contract Convergence & appctl-v2 Integration
+
+- **Deliverable 3.1: Manifest Schema v1.0 & Parser Library (`core_manifest.py`)**:
+  Implement the single authoritative parser on `main`:
+  - Strongly-typed parsing using PyYAML and `@dataclass`.
+  - Implements `SourceConfig(type, url, ref)`: validates `source.type == "git"`, permitted transport schemes (`https://`, `ssh://`, `git@`), enforces 10s timeout on remote Git inspections, and resolves `source.ref` tracking semantics.
+  - Rejects unknown top-level keys.
+- **Deliverable 3.2: Workload Catalog Migration**:
+  Audit all `~/Sites/*/app.yaml` files:
+  - Source-backed apps (`doc2site`, `courses`): declare `source: { type: git, url: ..., ref: main }`.
+  - Image-only apps (`snappymail`, `jellyfin`, `stirling`): omit `source:` block.
+- **Deliverable 3.3: In-House Application Source Migration Runbook**:
+  For workloads where source code was previously co-located with deployment configs (e.g. `doc2site`):
+  1. Create standalone upstream Git repository on Gitea (e.g., `git.roadtotech.me/kiskaadee/doc2site`).
+  2. Move application source, `Dockerfile`, and tests to the new repo; strip all Homelab host/Traefik configuration.
+  3. Configure Gitea Actions CI workflow injecting `org.opencontainers.image.revision` and pushing to the local registry.
+  4. Update `Sites/doc2site/app.yaml` and `docker-compose.yml` referencing the published image.
+- **Deliverable 3.4: appctl-v2 Convergence**:
+  1. Cherry-pick `core_manifest.py` from `main` into `refactor/appctl-rework`.
+  2. Connect `appctl_engine_v2.py` to `core_manifest.py`.
+  3. Verify test suite passes (`pytest`, `ruff`, `pyright`).
+  4. Promote `appctl_engine_v2.py` to `appctl_engine.py` on `refactor/appctl-rework` and merge into `main`.
+
+---
+
+### Phase 4: Platform Lifecycle & Readiness Contracts
+
+- **Deliverable 4.1: Service Healthchecks & Dependency Gating**:
+  Add deterministic healthchecks in `Core/docker-compose.yml` and enforce `condition: service_healthy` across dependent chains:
+  - Traefik depends on socket-proxy healthy.
+  - Authelia depends on LLDAP healthy.
+  - Diun depends on Stalwart healthy.
+  - Dozzle/Homepage depend on Authelia healthy.
+- **Deliverable 4.2: Startup Serialization**:
+  Ensure clean platform restarts without authentication deadlocks or dropped alerts.
+- **Deliverable 4.3: Watchtower / Image Update Governance**:
+  Standardize automated container image updates and notifications.
+
+---
+
+### Phase 5: Deployment Truth & Historical Ledger
+
+- **Deliverable 5.1: Two Operational Inspection Axes & Three Revision Identities in GitOps Dispatcher**:
+  Record true deployment facts in `~/.local/state/homelab/gitops/ledger/<app>.json`:
+  ```json
+  {
+    "workload": "bitetrack",
+    "deployment_config_revision": "c8f12a4",
+    "source_revision": "e4a81b2",
+    "artifact_digest": "sha256:7b9c45e812a...",
+    "deployed_at": "2026-09-28T20:25:00Z",
+    "duration_seconds": 12.4,
+    "status": "success",
+    "failure_stage": null
+  }
+  ```
+  *Note: `artifact_digest` is extracted directly from container inspect `RepoDigests`, capturing the immutable OCI registry digest.*
+- **Deliverable 5.2: `appctl history` Command**:
+  Implement CLI inspection of the deployment ledger in `appctl_engine.py`.
 
 ---
 
