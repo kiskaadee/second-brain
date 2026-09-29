@@ -59,9 +59,9 @@ Architectural inquiries and problem statements currently under evaluation that h
 
 Implementation roadmaps currently in progress (`status: active`) that are actively being executed or scheduled for deployment:
 
-1. 🟡 [**Architecture Consolidation & Hardening Roadmap v3**](../../01-plans/homelab/architecture-consolidation-roadmap-v3.md) `[Active]`
-   - 5-tier service taxonomy, authoritative Core repository registry, Stalwart vs. SnappyMail zero-data-loss relocation, workload Compose security policy, unified typed manifest engine, and platform readiness contracts.
-   - 📋 *Execution Guide*: [**Architecture Consolidation Implementation Guide v3**](../../01-plans/homelab/architecture-consolidation-implementation-guide-v3.md)
+1. 🟡 [**Architecture Consolidation & Hardening Roadmap & Execution Plan v4**](../../01-plans/homelab/architecture-consolidation-roadmap-v4.md) `[Active]`
+   - Unified roadmap and execution blueprint: 3-tier architecture (Software vs. Deployment vs. Platform), OCI provenance model, two workload deployment classes, authoritative Core registry, Stalwart vs. SnappyMail zero-data-loss relocation, workload Compose security policy, unified typed manifest engine, linear control path (KISS), and two operational inspection axes with three revision identities.
+   - 🏛️ *Architectural Decision Record*: [**Homelab 3-Tier Architecture & Provenance**](../../03-records/decisions/homelab-3tier-architecture-and-provenance.md)
 2. 🟡 [**Rust Daemon Migration Plan: Standalone `dynu-monitor`**](../../01-plans/homelab/dynu-monitor-rust-daemon.md) `[Active]`
    - Implementing a standalone Rust daemon with 30-second polling and round-robin public DNS resolution across 5 independent providers (Cloudflare, Quad9, Google, OpenDNS, Dynu).
 3. 🟡 [**Custom API Security Hardening & Threat Analysis**](../../01-plans/homelab/api-security-hardening.md) `[Active]`
@@ -116,6 +116,8 @@ Archived and foundational documentation for completed milestones:
 * [**Core Service Qualification & Portainer Deprecation**](../../02-discussions/homelab/core-service-qualification-and-portainer-deprecation.md) — Evaluated platform service qualification criteria; resolved via complete deprecation of Portainer and retaining Gitea and CI runner decoupled.
 
 ### Completed Plans
+* 🟢 [**Architecture Consolidation & Hardening Roadmap v3**](../../01-plans/homelab/architecture-consolidation-roadmap-v3.md) (Superseded by v4; established controller authority, mail relocation plan, and manifest convergence)
+* 🟢 [**Architecture Consolidation Implementation Guide v3**](../../01-plans/homelab/architecture-consolidation-implementation-guide-v3.md) (Superseded by v4)
 * 🟢 [**Diun Load-Shaping, Workload Exemption & Authenticated SMTPS Delivery (2026-09-24)**](../../03-records/debug/2026-09-24-diun-workload-isolation-and-load-shaping.md) — Resolved 6 post-deployment issues: Portainer bcrypt `$` interpolation, high-concurrency DNS load mitigated via `WORKERS=6` + `JITTER=30s`, local-build exemptions decentralized to `Sites/*`, and Diun migrated to port 465 SMTPS with dedicated service account. 19 images clean, mail delivered authenticated.
 * 🟢 [**Clean Deprecation of Portainer from Core**](../../01-plans/homelab/portainer-deprecation-plan.md)
 * 🟢 [**Stalwart Mail Server & SnappyMail Webmail Deployment**](../../01-plans/homelab/stalwart-email-server-implementation-plan.md)
