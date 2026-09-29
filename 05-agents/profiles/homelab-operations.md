@@ -24,10 +24,11 @@ tags:
 * **Problem Space & Safety Constraints**:
   * **The "Local First" Rule & Workspace Isolation**: Edits are strictly authored in the local workspace on dedicated branches (`investigate/<topic>` or `fix/<topic>`); never directly on the remote server host via interactive SSH sessions. Read-only diagnostics require no branch.
   * **Remote Diagnostic Boundary**: Agents use SSH strictly for read-only inspections (`journalctl`, `docker logs`, `appctl info`, container `exec`). Production service restarts or deployments over SSH are strictly forbidden as autonomous agent operations.
-  * **Mandatory Execution Boundaries**: The agent must **never autonomously** create Git commits, push to any remote, merge branches, deploy to production, execute `nixos-rebuild`, or perform service restarts to roll out changes.
-  * **Proposal-Only Commits & Deployment Runbooks**: When local validation passes, the agent proposes atomic commits with rationale and validation proof, and provides structured deployment runbooks with rollback steps. The user owns all commit, branch merge, and production rollout transitions.
-  * **Interactive Execution Harness**: Follows a 6-part checkpoint review protocol (Current State, Reasoning, Changes, Validation, Next Action, Recovery) at meaningful milestones, pausing before crossing user-controlled boundaries.
-  * **Incident Debugging Invariant**: Directs investigative findings, hypothesis testing, and non-obvious troubleshooting lessons into the Second Brain inbox for staging and subsequent curation into `03-records/debug/`.
+  * **Mandatory Execution Boundaries**: The agent must **never autonomously** create Git commits on `main`, push to any remote, merge branches, deploy to production, execute `nixos-rebuild`, or perform service restarts to roll out changes.
+  * **Global Skill Delegation**:
+    * Diagnostic triage and 6-part checkpoints defer to the global skill **`engineering-investigation`**.
+    * Atomic commit slicing, Conventional Commit derivation, and branch readiness defer to the global skill **`git-commit`**.
+    * Incident RCA capture and architectural decisions defer to the global skill **`documentation-router`** (`03-records/debug/`, `03-records/decisions/`).
 
 ---
 
@@ -35,28 +36,14 @@ tags:
 
 ### A. Dual-File Architecture: Authoritative Contract (`AGENTS.md`) vs. Client Adapter (`CLAUDE.md`)
 The operational contract is partitioned into two files to solve the problem of multi-agent tooling drift:
-* **`AGENTS.md` as the Single Source of Truth**: Houses the universal, client-agnostic operational rules for the homelab appliance. It captures system topology, network endpoints, server integrity guardrails, the interactive execution loop, commit/deployment policies, and epistemic journaling standards.
+* **`AGENTS.md` as the Single Source of Truth**: Houses the universal, client-agnostic operational rules for the homelab appliance. It captures system topology, network endpoints, server integrity guardrails, deployment handoffs, and CI/CD invariants.
 * **`CLAUDE.md` as a Lean Client Adapter**: Instructs Claude Code to read and defer strictly to `AGENTS.md` without duplicating or redefining policy. It clarifies toolchain mechanisms (`.claude/rules/`, `.claude/skills/`, and hooks) and establishes a clear directive: *do not duplicate or override the operational rules in `AGENTS.md`*.
-* **Why this matters**: Duplicating guidelines across client-specific files (`CLAUDE.md`, `.cursorrules`, `.windsurfrules`) inevitably causes drift where agents follow conflicting rules. Anchoring everything in `AGENTS.md` guarantees identical guardrails regardless of which assistant or CLI runs the session.
 
-### B. The Interactive Execution Harness: Autonomous Safety with User Sovereignty
-Homelab operations balance two competing failure modes:
-1. **Unchecked Autonomy**: An agent that autonomously edits live servers, commits code, pushes to `main`, and runs `nixos-rebuild` risks taking down DNS, network connectivity, or container stacks with no operator oversight.
-2. **Command-by-Command Micromanagement**: An agent that halts and asks permission before running `docker logs` or evaluating flake checks is tedious and destroys diagnostic velocity.
-
-**The Solution**: Reversible, safe operations (read-only SSH queries, local workspace edits on isolated branches, local tests/linting) run autonomously. The agent halts at structured **checkpoints** (State, Reasoning, Changes, Validation, Next Action, Recovery) to explain what has been proven, pausing before crossing **user-controlled boundaries** (staging/committing, branch integration, production deployment, and NixOS rebuilds).
-
-### C. Workspace State vs. Epistemic Structure
-Branching policy is decoupled from diagnostic reasoning:
-* **Git branches represent repository states**:
-  * Read-only diagnostics do not modify tracked files and require no branch.
-  * When tracked repository files must change during an investigation (e.g. temporary instrumentation, reproduction configurations, exploratory patches), work is isolated on an `investigate/<topic>` branch.
-  * Straightforward remediation uses `fix/<topic>` or `feat/<topic>`.
-* **Git branches do not represent hypotheses**: Hypotheses belong to the scientific method and are documented in the diagnostic record/journal, not in ephemeral Git branches. Once root cause is proven, exploratory instrumentation is stripped so that only clean, atomic production commits are proposed.
-
-### D. Checkpoints vs. Durable Debug Record
-* **Checkpoints**: Transient execution-control mechanisms during the live session that keep the operator aligned on current state, reasoning, and upcoming actions.
-* **Debug Record (`03-records/debug/`)**: The durable historical, technical, and epistemic artifact. Checkpoints are not transcribed verbatim; rather, the verified progression of hypotheses, evidence, declarative changes, and recovery outcomes is synthesized into the permanent Second Brain knowledge base under `03-records/debug/` and cross-referenced in daily journals (`03-records/journal/`).
+### B. Global Skill Synergy
+Rather than defining custom, redundant execution loops in every repository, Homelab operations leverage the global workstation skills:
+1. **`engineering-investigation`**: Enforces the scientific method (Observe $\to$ Hypothesize $\to$ Test $\to$ Narrow $\to$ RCA $\to$ Fix $\to$ Validate $\to$ Verify) and halts at structured 6-part checkpoints before crossing state boundaries.
+2. **`git-commit`**: Discovers repository-local branch isolation rules, evaluates commit slice readiness, and derives evidence-based Conventional Commit messages while preventing direct commits to `main`.
+3. **`documentation-router`**: Acts as a second-order gatekeeper to evaluate whether incident findings warrant a durable Debug Record (`03-records/debug/`) or an ADR, eliminating unnecessary documentation boilerplate for routine fixes.
 
 ---
 
@@ -125,67 +112,32 @@ To protect operational safety and preserve user ownership:
 
 ---
 
-## 3. Interactive Troubleshooting & Execution Harness
+## 3. Operational Lifecycles & Global Skill Integration
 
-When diagnosing and remediating an issue, the agent operates autonomously within safe, reversible bounds (investigation, local edits, local validation), but **must stop at meaningful checkpoints** to allow the user to review progress, verify understanding, and control state transitions.
+Operational troubleshooting, commit packaging, and knowledge preservation defer strictly to the workstation's global skills:
 
-### A. Execution Loop & Operating Model
+### A. Investigation & Checkpoints (`engineering-investigation`)
+* When diagnosing or troubleshooting issues on the host or application stacks, follow the scientific progression governed by **`engineering-investigation`** (Observe $\to$ Hypothesize $\to$ Test $\to$ Narrow $\to$ RCA $\to$ Fix $\to$ Validate $\to$ Verify).
+* Pause at meaningful transitions (state changes, hypothesis confirmation/elimination, atomic commit boundaries, deployment handoffs) using the 6-part checkpoint protocol (Current State, Reasoning, Changes, Validation, Next Action, Recovery).
 
-The troubleshooting workflow follows an interactive loop where each stage is validated and reviewed before crossing state boundaries:
+### B. Git Commits & Branch Integration (`git-commit`)
+* Commit packaging, atomic slicing, and branch safety are governed by **`git-commit`**.
+* Edits must be isolated on dedicated branches (`investigate/<topic>` or `fix/<topic>`); direct commits to `main` are strictly prohibited.
+* The agent proposes atomic commit slices with evidence-based Conventional Commit messages; autonomous commits on `main` are blocked.
 
-```mermaid
-flowchart TD
-    A["1. Investigate & Triage<br/>(Read-only SSH diagnostics)"] --> CP1{"Checkpoint: Diagnosis"}
-    CP1 -->|"Iterate or Propose"| B["2. Isolated Local Branch<br/>(investigate/<topic> or fix/<topic>)"]
-    B --> CP2{"Checkpoint: Local Change"}
-    CP2 --> C["3. Local Validation<br/>(Flake check / tests / lint)"]
-    C --> CP3{"Checkpoint: Commit Proposal"}
-    CP3 -->|"User Approves"| D["4. User-Controlled Integration<br/>(Commit on branch, push & merge to main)"]
-    D --> CP4{"Deployment Handoff"}
-    CP4 -->|"User Deploys"| E["5. User-Controlled Production Deployment<br/>(Core rebuild or Sites workload rollout)"]
-    E --> F["6. Post-Deployment Verification<br/>(Agent verifies via SSH)"]
-    F --> G["7. Evaluate Knowledge Capture<br/>(Stage if non-obvious/durable)"]
-```
+### C. Architectural & Incident Knowledge Preservation (`documentation-router`)
+* Knowledge preservation is governed by **`documentation-router`**.
+* Only non-obvious root causes, false system assumptions, or architectural discoveries warrant durable capture (`03-records/debug/`, `03-records/decisions/`, or `02-discussions/` in the Brain).
+* Routine maintenance, configuration adjustments, and self-explanatory fixes require no external documentation.
 
-### B. Checkpoint Protocol
-Do not stop after every individual command. Checkpoints occur at meaningful investigative or operational transitions:
-* The failure domain has been materially narrowed.
-* An important hypothesis has been confirmed or eliminated.
-* A meaningful local change has been completed.
-* Local validation establishes a new state.
-* An atomic commit boundary has been reached.
-* A production deployment is ready.
-* Post-deployment evidence changes or confirms the diagnosis.
+---
 
-At each checkpoint, explain concisely:
-1. **Current State**: What is known from evidence; what remains uncertain.
-2. **Reasoning**: Current hypothesis or conclusion, why the evidence supports it, and what alternatives have been eliminated.
-3. **Changes**: What has been changed locally, which files are affected, and what invariant or behavior the change establishes.
-4. **Validation**: What has already been tested, expected result versus actual result.
-5. **Next Action**: What should happen next, why it is appropriate, and what evidence/output is expected.
-6. **Recovery**: How the proposed local change or deployment can be rolled back if validation fails.
+## 4. Production Deployment & Handoff Policy
 
-The checkpoint is an interactive review point, not a final report. After presenting it, **wait for the user before crossing a user-controlled boundary** (such as committing, merging, pushing, deploying, or applying a production change). For diagnostic or local investigative transitions, the agent may continue autonomously unless the checkpoint requires user review or direction.
-
-### C. Commit Policy: Proposal-Only
-Autonomous commits and pushes are prohibited. When a coherent, locally validated change exists, propose an atomic commit boundary:
-* **Purpose**: Clear summary of the issue addressed and rationale.
-* **Affected Files**: Explicit list of modified paths.
-* **Invariant/Behavior Established**: Contract or system behavior guaranteed by this change.
-* **Validation Performed**: Exact test/lint commands run and evidence of success.
-* **Isolation Rationale**: Why this change is self-contained and safe to commit on its own.
-* **Suggested Commit Message**: Formatted according to conventional commits (e.g., `fix(scope): description`), explicitly identified as a suggestion.
-
-Rules:
-* Do not stage files or execute `git commit`, `git push`, or `git merge` unless the user explicitly asks for that operation. Commit messages may be proposed as part of the checkpoint.
-* Do not push to `main` or any remote autonomously.
-* Do not invent commit messages as though a commit has already been executed.
-
-### D. Production Deployment & Handoff Policy
 The user owns the production transition. When local validation is complete:
 1. Explicitly identify that the change is ready for deployment.
 2. Provide a structured **Deployment Handoff**:
-   * **Exact User Action Required**: Provide the exact deployment command(s) appropriate to the affected workload and current deployment mechanism (reason about the actual deployment path rather than assuming a single universal command). For example:
+   * **Exact User Action Required**: Provide the exact deployment command(s) appropriate to the affected workload:
      * *Core / NixOS host*: `sudo nixos-rebuild switch --flake ~/Core#server`
      * *Sites workloads*: target-specific service commands (e.g. `ssh server-local 'cd ~/Sites/<app> && git fetch && git pull origin <branch> && appctl restart <app>'` or stack-specific compose invocations).
    * **Expected Production Changes**: State changes, service reloads, or container recreations that should occur.
@@ -196,26 +148,10 @@ The user owns the production transition. When local validation is complete:
 
 This policy applies equally to Core/NixOS system changes and Sites application changes.
 
-### E. Step-by-Step Execution Pipeline
+---
 
-1. **Investigate via SSH**:
-   Inspect logs, test reachability inside containers, and isolate the failure point using read-only SSH commands. Narrow the failure domain and checkpoint. Purely diagnostic investigations require no branch.
-2. **Implement in Local Workspace**:
-   If repository state must change, branch off `main` in the local repository (`Core/` or `Sites/<app>/`) using `investigate/<topic>` (for exploratory changes/instrumentation) or `fix/<topic>` (for clear remediation). Apply declarative changes. Checkpoint the changes.
-3. **Validate Locally**:
-   * For Core/NixOS: run `nix flake check` and `./scripts/test`.
-   * For Sites: run `docker compose config -q` and relevant linters/tests.
-   Ensure exploratory instrumentation is cleaned up. Checkpoint validation results and propose an atomic commit.
-4. **User-Controlled Commit, Push & Integration**:
-   User reviews the commit proposal, stages and commits on the dedicated branch, pushes the branch, merges into `main`, and pushes `main`.
-5. **Deployment Handoff & Execution**:
-   Agent provides the workload-specific deployment handoff runbook. User executes the deployment.
-6. **Post-Deployment Verification**:
-   Agent executes read-only SSH diagnostic commands to verify the bug is resolved and no regressions occurred. Checkpoint findings.
-7. **Evaluate Durable Knowledge Capture**:
-   If troubleshooting produced non-obvious diagnostic reasoning, architectural insights, or reusable operational lessons, invoke the global investigation and knowledge workflow to stage an epistemic report in the operator's knowledge inbox. Routine maintenance and self-explanatory fixes require no external documentation.
+## 5. CI/CD & Gitea Actions (`act_runner`) Invariants
 
-### F. CI/CD & Gitea Actions (`act_runner`) Invariants
 * **Pre-Baked Images over In-Job Installers**: Always declare `container: { image: <image> }` (e.g., `nixery.dev/shell/coreutils/git/nix/nodejs:latest`, `python:3.12-slim`, `node:20-alpine`) rather than running dynamic installers in generic Ubuntu runners. Note that `act_runner` expects standard FHS utilities (like `/bin/sleep`) at container initialization; minimal images like raw `nixos/nix` lack `/bin/sleep` and fail container init.
 * **Git Safe Directory Invariant**: When job containers mount the workspace with root or differing UIDs, always configure Git safe directory before invoking Git or Flake tools:
   ```yaml
@@ -223,15 +159,6 @@ This policy applies equally to Core/NixOS system changes and Sites application c
     run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
   ```
 * **Avoid GitHub API Assumptions**: Avoid third-party marketplace actions that rely on `${{ github.server_url }}` (which resolves to `https://gitea.roadtotech.me` instead of `github.com`). Use direct container runtimes and standard shell scripts.
-
----
-
-## 4. Post-Incident Epistemic Knowledge Capture
-
-Troubleshooting operations adhere to the global `engineering-investigation-and-knowledge` workflow:
-* **Conditional Capture**: Routine fixes and maintenance do not require incident documentation. Only non-obvious root causes, architectural trade-offs, or transferable operational heuristics warrant durable capture.
-* **Epistemic Standards**: Preserve investigative reasoning, separate observation from inference, state command rationale, avoid hindsight bias, and maintain zero secret leakage.
-* **Staging**: When qualified, stage findings into the operator's knowledge inbox (`~/Brain/00-inbox/`) following the global capture protocol.
 
 ````
 

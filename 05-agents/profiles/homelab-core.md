@@ -177,22 +177,15 @@ documentation rather than expanding this file into an architecture manual.
 All documentation must remain GitHub-flavored Markdown compatible with Obsidian
 and the live documentation viewer.
 
----
+## Architectural & Engineering Knowledge Preservation
 
-## Brain Vault
-
-Capture significant:
-
-- Implementation roadmaps & plans (`~/Brain/01-plans/homelab/`)
-- Design trade-offs & inquiries (`~/Brain/02-discussions/homelab/`)
-- Incident post-mortems & RCAs (`~/Brain/03-records/debug/`)
-- Architectural decisions (ADRs) (`~/Brain/03-records/decisions/`)
-- Operational guides & runbooks (`~/Brain/04-learning/guides/homelab/`)
-- Engineering methodologies & durable knowledge (`~/Brain/04-learning/knowledge/`)
-- Staging captures (`~/Brain/00-inbox/`)
-
-Refer to the project topology hub at `~/Brain/06-projects/homelab/README.md`.
-Do not duplicate entire repository documentation in the Brain Vault.
+When engineering changes in Core yield durable architectural insights, security posture shifts, non-obvious root causes, or transferable operational heuristics, knowledge preservation is governed by the global skill **`documentation-router`**:
+- Architectural commitments are recorded in ADRs (`03-records/decisions/`).
+- Exploratory design inquiries and trade-offs are recorded in Discussions (`02-discussions/`).
+- Empirical incident RCAs are recorded in Debug Records (`03-records/debug/`).
+- Implementation roadmaps are recorded in Plans (`01-plans/`).
+- Routine maintenance, configuration adjustments, and self-explanatory fixes require no external documentation.
+- Preserve repository-local documentation (`docs/`, inline comments, commit rationale) as the primary source of truth for runtime behavior.
 ````
 
 ---
