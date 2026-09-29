@@ -1,6 +1,7 @@
 ---
 type: plan
-status: active
+status: superseded
+superseded_by: architecture-consolidation-roadmap-v4.md
 project: homelab
 tags:
   - architecture
@@ -14,11 +15,14 @@ tags:
 
 # Architecture Consolidation & Hardening Roadmap v3
 
+> [!WARNING]
+> **SUPERSEDED**: This roadmap has been superseded by [**Architecture Consolidation & Hardening Roadmap v4**](architecture-consolidation-roadmap-v4.md), which establishes the 3-Tier Architecture (Software vs. Deployment vs. Platform), OCI artifact provenance, and dual-axis deployment truth.
+>
 > **Supersedes**: [Architecture Consolidation & Hardening Roadmap v2](architecture-consolidation-roadmap-v2.md)
 >
 > **Current Platform Baseline**: Commit `246b587` (NixOS standalone appliance, consolidated docs, Portainer deprecated, Stalwart mail & SMTPS submission, Dozzle auth, Diun jitter/worker pool, Gitea Actions CI).
 >
-> 📋 **Companion Execution Guide**: [`architecture-consolidation-implementation-guide-v3.md`](architecture-consolidation-implementation-guide-v3.md)
+> 📋 **Companion Execution Guide (Superseded)**: [`architecture-consolidation-implementation-guide-v3.md`](architecture-consolidation-implementation-guide-v3.md)
 
 ---
 

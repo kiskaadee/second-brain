@@ -1,6 +1,7 @@
 ---
 type: plan
-status: active
+status: superseded
+superseded_by: architecture-consolidation-implementation-guide-v4.md
 project: homelab
 tags:
   - architecture
@@ -14,7 +15,10 @@ tags:
 
 # Homelab Core — Architecture Consolidation & Hardening Implementation Guide v3
 
-> **Companion Architecture Roadmap**: [`architecture-consolidation-roadmap-v3.md`](architecture-consolidation-roadmap-v3.md)
+> [!WARNING]
+> **SUPERSEDED**: This execution guide has been superseded by [**Homelab Core — Architecture Consolidation & Hardening Implementation Guide v4**](architecture-consolidation-implementation-guide-v4.md).
+>
+> **Companion Architecture Roadmap**: [`architecture-consolidation-roadmap-v4.md`](architecture-consolidation-roadmap-v4.md)
 >
 > **Target System**: `roadtotech.me` (NixOS appliance `Core/`, application workloads `Sites/`)
 >

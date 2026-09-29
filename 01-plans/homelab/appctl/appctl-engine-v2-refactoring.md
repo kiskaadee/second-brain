@@ -50,8 +50,9 @@ This plan modernizes the engine from a procedural ~900-line script with a hand-r
 │          (Inspection, Metadata, Discovery & Sync)           │
 ├─────────────────────────────────────────────────────────────┤
 │ 1. Domain Hierarchy                                         │
+│    ├── SourceConfig (Provenance: type, url, ref)            │
 │    ├── App (Base: name, description, domain, dir_path)     │
-│    ├── SitesApp (Sites: aliases, visible, auth, env, etc.)  │
+│    ├── SitesApp (Sites: source, aliases, visible, auth)     │
 │    └── CoreService (Core: container, weight, icon)          │
 ├─────────────────────────────────────────────────────────────┤
 │ 2. Ingestion & Normalization                                │
@@ -59,13 +60,14 @@ This plan modernizes the engine from a procedural ~900-line script with a hand-r
 │    └── sites_app_from_manifest() -> SitesApp (Pure Seam)    │
 ├─────────────────────────────────────────────────────────────┤
 │ 3. Inspection Engines                                       │
-│    ├── Docker Status (Compose ps -q & inspect Running)      │
-│    ├── Git Sync Status (plumbing porcelain & rev-list)      │
+│    ├── Docker Status & OCI Image Label Inspection           │
+│    ├── Deployment Git Status (local Sites repository)       │
+│    ├── Source Provenance Resolver (git ls-remote --fetch)   │
 │    └── TLS/SSL Validation (stdlib socket/ssl via ThreadPool)│
 ├─────────────────────────────────────────────────────────────┤
 │ 4. CLI Dispatch Layer                                       │
 │    ├── cmd_list / cmd_status (polymorphic table rendering)  │
-│    ├── cmd_info (unified diagnostics view)                  │
+│    ├── cmd_info (unified diagnostics & provenance view)     │
 │    ├── cmd_ssl (TLS overview across apps and Core)          │
 │    ├── cmd_resolve (JSON emitter for bash caller)           │
 │    ├── cmd_sync_homepage (compiles services.yaml)           │
@@ -80,7 +82,8 @@ This plan modernizes the engine from a procedural ~900-line script with a hand-r
 ### Deliverable 1: Domain Model, Manifest Ingestion & TDD Scaffold (COMPLETE / GREEN)
 - [x] Create isolated Git worktree at `~/Projects/active/appctl-refactor`.
 - [x] Configure Pyright and Nix devShell (`python3.withPackages [ pyyaml types-pyyaml pytest ruff pyright ]`).
-- [x] Implement `@dataclass class App`, `SitesApp`, `CoreService`, and `HomepageConfig`.
+- [x] Implement `@dataclass class SourceConfig(type, url, ref)` with explicit ref semantics.
+- [x] Implement `@dataclass class App`, `SitesApp(source: SourceConfig | None)`, `CoreService`, and `HomepageConfig`.
 - [x] Implement `load_manifest(manifest_path)` with `ManifestError`.
 - [x] Implement pure normalization seam `sites_app_from_manifest(app_dir, manifest, manifest_error)`.
 - [x] Implement dynamic discovery `get_sites_apps(sites_dir)` and `resolve_app(query, apps)`.
@@ -94,26 +97,40 @@ This plan modernizes the engine from a procedural ~900-line script with a hand-r
   - Handle Compose directory inspection (`docker compose ps -q` + inspect).
   - Handle Core single container inspection (`docker inspect -f '{{.State.Running}}' <name>`).
   - Return standardized status badges (`🟢 Running (N)`, `🟡 Degraded (M/N)`, `🔴 Stopped`, `⚪ Not Stack`, `❓ Unknown`).
-- [ ] **Git Sync & Diagnostics Engine**:
-  - Implement `get_git_sync_status(dir_path: Path | str) -> str`.
-  - Parse `git status --porcelain` and `git rev-list --left-right --count HEAD...@{u}`.
-  - Return standardized badges (`✓ Synced`, `⬆ N Ahead`, `⬇ N Behind`, `⚡ N⬆ M⬇`, `⚪ Untracked`, `*` dirty indicator).
-  - Implement `get_git_diagnostics(dir_path: Path | str) -> dict[str, Any] | None`.
+  - Extract container image labels: specifically `org.opencontainers.image.revision` for software provenance.
+- [ ] **Two-Axis Git & Source Provenance Engine**:
+  - **Axis 1: Deployment Git Status**:
+    - Implement `get_deployment_git_status(dir_path: Path | str) -> str`.
+    - Parse `git status --porcelain` and `git rev-list --left-right --count HEAD...@{u}`.
+    - Return standardized badges (`✓ Synced`, `⬆ N Ahead`, `⬇ N Behind`, `⚡ N⬆ M⬇`, `⚪ Untracked`, `*` dirty indicator).
+  - **Axis 2: Source Provenance Resolver**:
+    - Implement `get_source_provenance_status(app: SitesApp, fetch_remote: bool = False) -> str`.
+    - If `app.source is None`: return `⚪ Image Only` (display container image tag).
+    - If `app.source.ref` is a pinned tag or commit SHA: return `📌 Pinned (<ref>)`.
+    - Extract running container's `org.opencontainers.image.revision` (deployed SHA).
+    - If `fetch_remote=True`: resolve remote ref SHA via `git ls-remote <url> refs/heads/<ref>`.
+    - Compare revisions:
+      * Remote SHA == Deployed SHA: `✓ Up to date (<sha>)`
+      * Remote SHA != Deployed SHA: `⚡ Revision Changed`
+  - Implement `get_git_diagnostics(dir_path: Path | str, app: SitesApp | None = None) -> dict[str, Any] | None`.
 - [ ] **SSL / TLS Inspection Engine**:
   - Define `@dataclass class SSLCertResult`.
   - Implement `check_ssl_cert(domain: str, port: int = 443, timeout: float = 3.0) -> SSLCertResult`.
   - Implement `check_all_ssl_certs(domains: list[str]) -> dict[str, SSLCertResult]` with `ThreadPoolExecutor`.
 - [ ] **Concurrent Remote Fetching**:
   - Implement `fetch_all_repositories(apps: list[SitesApp], include_core: bool = True)` with worker pool.
+  - Concurrently resolves `git fetch` for local deployment repositories and `git ls-remote` for source-backed workloads.
 
 ### Deliverable 3: Presentation & CLI Dispatch Layer
 - [ ] **`cmd_list` / `cmd_status`**:
   - Support `--core` / `-c`, `--fetch` / `-f`, `--ssl` / `-s`, and `--all` / `-a` flags.
   - Polymorphic table formatting for both `SitesApp` and `CoreService`.
+  - Display two-axis status: Deployment checkout state + Upstream revision badge.
   - Render manifest warning indicators if `app.manifest_error` is populated.
 - [ ] **`cmd_info`**:
   - Formatted deep diagnostic view for a single application or Core service.
   - Display metadata, Authelia guard status, Compose status, Git diagnostics, and TLS certificate info.
+  - Display dedicated **Source Provenance Block**: Upstream Git URL, Tracking Ref, Deployed Commit SHA, and Remote HEAD SHA.
 - [ ] **`cmd_ssl`**:
   - Formatted TLS certificate table for all public domains or deep inspection of a single target.
 - [ ] **`cmd_resolve`**:
@@ -128,12 +145,12 @@ This plan modernizes the engine from a procedural ~900-line script with a hand-r
 - [ ] Run full automated test suite: `pytest tests/` (100% Green).
 - [ ] Run code linter: `ruff check .` with zero errors.
 - [ ] Run type checker: `pyright` with zero errors.
-- [ ] **Topology Synchronization (Roadmap v3 P1 alignment)**:
+- [ ] **Topology Synchronization (Roadmap v4 P1 alignment)**:
   - Update `scripts/appctl_engine_v2.py` `get_core_services()`:
     * `stalwart`: domain `smtp.${HOMELAB_DOMAIN}`.
     * Remove `snappymail` (discovered dynamically in `~/Sites/snappymail`).
     * Remove deprecated `portainer`.
-- [ ] **Manifest Engine Convergence (Roadmap v3 P3 alignment)**:
+- [ ] **Manifest Engine Convergence (Roadmap v4 P3 alignment)**:
   - In `~/Projects/active/appctl-refactor`, cherry-pick the atomic commit from `main` that introduces `Core/scripts/core_manifest.py`.
   - Refactor `appctl_engine_v2.py` to ingest manifests via `core_manifest.py` in place of standalone `load_manifest()`.
   - Update unit test fixtures in `tests/unit/test_appctl_engine_v2.py` to validate against schema v1.0 models.
