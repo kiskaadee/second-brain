@@ -34,3 +34,4 @@ Rather than treating agent rulebooks (`AGENTS.md`) as transient, untracked local
 | [Documentation Router](skills/documentation-router.md) | Global (`~/.gemini/config/skills/`) | Second-order knowledge evaluation, epistemic classification, anti-overlap invariants, and authoring modules | `active` |
 | [Engineering Tutor](skills/engineering-tutor.md) | Global (`~/.gemini/config/skills/`) | Practice mode, Socratic graduated assistance, learner-as-primary-agent, and transfer verification | `active` |
 | [Git Commit & History Hygiene](skills/git-commit.md) | Global (`~/.gemini/config/skills/`) | GitKeeper history construction, atomic commit slicing, 3-level CC messages, and readiness gates | `active` |
+| [Skill Builder](skills/skill-builder.md) | Global (`~/.gemini/config/skills/`) | Interactive skill design, proportional sizing, boundary review, and empirical refinement | `active` |

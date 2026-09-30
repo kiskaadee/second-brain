@@ -38,13 +38,15 @@ flowchart TD
 ```
 
 ### Core Epistemic Principles
+* **Evidence Before Hypothesis**: Before formulating causal theories or diving into implementation code, establish sufficient observable evidence (raw logs, error outputs, system traces, or deterministic reproductions where available) to characterize the failure symptom and boundary. Avoid speculative code browsing without grounded empirical observations.
 * **Preserve Investigative Reasoning**: Document how the evidence led from the initial observation to the explanation, not merely what final patch fixed the bug.
 * **Separate Observation from Inference**: Strictly distinguish what the system reported (raw logs, error outputs, exit codes) from what the operator inferred.
 * **Explain Diagnostic Command Rationale**: Before running inspections, be clear on why the command is run, what layer of the stack it tests, and what result supports or refutes the working hypothesis.
+* **Traceable Diagnostic Mutations & Cleanup**: Every temporary diagnostic modification (debug logging, environment overrides, test fixtures, database records, probe code, or configuration changes) must have an explicit cleanup boundary and a verification method. Before declaring recovery or proposing commits, verify that all temporary mutations have been completely removed.
 * **No Hindsight Bias**: Avoid fabricating a tidy, linear narrative after the fact. Distinguish working hypotheses held during the investigation from insights discovered retrospectively.
 * **Proportional Depth**: Scale the depth of investigation to the complexity and learning value of the issue. Do not manufacture complex hypotheses or ceremonial boilerplate for trivial syntax errors or routine typos.
 * **Transferable Diagnostic Knowledge**: Surface heuristics, architectural invariants, and debugging techniques that generalize across system boundaries.
-* **Zero Secret Leakage**: Never log credentials, API tokens, HMAC keys, or raw secrets. Verify security matches via redacted signatures or non-sensitive metadata.
+* **Sensitive Data Redaction & Zero Leakage**: Diagnostic evidence must be inspected for sensitive values (passwords, API tokens, HMAC keys, authorization headers, database connection strings, personal identifiers) before being surfaced, persisted, or incorporated into an investigation log. Verify credentials via redacted signatures or non-sensitive metadata.
 
 ---
 
