@@ -118,7 +118,7 @@ DIRECTORY_CONTRACTS: tuple[DirectoryContract, ...] = (
 
     # 05-agents: Agent persona profiles & reusable skills
     DirectoryContract(prefix="05-agents/profiles", expected_type="agent", max_depth=2),
-    DirectoryContract(prefix="05-agents/skills", expected_type="agent", max_depth=2),
+    DirectoryContract(prefix="05-agents/skills", expected_type="agent", max_depth=4),
 
     # 06-projects: System topology hubs strictly at depth 2 named README.md
     DirectoryContract(
@@ -239,6 +239,16 @@ def _line_of(content: str, pos: int) -> int:
     return content[:pos].count('\n') + 1
 
 
+def _is_skill_package_internal(rel: pathlib.Path) -> bool:
+    """Return True if rel is an internal artifact of a skill package (SKILL.md, references/, scripts/)."""
+    rel_str = str(rel)
+    if not rel_str.startswith(("05-agents/skills/", "agents/skills/")):
+        return False
+    if rel.name == "SKILL.md":
+        return True
+    return any(p in ("references", "scripts") for p in rel.parts)
+
+
 # ── Repository checks ──────────────────────────────────────────────────────────
 
 def check_deprecated_dirs(root: pathlib.Path) -> list[Issue]:
@@ -320,7 +330,11 @@ def check_directory_contracts(doc: Document) -> list[Issue]:
                 doc_type = type_match.group(1)
                 type_line = _line_of(content, 3 + type_match.start())
 
-    if matched_contract.expected_type is not None and doc_type != matched_contract.expected_type:
+    if (
+        matched_contract.expected_type is not None
+        and doc_type != matched_contract.expected_type
+        and not _is_skill_package_internal(doc.rel)
+    ):
         issues.append(Issue(
             "error", doc.rel, type_line,
             f"Directory/type contract violation: {doc.rel} has type '{doc_type}', expected '{matched_contract.expected_type}'",
@@ -330,6 +344,24 @@ def check_directory_contracts(doc: Document) -> list[Issue]:
 
 def check_frontmatter(doc: Document) -> list[Issue]:
     if not doc.validates_frontmatter:
+        return []
+
+    # Skill package internals:
+    # SKILL.md is the agent runtime specification and must have name and description.
+    # Subordinate directories (references/, scripts/) are exempt from vault frontmatter.
+    if _is_skill_package_internal(doc.rel):
+        if doc.path.name == "SKILL.md":
+            content = doc.content
+            if not content.startswith("---"):
+                return [Issue("error", doc.rel, 1, "Missing frontmatter in SKILL.md")]
+            end = content.find("\n---", 3)
+            if end == -1:
+                return [Issue("error", doc.rel, 1, "Malformed frontmatter in SKILL.md: no closing ---")]
+            fm_block = content[3:end]
+            if not re.search(r'^name:\s*\S+', fm_block, re.MULTILINE):
+                return [Issue("error", doc.rel, 1, "Frontmatter missing 'name' field in SKILL.md")]
+            if not re.search(r'^description:', fm_block, re.MULTILINE):
+                return [Issue("error", doc.rel, 1, "Frontmatter missing 'description' field in SKILL.md")]
         return []
 
     content = doc.content
@@ -360,14 +392,20 @@ def check_links(doc: Document) -> list[Issue]:
         return []
 
     issues: list[Issue] = []
+    blocks, _ = scan_code_blocks(doc.content)
+    code_spans = [(b.start_line, b.end_line) for b in blocks]
+
     for m in re.finditer(r'\[([^\]]*)\]\(([^)]+)\)', doc.content):
+        line_no = _line_of(doc.content, m.start())
+        if any(start <= line_no <= end for start, end in code_spans):
+            continue
         target = m.group(2).split('#')[0].strip()
         if not target or target.startswith(('http', 'file:', 'mailto:')):
             continue
         resolved = (doc.path.parent / target).resolve()
         if not resolved.exists():
             issues.append(Issue(
-                "error", doc.rel, _line_of(doc.content, m.start()),
+                "error", doc.rel, line_no,
                 f"Broken relative link: {target}",
             ))
     return issues
