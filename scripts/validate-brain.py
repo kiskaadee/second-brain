@@ -50,6 +50,7 @@ DEPRECATED_NESTED_PATHS: frozenset[str] = frozenset({
 # Paths (or path substrings) excluded entirely from validation.
 EXEMPT_PATTERNS: tuple[str, ...] = (
     ".obsidian",
+    ".trash",
     "00-inbox",
     "inbox",
     "04-learning/practice/LeetCode/Solutions",

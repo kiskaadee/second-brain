@@ -2,6 +2,7 @@
 .obsidian/workspace.json
 .obsidian/graph.json
 .DS_Store
+.trash/
 
 # Environments & Python
 .envrc
