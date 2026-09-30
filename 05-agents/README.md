@@ -13,6 +13,21 @@ Rather than treating agent rulebooks (`AGENTS.md`) as transient, untracked local
 3. **Canonical Specification**: Preserves the complete, verbatim behavioral prompt deployed in the target environment.
 4. **Cross-References**: Connects the agent profile to project overviews, incident journals, and architecture guides.
 
+### Skill Package Architecture (Dual-Audience Separation)
+
+Skills in `05-agents/skills/` are organized as encapsulated capability packages rather than flat, monolithic prompts:
+
+```text
+05-agents/skills/<skill-name>/
+├── README.md              # Human API (Identity, Value, Invocation, Behavior, Outputs, Boundaries)
+├── SKILL.md               # Agent Specification (Runtime engine, invariants, decision procedures)
+└── references/            # Deep-dive modules loaded on demand (progressive disclosure)
+```
+
+- **`README.md` (Human API)**: The canonical Brain graph citizen (`type: agent`, `kind: skill`). Focuses strictly on the **capability contract**: what the skill is, why it matters, when to invoke it, expected outputs, negative boundaries, and package manifest.
+- **`SKILL.md` (Operational Engine)**: The runtime prompt consumed by Antigravity (`~/.gemini/config/skills/`). Focuses strictly on **agent execution**: state machines, decision procedures, anti-skipping invariants, and behavioral anchors.
+- **`references/` (Modular Contracts)**: Modular specifications loaded by the agent on demand, preventing attention dilution.
+
 ---
 
 ## Catalog of Agent Specifications
@@ -31,7 +46,7 @@ Rather than treating agent rulebooks (`AGENTS.md`) as transient, untracked local
 | Skill | Target Workspace | Primary Capability | Status |
 | :--- | :--- | :--- | :--- |
 | [Engineering Investigation](skills/engineering-investigation.md) | Global (`~/.gemini/config/skills/`) | Scientific investigation lifecycle, 6-part interactive checkpoints, and runtime verification | `active` |
-| [Documentation Router](skills/documentation-router.md) | Global (`~/.gemini/config/skills/`) | Second-order knowledge evaluation, epistemic classification, anti-overlap invariants, and authoring modules | `active` |
+| [Documentation Router](skills/documentation-router/README.md) | Global (`~/.gemini/config/skills/`) | Second-order knowledge evaluation, epistemic classification, anti-overlap invariants, and authoring modules | `active` |
 | [Engineering Tutor](skills/engineering-tutor.md) | Global (`~/.gemini/config/skills/`) | Practice mode, Socratic graduated assistance, learner-as-primary-agent, and transfer verification | `active` |
 | [Git Commit & History Hygiene](skills/git-commit.md) | Global (`~/.gemini/config/skills/`) | GitKeeper history construction, atomic commit slicing, 3-level CC messages, and readiness gates | `active` |
 | [Skill Builder](skills/skill-builder.md) | Global (`~/.gemini/config/skills/`) | Interactive skill design, proportional sizing, boundary review, and empirical refinement | `active` |

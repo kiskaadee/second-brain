@@ -72,7 +72,7 @@ We deploy `skill-builder` (`~/.gemini/config/skills/skill-builder/SKILL.md` and 
 * **Mandatory Review Gate**: `skill-builder` halts at a formal **Skill Design Specification** and requires explicit human approval before any files are authored.
 
 ### 4. Epistemic Integration of Knowledge Articles
-We formalize **Knowledge Articles** (`04-learning/knowledge/`, `type: knowledge`) within [`documentation-router`](../../05-agents/skills/documentation-router.md):
+We formalize **Knowledge Articles** (`04-learning/knowledge/`, `type: knowledge`) within [`documentation-router`](../../05-agents/skills/documentation-router/README.md):
 * Governed by `references/knowledge-authoring.md` (in `documentation-router`).
 * Captures generalized, reusable understanding and methodologies written in a side-by-side learner voice.
 * Preserves canonical ownership: general lessons live in Knowledge; project explorations live in Discussions; point-in-time commitments live in ADRs; implementation steps live in Plans; incident RCAs live in Debug Records.

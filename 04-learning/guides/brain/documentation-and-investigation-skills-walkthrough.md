@@ -51,7 +51,7 @@ Operational walkthrough for the implementation of the decoupled, reusable global
 
 ### B. Documentation Router Skill
 - **Runtime Location**: `~/.gemini/config/skills/documentation-router/SKILL.md`
-- **Vault Specification**: [`05-agents/skills/documentation-router.md`](../../../05-agents/skills/documentation-router.md)
+- **Vault Specification**: [`05-agents/skills/documentation-router/README.md`](../../../05-agents/skills/documentation-router/README.md)
 - **Role**: Second-order knowledge filter and gatekeeper (anti-markdown factory).
 - **Core Rules**:
   - **Gatekeeping**: Routine/trivial tasks produce **NO ARTIFACT**.
