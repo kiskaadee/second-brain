@@ -62,11 +62,12 @@ graph TD
 ## 🛠️ Canonical Guides & Runbooks
 
 * [**Deterministic Tag & Key Term Extraction Guide**](../../04-learning/knowledge/methods/deterministic-tag-extraction.md) — Algorithmic approaches and architectural comparison across statistical heuristics, AST parsers, and taxonomy matchers.
+* [**How to Build Effective Agent Skills**](../../04-learning/knowledge/methods/building-effective-agent-skills.md) — Canonical method guide explaining the operational physics of skills, the airlock mental model, and the single observable proof heuristic.
 * [**Global Documentation Router & Investigation Skills Walkthrough**](../../04-learning/guides/brain/documentation-and-investigation-skills-walkthrough.md) — Operational walkthrough covering procedural investigation, documentation router gatekeeping, anti-overlap invariants, and authoring reference modules.
 
 ---
 
-## 🏛️ Completed Milestones & Resolved Discussions
+## 🏛️ Completed Milestones & Resolved Decisions
 
 * 🟢 **Validation & Taxonomy Foundation** — Implementation of `scripts/validate-brain.py`, pre-commit hook enforcement, and five-category semantic schema.
 * 🟢 **Multi-Agent Catalog** — Formalization of `agents/` store and operational profiles.
@@ -74,3 +75,4 @@ graph TD
   - Companion Discussion: [Brain Epistemic Lifecycle Taxonomy](../../02-discussions/brain/taxonomy-and-lifecycle-architecture.md)
 * 🟢 [**Incident Debug Records & Daily Journal Workflow Reorganization**](../../01-plans/brain/incident-debug-and-journal-workflow.md) — Established first-class `type: debug` records in `03-records/debug/`, strictly one daily journal per date in `03-records/journal/YYYY-MM-DD.md`, and automated inbox curation protocol.
 * 🟢 [**Documentation Router & Engineering Investigation Skills Decoupling**](../../01-plans/brain/documentation-and-investigation-skills-decoupling.md) — Decoupled procedural troubleshooting (scientific method, interactive checkpoints) from documentation evaluation and routing; introduced second-order documentation router with modular authoring specifications.
+* 🟢 [**Agent Skill Architecture, Proportional Sizing, and Meta-Builder Governance**](../../03-records/decisions/agent-skill-architecture-and-governance.md) — Point-in-time architectural commitments establishing the 4-tier skill taxonomy, proportional structural sizing, skill-builder review gate, and investigation invariants.
