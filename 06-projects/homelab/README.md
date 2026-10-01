@@ -28,7 +28,9 @@ The homelab is organized into four decoupled architectural layers to isolate fai
 2. **Core Control Plane (`~/Core`)**:
    - Central homelab services managed as a declarative NixOS appliance, including Gitea (Git forge & CI/CD runner), Nextcloud, Vaultwarden, Homepage dashboard, and deployment webhooks.
 3. **Workload Plane (`~/Sites`)**:
-   - Autonomous, containerized application stacks (Docker Compose) completely decoupled from Core infrastructure. Each service repository declares its own metadata, routing rules, and lifecycle via an `app.yaml` manifest.
+   - Autonomous, containerized application stacks (Docker Compose) completely decoupled from Core infrastructure. Each service repository declares its own metadata, routing rules, and lifecycle via an `app.yaml` manifest. Managed workloads include:
+     - [**BDInvite**](../bdinvite/README.md) (`demos.roadtotech.me/birthday`): Interactive digital birthday invitation with RSVP, FastAPI backend, and split Traefik/Authelia access.
+     - [**MagNetFlix**](../magnetflix/README.md) (`magnetflix.roadtotech.me`): Automated media acquisition and streaming pipeline behind Authelia SSO.
 4. **Host Foundation**:
    - Headless NixOS host system configured with encrypted secrets via SOPS-nix (`age`), strict firewall isolation, and standardized systemd timers for maintenance.
 
