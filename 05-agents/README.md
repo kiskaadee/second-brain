@@ -43,10 +43,13 @@ Skills in `05-agents/skills/` are organized as encapsulated capability packages 
 
 ## Catalog of Operational Skills
 
+For the system-level architecture diagram, skill interaction matrix, and canonical transition workflows, see [skills/README.md](skills/README.md).
+
 | Skill | Target Workspace | Primary Capability | Status |
 | :--- | :--- | :--- | :--- |
-| [Engineering Investigation](skills/engineering-investigation.md) | Global (`~/.gemini/config/skills/`) | Scientific investigation lifecycle, 6-part interactive checkpoints, and runtime verification | `active` |
+| [Engineering Investigation](skills/engineering-investigation/README.md) | Global (`~/.gemini/config/skills/`) | Scientific investigation lifecycle, proportional checkpoints, and runtime verification | `active` |
 | [Documentation Router](skills/documentation-router/README.md) | Global (`~/.gemini/config/skills/`) | Second-order knowledge evaluation, epistemic classification, anti-overlap invariants, and authoring modules | `active` |
-| [Engineering Tutor](skills/engineering-tutor.md) | Global (`~/.gemini/config/skills/`) | Practice mode, Socratic graduated assistance, learner-as-primary-agent, and transfer verification | `active` |
-| [Git Commit & History Hygiene](skills/git-commit.md) | Global (`~/.gemini/config/skills/`) | GitKeeper history construction, atomic commit slicing, 3-level CC messages, and readiness gates | `active` |
-| [Skill Builder](skills/skill-builder.md) | Global (`~/.gemini/config/skills/`) | Interactive skill design, proportional sizing, boundary review, and empirical refinement | `active` |
+| [Engineering Tutor](skills/engineering-tutor/README.md) | Global (`~/.gemini/config/skills/`) | Practice mode, Socratic graduated assistance, learner-as-primary-agent, and context-sensitive transfer verification | `active` |
+| [Git Commit & History Hygiene](skills/git-commit/README.md) | Global (`~/.gemini/config/skills/`) | GitKeeper history construction, atomic commit slicing, 3-level CC messages, explicit authority precedence, and readiness gates | `active` |
+| [Skill Builder](skills/skill-builder/README.md) | Global (`~/.gemini/config/skills/`) | Interactive skill design, proportional sizing, boundary review, and empirical refinement | `active` |
+
