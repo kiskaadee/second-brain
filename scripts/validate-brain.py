@@ -57,6 +57,7 @@ EXEMPT_PATTERNS: tuple[str, ...] = (
     "practice/LeetCode/Solutions",
     "scripts",
     ".git",
+    ".agents",  # graphify runtime files; not vault documents
 )
 
 # Navigational/meta files exempt from frontmatter and link validation.

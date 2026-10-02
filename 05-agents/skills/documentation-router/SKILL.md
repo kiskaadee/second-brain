@@ -2,8 +2,9 @@
 name: documentation-router
 description: >-
   Use this skill to evaluate session context, determine whether durable knowledge preservation
-  is warranted, classify knowledge into distinct epistemic containers (Discussion, ADR, Plan, Debug Record),
-  enforce anti-overlap invariants, and coordinate documentation authoring.
+  is warranted, classify knowledge into distinct epistemic containers (Discussion, ADR, Plan,
+  Debug Record, Knowledge Article), enforce anti-overlap invariants, and coordinate documentation
+  authoring.
 ---
 
 # Documentation Router & Epistemic Governance
@@ -73,20 +74,19 @@ A rich session may legitimately produce multiple distinct knowledge objects. Whe
 
 ## 3. Document Relationships & Authority
 
-```text
-Discussion ──informs──> ADR ──constrains──> Plan
-     ^                      ^                 |
-     └──────────────────────┴─────────────────┘
-                cross-references
-```
+The relationships below are **possible, not required**. Each artifact is independently valid; none mandates a predecessor or successor.
 
-> **Rule on Relationships vs. Pipelines**:
-> Discussions may inform ADRs; ADRs may constrain Plans. These relationships describe **optional information flow and authority boundaries, not a mandatory documentation lifecycle**.
->
-> * A Discussion may exist and remain open or resolved without generating an ADR or Plan.
-> * An ADR may be authored directly for a clear architectural commitment without requiring a preceding Discussion artifact.
-> * A Plan may be authored for a known engineering project without requiring a preceding Discussion or ADR.
-> * A Debug Record stands alone as historical memory of an investigation.
+| From | Relationship | To | Meaning |
+| :--- | :--- | :--- | :--- |
+| Discussion | may inform | ADR | A resolved exploration can motivate a commitment. |
+| ADR | may constrain | Plan | An accepted commitment can bound an implementation spec. |
+| Any | cross-references | Any | Any document may link to related records. |
+| Debug Record | stands alone | — | Historical investigation; never requires a companion artifact. |
+
+* A Discussion may exist as the only artifact, open or resolved.
+* An ADR may be authored directly for a clear commitment, with no prior Discussion.
+* A Plan may be authored for a known project, with no prior Discussion or ADR.
+* A Debug Record always stands alone as historical memory.
 
 ---
 
