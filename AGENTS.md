@@ -56,7 +56,7 @@ Durable understanding, operational procedures, and deliberate drills answering: 
 Canonical store of AI agent profiles, instructions, operational boundaries, and guardrails across projects and workstations.
 - **`README.md`** — Structural catalog of all configured agents and target workspaces.
 - **`profiles/`** — Machine-readable agent persona specifications and safety guardrails (`05-agents/profiles/<name>.md`, `type: agent`, `kind: profile`).
-- **`skills/`** — Reusable agent operational capabilities, instructions, and prompt modules (`05-agents/skills/<name>.md`, `type: agent`, `kind: skill`).
+- **`skills/`** — Reusable agent operational capabilities, packaged with human capability contracts (`05-agents/skills/<name>/README.md`, `type: agent`, `kind: skill`) and runtime specifications (`SKILL.md`).
 
 ### `06-projects/`
 Canonical project entrypoints and navigation hubs.

@@ -45,7 +45,7 @@ Operational walkthrough for the implementation of the decoupled, reusable global
 
 ### A. Procedural Investigation Skill
 - **Runtime Location**: `~/.gemini/config/skills/engineering-investigation/SKILL.md`
-- **Vault Specification**: [`05-agents/skills/engineering-investigation.md`](../../../05-agents/skills/engineering-investigation.md)
+- **Vault Specification**: [`05-agents/skills/engineering-investigation/README.md`](../../../05-agents/skills/engineering-investigation/README.md)
 - **Role**: Purely empirical troubleshooting following the scientific method (Observation $\to$ Verification) and the 6-part interactive checkpoint protocol.
 - **Boundary**: Stops cleanly upon verified recovery; hands off to `documentation-router` if non-obvious learning or architectural questions emerged.
 
