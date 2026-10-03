@@ -129,6 +129,7 @@ The primary threat to this collection's health is **duplicate authority**, not m
 
 | Skill | Human API | Runtime Engine | References |
 | :--- | :--- | :--- | :--- |
+| [Inbox Curation](inbox-curation/README.md) | [README](inbox-curation/README.md) | [SKILL.md](inbox-curation/SKILL.md) | — |
 | [Engineering Investigation](engineering-investigation/README.md) | [README](engineering-investigation/README.md) | [SKILL.md](engineering-investigation/SKILL.md) | — |
 | [Engineering Tutor](engineering-tutor/README.md) | [README](engineering-tutor/README.md) | [SKILL.md](engineering-tutor/SKILL.md) | — |
 | [Git Commit](git-commit/README.md) | [README](git-commit/README.md) | [SKILL.md](git-commit/SKILL.md) | — |

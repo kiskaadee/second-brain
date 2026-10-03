@@ -47,6 +47,7 @@ For the system-level architecture diagram, skill interaction matrix, and canonic
 
 | Skill | Target Workspace | Primary Capability | Status |
 | :--- | :--- | :--- | :--- |
+| [Inbox Curation](skills/inbox-curation/README.md) | Brain (`/home/kiskaadee/Brain`) | Triage, classify, format, validate, and move raw drafts from `00-inbox/` | `active` |
 | [Engineering Investigation](skills/engineering-investigation/README.md) | Global (`~/.gemini/config/skills/`) | Scientific investigation lifecycle, proportional checkpoints, and runtime verification | `active` |
 | [Documentation Router](skills/documentation-router/README.md) | Global (`~/.gemini/config/skills/`) | Second-order knowledge evaluation, epistemic classification, anti-overlap invariants, and authoring modules | `active` |
 | [Engineering Tutor](skills/engineering-tutor/README.md) | Global (`~/.gemini/config/skills/`) | Practice mode, Socratic graduated assistance, learner-as-primary-agent, and context-sensitive transfer verification | `active` |

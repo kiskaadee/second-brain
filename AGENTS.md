@@ -8,15 +8,15 @@ This repository is a personal knowledge graph organized strictly around the **ep
 
 The Brain organizes information into seven numbered lifecycle directories:
 
-| Directory | Semantic Role | Contains |
-| :--- | :--- | :--- |
-| `00-inbox/` | **Capture** | Unprocessed, ephemeral captures — no classification or metadata required. |
-| `01-plans/` | **Intent** | Actionable implementation roadmaps, specifications, and execution blueprints (`type: plan`). |
-| `02-discussions/` | **Exploration** | Prospective inquiries, architectural options evaluations, and trade-offs (`type: discussion`). |
-| `03-records/` | **History** | Historical memory: journals, incident RCAs, and ADRs (`type: journal \| debug \| decision`). |
-| `04-learning/` | **Understanding** | Durable knowledge (`knowledge/`), operational SOPs (`guides/`), and deliberate practice (`practice/`). |
-| `05-agents/` | **Machine Context** | Canonical store of AI agent profiles (`profiles/`) and operational skills (`skills/`). |
-| `06-projects/` | **System Hubs** | Project topology hubs, forge repository mappings, and cross-cutting index entrypoints (`type: project`). |
+| Directory         | Semantic Role       | Contains                                                                                                 |
+| :---------------- | :------------------ | :------------------------------------------------------------------------------------------------------- |
+| `00-inbox/`       | **Capture**         | Unprocessed, ephemeral captures — no classification or metadata required.                                |
+| `01-plans/`       | **Intent**          | Actionable implementation roadmaps, specifications, and execution blueprints (`type: plan`).             |
+| `02-discussions/` | **Exploration**     | Prospective inquiries, architectural options evaluations, and trade-offs (`type: discussion`).           |
+| `03-records/`     | **History**         | Historical memory: journals, incident RCAs, and ADRs (`type: journal \| debug \| decision`).             |
+| `04-learning/`    | **Understanding**   | Durable knowledge (`knowledge/`), operational SOPs (`guides/`), and deliberate practice (`practice/`).   |
+| `05-agents/`      | **Machine Context** | Canonical store of AI agent profiles (`profiles/`) and operational skills (`skills/`).                   |
+| `06-projects/`    | **System Hubs**     | Project topology hubs, forge repository mappings, and cross-cutting index entrypoints (`type: project`). |
 
 ---
 
@@ -213,17 +213,10 @@ Checks: directory-type contracts, max depth, filename requirements, frontmatter 
 
 ---
 
-## Inbox Curation Protocol
+## Operational Skills
 
-When curating the `00-inbox/` staging area:
+Procedural workflows and multi-step capabilities are encapsulated as operational skills under `05-agents/skills/` rather than inline repository rules:
 
-1. **Verify Baseline**: Ensure `python scripts/validate-brain.py` passes cleanly.
-2. **Classify**: Map the captured draft into its target directory based on epistemic role:
-   - Implementation roadmap $\to$ `01-plans/<project>/` (`type: plan`)
-   - Architectural trade-off $\to$ `02-discussions/<project>/` (`type: discussion`)
-   - Incident post-mortem $\to$ `03-records/debug/` (`type: debug`)
-   - Knowledge note $\to$ `04-learning/knowledge/` (`type: knowledge`)
-   - Operational SOP $\to$ `04-learning/guides/<project>/` (`type: guide`)
-3. **Format & Frontmatter**: Add valid YAML frontmatter matching the target directory contract.
-4. **Remove Staging File**: Delete from `00-inbox/`.
-5. **Atomic Commit**: Commit with semantic commit type matching the document role.
+- **[Inbox Curation](05-agents/skills/inbox-curation/README.md)**: Scans `00-inbox/`, classifies raw notes into canonical lifecycle directories, injects valid YAML frontmatter, validates links, and executes atomic commits.
+- **[Documentation Router](05-agents/skills/documentation-router/README.md)**: Evaluates completed engineering sessions to determine whether durable knowledge was produced and selects the canonical epistemic container (Discussion, ADR, Plan, Debug Record).
+- **[Git Commit & History Hygiene](05-agents/skills/git-commit/README.md)**: Packages validated repository transitions into coherent, atomic Conventional Commits matching the Brain semantic taxonomy.
