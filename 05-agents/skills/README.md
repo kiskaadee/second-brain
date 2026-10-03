@@ -134,4 +134,5 @@ The primary threat to this collection's health is **duplicate authority**, not m
 | [Engineering Tutor](engineering-tutor/README.md) | [README](engineering-tutor/README.md) | [SKILL.md](engineering-tutor/SKILL.md) | — |
 | [Git Commit](git-commit/README.md) | [README](git-commit/README.md) | [SKILL.md](git-commit/SKILL.md) | — |
 | [Documentation Router](documentation-router/README.md) | [README](documentation-router/README.md) | [SKILL.md](documentation-router/SKILL.md) | [5 authoring specs](documentation-router/references/) |
+| [Commit Logger](commit-logger/README.md) | [README](commit-logger/README.md) | [SKILL.md](commit-logger/SKILL.md) | — |
 | [Skill Builder](skill-builder/README.md) | [README](skill-builder/README.md) | [SKILL.md](skill-builder/SKILL.md) | [Evaluation checklist](skill-builder/references/skill-evaluation-checklist.md) |

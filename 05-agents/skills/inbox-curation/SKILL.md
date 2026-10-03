@@ -47,7 +47,7 @@ python scripts/validate-brain.py
 If the validator fails prior to curation, resolve existing repository issues or alert the user before proceeding.
 
 ### Step 2: Inventory & Inspection
-Scan `00-inbox/` for files to curate, ignoring `.keep`, `README.md`, or active scratch notes specified by the user:
+Scan `00-inbox/` for files to curate, ignoring `.keep`, `README.md`, system ledgers (`commit-log.csv`), or active scratch notes specified by the user:
 - Read the content of the staged draft.
 - Identify the project context (e.g. `homelab`, `nekoweb`, `brain`, or global/general).
 - Determine whether the draft contains a single concept or multiple mixed concerns that should be decomposed into separate files.
