@@ -217,6 +217,6 @@ Checks: directory-type contracts, max depth, filename requirements, frontmatter 
 
 Procedural workflows and multi-step capabilities are maintained in the standalone [`skills`](https://github.com/kiskaadee/skills) repository and indexed in [05-agents/skills/README.md](05-agents/skills/README.md):
 
-- **[Inbox Curation](https://github.com/kiskaadee/skills/blob/main/brain/inbox-curation/SKILL.md)**: Scans `00-inbox/`, classifies raw notes into canonical lifecycle directories, injects valid YAML frontmatter, validates links, and executes atomic commits.
+- **[Draft Curation](https://github.com/kiskaadee/skills/blob/main/extensions/draft-curation/SKILL.md)**: Scans `00-inbox/`, classifies raw notes into canonical lifecycle directories, injects valid YAML frontmatter, validates links, and executes atomic commits.
 - **[Document](https://github.com/kiskaadee/skills/blob/main/skills/document/SKILL.md)**: Evaluates completed engineering sessions to determine whether durable knowledge was produced and selects the canonical epistemic container (Discussion, ADR, Plan, Debug Record, Knowledge).
 - **[Git Commit & History Hygiene](https://github.com/kiskaadee/skills/blob/main/skills/git-commit/SKILL.md)**: Packages validated repository transitions into coherent, atomic Conventional Commits matching the Brain semantic taxonomy.

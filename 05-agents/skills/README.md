@@ -39,7 +39,7 @@ cd ~/Projects/active/skills
 - **[`document`](https://github.com/kiskaadee/skills/blob/main/skills/document/SKILL.md)**: Second-order knowledge classifier for Discussions, ADRs, Plans, Debug Records, and Knowledge Articles.
 - **[`build-skill`](https://github.com/kiskaadee/skills/blob/main/skills/build-skill/SKILL.md)**: Interactive skill design, sizing, authoring, and empirical dogfooding.
 
-### Brain Extensions
+### Vault Extensions
 
-- **[`inbox-curation`](https://github.com/kiskaadee/skills/blob/main/brain/inbox-curation/SKILL.md)**: Triages, classifies, formats, and validates incoming drafts from `00-inbox/` into canonical lifecycle directories.
-- **[`commit-logger`](https://github.com/kiskaadee/skills/blob/main/brain/commit-logger/SKILL.md)**: Immutable event capture script logging Git commits into `00-inbox/commit-log.csv` (planned consumer of future `journal-builder`).
+- **[`draft-curation`](https://github.com/kiskaadee/skills/blob/main/extensions/draft-curation/SKILL.md)**: Triages, classifies, formats, and validates incoming drafts from `00-inbox/` into canonical lifecycle directories.
+- **[`commit-logger`](https://github.com/kiskaadee/skills/blob/main/extensions/commit-logger/SKILL.md)**: Immutable event capture script logging Git commits into `00-inbox/commit-log.csv` (planned consumer of future `journal-builder`).
