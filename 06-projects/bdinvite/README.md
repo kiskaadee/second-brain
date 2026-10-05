@@ -106,8 +106,12 @@ flowchart TB
 * 🗺️ **Implementation Plans & Specifications**:
   - [BDInvite Implementation Plan](../../01-plans/bdinvite/implementation-plan.md) — Phased technical execution plan (P0–P5) covering Docker packaging, FastAPI backend, React 19 frontend, Traefik split routing, and deployment.
   - [Digital Invitation Frontend Specification](../../01-plans/bdinvite/frontend-specification.md) — Responsive design principles, particle canvas architecture, typography, and guest/admin state transitions.
+  - [SSO Authentication Benchmark Roadmap](../../01-plans/bdinvite/sso-benchmark-roadmap.md) — Controlled A/B benchmark (Control vs Graphify) for portable Hexagonal AuthPort & OIDC migration.
+* 💡 **Explorations & Discussions**:
+  - [Graphify Agent Experiment Retrospective](../../02-discussions/bdinvite/graphify-agent-experiment-retrospective.md) — Empirical post-mortem comparing Control vs Graphify agent conditions across the 8-checkpoint OIDC migration.
 * 🏛️ **Architectural Decision Record**:
   - [BDInvite Single-Container Architecture, Split Traefik Routing & ForwardAuth Integration](../../03-records/decisions/bdinvite-architecture-and-deployment.md) — MADR 4.0 capturing container topology, Traefik priority routing, defense-in-depth auth, and self-hosted fonts.
 * 🌐 **Platform Context**:
   - [Homelab Ecosystem & Core Infrastructure](../homelab/README.md) — System topology and workload specifications for `roadtotech.me`.
+
 
