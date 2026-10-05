@@ -215,8 +215,8 @@ Checks: directory-type contracts, max depth, filename requirements, frontmatter 
 
 ## Operational Skills
 
-Procedural workflows and multi-step capabilities are encapsulated as operational skills under `05-agents/skills/` rather than inline repository rules:
+Procedural workflows and multi-step capabilities are maintained in the standalone [`skills`](https://github.com/kiskaadee/skills) repository and indexed in [05-agents/skills/README.md](05-agents/skills/README.md):
 
-- **[Inbox Curation](05-agents/skills/inbox-curation/README.md)**: Scans `00-inbox/`, classifies raw notes into canonical lifecycle directories, injects valid YAML frontmatter, validates links, and executes atomic commits.
-- **[Documentation Router](05-agents/skills/documentation-router/README.md)**: Evaluates completed engineering sessions to determine whether durable knowledge was produced and selects the canonical epistemic container (Discussion, ADR, Plan, Debug Record).
-- **[Git Commit & History Hygiene](05-agents/skills/git-commit/README.md)**: Packages validated repository transitions into coherent, atomic Conventional Commits matching the Brain semantic taxonomy.
+- **[Inbox Curation](https://github.com/kiskaadee/skills/blob/main/brain/inbox-curation/SKILL.md)**: Scans `00-inbox/`, classifies raw notes into canonical lifecycle directories, injects valid YAML frontmatter, validates links, and executes atomic commits.
+- **[Document](https://github.com/kiskaadee/skills/blob/main/skills/document/SKILL.md)**: Evaluates completed engineering sessions to determine whether durable knowledge was produced and selects the canonical epistemic container (Discussion, ADR, Plan, Debug Record, Knowledge).
+- **[Git Commit & History Hygiene](https://github.com/kiskaadee/skills/blob/main/skills/git-commit/SKILL.md)**: Packages validated repository transitions into coherent, atomic Conventional Commits matching the Brain semantic taxonomy.

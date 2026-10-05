@@ -44,14 +44,14 @@ Operational walkthrough for the implementation of the decoupled, reusable global
 ## 2. Implemented Artifacts & Locations
 
 ### A. Procedural Investigation Skill
-- **Runtime Location**: `~/.gemini/config/skills/engineering-investigation/SKILL.md`
-- **Vault Specification**: [`05-agents/skills/engineering-investigation/README.md`](../../../05-agents/skills/engineering-investigation/README.md)
+- **Runtime Location**: `~/.gemini/config/skills/diagnose/SKILL.md`
+- **Repository Specification**: [`skills/diagnose`](https://github.com/kiskaadee/skills/blob/main/skills/diagnose/SKILL.md)
 - **Role**: Purely empirical troubleshooting following the scientific method (Observation $\to$ Verification) and the 6-part interactive checkpoint protocol.
-- **Boundary**: Stops cleanly upon verified recovery; hands off to `documentation-router` if non-obvious learning or architectural questions emerged.
+- **Boundary**: Stops cleanly upon verified recovery; hands off to `document` if non-obvious learning or architectural questions emerged.
 
-### B. Documentation Router Skill
-- **Runtime Location**: `~/.gemini/config/skills/documentation-router/SKILL.md`
-- **Vault Specification**: [`05-agents/skills/documentation-router/README.md`](../../../05-agents/skills/documentation-router/README.md)
+### B. Documentation Skill
+- **Runtime Location**: `~/.gemini/config/skills/document/SKILL.md`
+- **Repository Specification**: [`skills/document`](https://github.com/kiskaadee/skills/blob/main/skills/document/SKILL.md)
 - **Role**: Second-order knowledge filter and gatekeeper (anti-markdown factory).
 - **Core Rules**:
   - **Gatekeeping**: Routine/trivial tasks produce **NO ARTIFACT**.
