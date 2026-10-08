@@ -3,6 +3,7 @@
 .obsidian/graph.json
 .DS_Store
 .trash/
+*.base
 
 # Environments & Python
 .envrc
