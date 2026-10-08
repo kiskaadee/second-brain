@@ -1,6 +1,6 @@
 ---
 type: plan
-status: active
+status: superseded
 project: homelab
 date: 2026-09-21
 tags:
@@ -15,6 +15,8 @@ tags:
 ---
 
 # 🚀 appctl Engine V2: Architectural Modernization & Type-Safe Refactoring Plan
+
+> **Superseded by**: [Architecture Consolidation & Control Plane Roadmap v5](../consolidation/architecture-consolidation-roadmap-v5.md) (specifically Phases P0, P3, and P4). Engine modernization code has been integrated into the consolidated baseline and control-plane architecture.
 
 ## 1. Executive Summary & Intent
 

@@ -1,6 +1,6 @@
 ---
 type: plan
-status: active
+status: superseded
 project: homelab
 tags:
   - architecture
@@ -15,6 +15,8 @@ tags:
 
 # Architecture Consolidation & Hardening Roadmap & Execution Plan v4
 
+> **Superseded by**: [Architecture Consolidation & Control Plane Roadmap v5](architecture-consolidation-roadmap-v5.md)
+>
 > **Supersedes**: [Architecture Consolidation & Hardening Roadmap v3](architecture-consolidation-roadmap-v3.md) and [Architecture Consolidation Implementation Guide v3](architecture-consolidation-implementation-guide-v3.md)
 >
 > **Current Platform Baseline**: Commit `246b587` (NixOS standalone appliance, consolidated docs, Portainer deprecated, Stalwart mail & SMTPS submission, Dozzle auth, Diun jitter/worker pool, Gitea Actions CI).

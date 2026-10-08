@@ -1,6 +1,6 @@
 ---
 type: plan
-status: active
+status: superseded
 project: homelab
 tags:
   - operations
@@ -13,6 +13,8 @@ tags:
 ---
 
 # 🚀 Smart Selective Deployment Pipeline Plan for Homelab Core
+
+> **Superseded by**: [Architecture Consolidation & Control Plane Roadmap v5](../consolidation/architecture-consolidation-roadmap-v5.md) (specifically Phase P4 control-plane reconciliation).
 
 ## Goal Description
 Implement an intelligent, change-aware deployment pipeline for `homelab-core` that:
