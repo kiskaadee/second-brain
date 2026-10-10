@@ -84,6 +84,7 @@ Canonical entrypoints describing system topology, source code repositories, and 
 - [New-Repo CLI Hub](06-projects/new-repo/README.md)
 - [Supervisor Hub](06-projects/supervisor/README.md)
 - [Second Brain Tooling Hub](06-projects/brain/README.md)
+- [AMC Solutions — Digital Discovery](06-projects/amc-solutions-seo/README.md)
 
 ---
 
