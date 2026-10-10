@@ -1,16 +1,22 @@
 ---
 type: plan
-status: active
+status: superseded
+superseded_by: ~/Config/home/scripts/new-repo.py
 project: new-repo
 tags:
   - gitea
   - github
-  - rust
+  - python
   - automation
   - cli
   - sops
 ---
 # 📋 Implementation Plan — `new-repo` Provisioning CLI
+
+> [!NOTE]
+> **Architecture Pivot (2026-10-09)**:
+> This plan's compiled Rust approach was evaluated and superseded by a lightweight, zero-dependency Python 3 implementation located in `~/Config/home/scripts/new-repo.py`. This eliminated cargo build steps while preserving strict typing (Pyright), linting (Ruff), and in-memory SOPS security.
+
 
 ## 🎯 Objective
 Build a fast, type-safe, and self-contained Rust command-line tool (`new-repo`) to provision repositories across self-hosted Gitea and GitHub with automated push mirroring, template generation, and zero plaintext secret leakage.
