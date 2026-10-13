@@ -84,6 +84,10 @@ flowchart TB
    - **Spatial Clustering**: Groups reports within a 20-meter radius over 48 hours.
    - **Confidence Scoring**: $C_{\text{cluster}} = \sum \text{trust\_score}_i$. Automatic promotion to SSOT occurs when $C_{\text{cluster}} \ge 3.0$ with $\ge 3$ distinct contributors. Conflicted or lower-confidence submissions escalate to manual moderator review.
    - **Reputation Dynamics**: Verified reports award $+0.05$ trust (max 1.0); malicious or invalid reports penalize $-0.15$.
+5. **Cascade Triage & Non-Autoregressive Decision Engine (Jev)**:
+   - Crowdsourced reports (`POST /reports`) and device fallback queues are triaged via a pluggable `TriageProvider` adapter (backed by TypeSafe AI's **Jev** model).
+   - Fast evaluation against typed schemas (`choice` for intent/category, `noul` for spam detection, `score` for credibility) ensures sub-200ms latency, zero type errors, and calibrated probabilities without running heavy autoregressive LLMs.
+   - Core mathematical velocity filters and client-side MobileNetV2 edge vectors remain untouched.
 
 ---
 
