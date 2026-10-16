@@ -99,12 +99,12 @@ flowchart TD
    Anne does not duplicate procedural skills. She executes standard repository skills (`git-commit`, `diagnose`, `document`) under her persona and authority profile.
 2. **Pedagogical Boundary & Human Ownership**:
    Delegation does not bypass human comprehension. The human lead reviews diffs and owns PR merge decisions.
-3. **Frontend → Backend Feedback Protocol**:
-   When backend APIs present awkward contracts, unnecessary request waterfalls, or ambiguous state flags, Anne adheres to the following review format:
-   - **Consumer Friction**: The concrete ergonomics issue in the endpoint.
-   - **Client Impact**: Resulting UI complexity, extra round trips, or state synchronization hazards.
-   - **Proposed Contract**: Concrete JSON response shape, pagination parameters, or error statuses.
-   - **Action**: Delivered as an advisory note or Gitea issue; Anne never edits backend files directly.
+3. **Communication & Documentation Triage**:
+   Anne rigorously separates persistent knowledge from transient action items to prevent repository and issue bloat:
+   - **Persistent Documentation (`docs/`)**: Architecture, design tokens, and durable contracts that must be read repeatedly across sessions are committed directly to the repo.
+   - **Actionable Forge Issues (`tea issues create`)**: Single-action follow-ups that must be answered once. Filtered strictly to critical triggers: breaking contract/schema changes, security/auth boundaries, or severe client UX/performance degradation.
+   - **In-Line PR Reviews**: Minor, non-breaking design notes or line queries stay in the active PR discussion.
+   - Anne never edits backend files directly and never leaves untracked conversational scratchpads in the repository root.
 4. **Secret Isolation & Portability**:
    No tokens, passwords, or absolute home paths are committed to the public skills repository. All persona rules use relative or tilde-expanded paths.
 
@@ -117,7 +117,7 @@ flowchart TD
 | **P0: Forge Identity & Keys** | Completed | User `anne-droid`, SSH key pair, public key upload | `ssh -p 2223 git@gitea.roadtotech.me` verifies identity |
 | **P1: Persona & Repo Routing** | Completed | `profile/agents/anne-droid.md`, `profile/AGENTS.md`, `install.sh` | `./install.sh check` clean, conventional commit in `main` |
 | **P2: Subagent Registration** | Completed | Antigravity `anne_droid` subagent definition | `define_subagent` registers successfully |
-| **P3: CLI Token & PR Automation** | Pending (User) | Gitea access token in `tea` login profile | `tea --login anne-droid whoami` returns `anne-droid` |
+| **P3: CLI Token & PR Automation** | Completed | Gitea access token in `tea` login profile | `tea logins list` shows `anne-droid` authenticated |
 | **P4: End-to-End Dogfood Run** | Pending | Advisory API audit & delegated branch implementation | Real PR opened on Gitea authored by `anne-droid` |
 
 ---
@@ -136,12 +136,18 @@ flowchart TD
    ```
 
 ### Step 2: Delegated Feature Implementation (Agent runbook)
-1. Create and switch to feature branch:
+1. Create and switch to isolated worktree in sibling directory:
    ```bash
-   git checkout -b feat/anne/<feature-name>
+   git worktree add ../<repo>-anne-<task> -b feat/anne/<task>
+   cd ../<repo>-anne-<task>
    ```
-2. Implement frontend components, styles, and unit tests.
-3. Commit with Anne's metadata:
+2. Implement frontend components, styles, and unit tests using `htmx` or `Vite+` (`vp`).
+3. Visually verify UI in browser (desktop + mobile viewports):
+   ```bash
+   google-chrome --headless --disable-gpu --screenshot=desktop.png --window-size=1280,800 <url>
+   google-chrome --headless --disable-gpu --screenshot=mobile.png --window-size=375,812 <url>
+   ```
+4. Commit with Anne's metadata:
    ```bash
    GIT_AUTHOR_NAME="Anne Droid" \
    GIT_AUTHOR_EMAIL="anne-droid@roadtotech.me" \
@@ -149,14 +155,20 @@ flowchart TD
    GIT_COMMITTER_EMAIL="anne-droid@roadtotech.me" \
    git commit -m "feat(ui): <description>"
    ```
-4. Push branch to remote:
+5. Push branch to remote:
    ```bash
    GIT_SSH_COMMAND="ssh -F /dev/null -p 2223 -i ~/.ssh/id_ed25519_anne_droid -o IdentitiesOnly=yes" \
-   git push -u origin feat/anne/<feature-name>
+   git push -u origin feat/anne/<task>
    ```
-5. Open PR via `tea`:
+6. Open PR via `tea` and await user review (worktree remains active):
    ```bash
    tea pr create --login anne-droid --title "feat(ui): <title>" --description "..."
+   ```
+7. Upon PR merge/closure confirmation, teardown worktree:
+   ```bash
+   cd <original-repo>
+   git worktree remove ../<repo>-anne-<task>
+   git branch -d feat/anne/<task>
    ```
 
 ---
@@ -170,5 +182,5 @@ flowchart TD
 - [x] Global routing table in `profile/AGENTS.md` updated.
 - [x] `install.sh` updated and symlink verified in `~/.gemini/config/agents/`.
 - [x] Antigravity subagent `anne_droid` registered.
-- [ ] Gitea API token added to `tea` CLI login configuration.
+- [x] Gitea API token added to `tea` CLI login configuration.
 - [ ] First end-to-end pull request created on Gitea authored by Anne Droid.
