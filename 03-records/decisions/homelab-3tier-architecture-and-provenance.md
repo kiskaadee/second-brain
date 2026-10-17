@@ -107,5 +107,5 @@ Chosen option: **Option 3: Bounded 3-Tier Platform with OCI Provenance Labels & 
 ## More Information
 
 * **Informing Discussion & Rationale**: [`02-discussions/homelab/architecture-migration-v3-to-v4.md`](../../02-discussions/homelab/architecture-migration-v3-to-v4.md)
-* **Governed Implementation Roadmap**: [`01-plans/homelab/consolidation/architecture-consolidation-roadmap-v4.md`](../../01-plans/homelab/consolidation/architecture-consolidation-roadmap-v4.md)
+* **Governed Implementation Roadmap**: [`01-plans/homelab/consolidation/architecture-consolidation-roadmap-v6.md`](../../01-plans/homelab/consolidation/architecture-consolidation-roadmap-v6.md)
 * **Project Hub**: [`06-projects/homelab/README.md`](../../06-projects/homelab/README.md)

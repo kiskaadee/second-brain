@@ -130,4 +130,4 @@ The exploration converged on a clear architectural trajectory: **move operationa
 
 This exploration informed the formal architectural commitments and implementation phasing recorded in:
 - **Architectural Decision Record**: [`03-records/decisions/homelab-appctl-control-plane-architecture.md`](../../03-records/decisions/homelab-appctl-control-plane-architecture.md) — Formally adopts the daemon control plane, typed metadata engine, Unix domain socket transport, and `SecretProvider` boundary.
-- **Implementation Roadmap**: [`01-plans/homelab/consolidation/architecture-consolidation-roadmap-v5.md`](../../01-plans/homelab/consolidation/architecture-consolidation-roadmap-v5.md) — Organizes the migration into concrete, incremental phases (P0 through P4).
+- **Implementation Roadmap**: [`01-plans/homelab/consolidation/architecture-consolidation-roadmap-v6.md`](../../01-plans/homelab/consolidation/architecture-consolidation-roadmap-v6.md) — Organizes the migration and locked P4 daemon boundaries (`DEC-01`–`DEC-05`) into concrete phases (P0 through P7).

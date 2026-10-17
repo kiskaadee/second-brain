@@ -51,6 +51,9 @@ The homelab is organized into four decoupled architectural layers to isolate fai
 
 Architectural inquiries and problem statements currently under evaluation that have **not yet produced an active implementation plan**:
 
+* ❓ [**Multi-User Houston Architecture via Dynamic Container Spawner and LLDAP/Authelia**](../../02-discussions/homelab/houston-multiuser-spawner-architecture.md)
+  - **Focus**: Evaluates a dynamic container spawner and LLDAP/Authelia ForwardAuth proxy architecture to provide per-user isolated Houston engine pods (`~/Sites/houston`).
+  - **Current Status**: Open inquiry analyzing container lifecycle management, per-tenant state volume isolation, and idle spin-down semantics.
 * ❓ [**WhatsApp & Telegram AI Assistant Backend Architecture**](../../02-discussions/homelab/chatbot-assistant-design.md)
   - **Focus**: Evaluates architecture, webhook ingress, and trade-offs between Telegram Bot API and WhatsApp Cloud API for a personal AI assistant microservice (`~/Sites/homelab-assistant`) connected to the Brain vault.
   - **Current Status**: Open inquiry examining authorization models, message formatting, cron triggers, and RAG search capabilities before formalizing an implementation plan.
@@ -69,13 +72,9 @@ Implementation roadmaps currently in progress (`status: active`) that are active
    - Implementing a standalone Rust daemon with 30-second polling and round-robin public DNS resolution across 5 independent providers (Cloudflare, Quad9, Google, OpenDNS, Dynu).
 3. 🟡 [**Custom API Security Hardening & Threat Analysis**](../../01-plans/homelab/api-security-hardening.md) `[Active]`
    - Defense-in-depth security hardening for custom microservice APIs (Learning Hub and Minecraft dashboard) using Authelia ForwardAuth, token validation, and rate limiting.
-4. 🟡 [**Smart Selective Deployment Pipeline for Homelab Core**](../../01-plans/homelab/appctl/smart-deployment-pipeline.md) `[Active]`
-   - Enhancing `appctl` and Gitea Actions with change-aware selective container restarts to prevent unnecessary service interruptions during routine deployments.
-5. 🟡 [**appctl Engine V2: Architectural Modernization & Type-Safe Refactoring Plan**](../../01-plans/homelab/appctl/appctl-engine-v2-refactoring.md) `[Active]`
-   - Modernizing the homelab control utility into a clean, typed Python 3 engine with PyYAML parsing, explicit domain models, and a TDD test suite.
-6. 🟡 [**GitHub to Gitea Automated Batch Migration Plan**](../../01-plans/homelab/gitea/github-to-gitea-migration-plan.md) `[Active]`
+4. 🟡 [**GitHub to Gitea Automated Batch Migration Plan**](../../01-plans/homelab/gitea/github-to-gitea-migration-plan.md) `[Active]`
    - Automated migration tooling using `gh` and `tea` APIs to migrate ~35 repositories from GitHub to self-hosted Gitea with push mirrors for redundancy.
-7. 🟡 [**LVM Storage Optimization & Partition Resizing Strategy**](../../01-plans/homelab/server-24-7/lvm-storage-optimization-and-resizing.md) `[Active]`
+5. 🟡 [**LVM Storage Optimization & Partition Resizing Strategy**](../../01-plans/homelab/server-24-7/lvm-storage-optimization-and-resizing.md) `[Active]`
    - Storage space audit, disk cleanup runbooks, and a non-destructive LVM logical volume expansion procedure for the server's root filesystem.
 
 ---
@@ -104,6 +103,7 @@ Operational runbooks and procedures for daily administration:
 Archived and foundational documentation for completed milestones:
 
 ### Resolved Architectural Discussions
+* [**Homelab Control Plane Modernization & Separation of Responsibilities**](../../02-discussions/homelab/control-plane-and-engine-modernization.md) — Evaluated script-based orchestration vs unified control plane daemon (`homelab-appctl.service`); resolved via ADR-0002 and Roadmap v5/v6.
 * [**Stalwart Mail Server Evaluation for Homelab Core**](../../02-discussions/homelab/mail-server-evaluation-stalwart.md) — Evaluated Stalwart vs Mailcow, Poste.io, and Postfix; resolved via Stalwart deployment.
 * [**Hostinger Business Email vs. Self-Hosted Stalwart**](../../02-discussions/homelab/hostinger-vs-stalwart-email-evaluation.md) — Compared cloud SaaS mail vs self-hosted mail with smart host relay.
 * [**Dual-Email Schema: Internal Mailboxes vs External Recovery**](../../02-discussions/homelab/dual-email-schema-lldap-stalwart.md) — Solved password recovery loops in identity directories with separate `mail` and `recovery_email` attributes.
@@ -120,8 +120,10 @@ Archived and foundational documentation for completed milestones:
 * [**Core Service Qualification & Portainer Deprecation**](../../02-discussions/homelab/core-service-qualification-and-portainer-deprecation.md) — Evaluated platform service qualification criteria; resolved via complete deprecation of Portainer and retaining Gitea and CI runner decoupled.
 * [**Migrating from Legacy Multirepo (v3) to 3-Tier Provenance Architecture (v4)**](../../02-discussions/homelab/architecture-migration-v3-to-v4.md) — Evaluated multirepo friction (source pollution, repo inflation, state co-location) vs 3-tier decoupling; resolved via Roadmap v4 adoption.
 
-### Completed Plans
+### Completed & Superseded Plans
 * 🟢 [**Architecture Consolidation & Control Plane Roadmap v5**](../../01-plans/homelab/consolidation/architecture-consolidation-roadmap-v5.md) (Superseded by v6; established 5-stage DeploymentModel lifecycle and control-plane architecture)
+* 🟢 [**appctl Engine V2: Architectural Modernization & Type-Safe Refactoring Plan**](../../01-plans/homelab/appctl/appctl-engine-v2-refactoring.md) (Superseded by Roadmap v5/v6 Phases P0 and P3; engine promoted to `scripts/appctl_engine.py`)
+* 🟢 [**Smart Selective Deployment Pipeline for Homelab Core**](../../01-plans/homelab/appctl/smart-deployment-pipeline.md) (Superseded by Roadmap v5/v6 Phase P4 control-plane reconciliation)
 * 🟢 [**Architecture Consolidation & Hardening Roadmap & Execution Plan v4**](../../01-plans/homelab/consolidation/architecture-consolidation-roadmap-v4.md) (Superseded by v5; established 3-tier architecture, OCI provenance model, and execution guide unification)
 * 🟢 [**Homelab Architecture Consolidation Documents Reorganization**](../../01-plans/homelab/architecture-docs-reorganization.md) — Reorganized consolidation documentation across the epistemic triad (ADR MADR 4.0, narrative Discussion, authoritative Plan) and created `01-plans/homelab/consolidation/` lineage directory.
 * 🟢 [**Architecture Consolidation & Hardening Roadmap v3**](../../01-plans/homelab/consolidation/architecture-consolidation-roadmap-v3.md) (Superseded by v4; established controller authority, mail relocation plan, and manifest convergence)

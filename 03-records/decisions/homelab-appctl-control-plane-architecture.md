@@ -100,29 +100,29 @@ Chosen option: **Option 3: Homelab Operational Control Plane with Stable Deploym
                                    Runtime Reconciliation
 ```
 
-#### 1. One Logical Control-Plane API across Dual Transports
+#### 1. One Logical Control-Plane API across Dual Transports (`DEC-01`)
 * `appctl` transitions from a collection of local shell scripts into the authoritative **operational control plane service** for Homelab Core, managed as a systemd service (`homelab-appctl.service`).
-* The control plane exposes **one logical, command-oriented API** (e.g. `POST /operations/deploy`, `POST /operations/restart`, `GET /workloads`, `GET /workloads/{id}/status`, `POST /operations/sync`).
+* The control plane exposes **one logical, command-oriented HTTP/1.1 API** dispatched through a single canonical operation endpoint: `POST /v1/operations` (covering all 13 canonical domain operations) and `GET /v1/health` (liveness probe), validated by strict Pydantic v2 contracts (`extra="forbid"`, `strict=True`). Multi-route REST aliases are rejected.
 * Transport is decoupled from contract:
-  * **Unix Domain Socket** (`/run/homelab/appctl.sock`): Used by local host clients (local CLI).
-  * **HTTP Listener** (Localhost / LAN fronted by Traefik): Used by remote clients (remote CLI, Operations UI, GitOps dispatcher).
+  * **Unix Domain Socket** (`/run/homelab/appctl.sock`, mode `0660`, `homelab-appctl:homelab-operators`): Used by local host clients (thin-client CLI and `gitops_dispatcher.py` worker).
+  * **HTTP Listener** (`127.0.0.1:9001` in P4; LAN/Traefik ingress in P5+): Used by network clients (remote CLI, Operations UI).
 * Both local and remote clients invoke the exact same logical API schema.
 
-#### 2. Identity, Authentication & Host Authority Decoupling
-* **Host Access Does Not Confer Appctl Authority**: Entering the server via SSH is merely host access; it does not substitute for appctl authentication. **Every mutating appctl operation requires an explicit, authenticated user-scoped token**, regardless of transport.
+#### 2. Identity, Authentication, Service Isolation & Fail-Closed Audit (`DEC-02`, `DEC-03`)
+* **Host Access Does Not Confer Appctl Mutation Authority**: Entering the server via SSH is merely host access; it does not substitute for appctl mutation authentication. **Every mutating appctl operation and sensitive read (`workload.config`, `workload.logs`) requires an explicit, authenticated Bearer token**, regardless of transport.
 * **Authentication Modes**:
-  * *Interactive Web / Operations UI*: Ingress routes via Traefik and Authelia (ForwardAuth). The control plane accepts identity from trusted headers (`Remote-User`, `Remote-Groups`).
-  * *Remote & Local CLI*: Authenticates via explicit user-scoped API tokens (`Authorization: Bearer <token>`) mapped to an LLDAP user profile.
-  * *GitOps Dispatcher*: Authenticates via cryptographic HMAC-SHA256 signatures with the webhook shared secret.
-* **Role-Based Access Control (RBAC)**: Maps LLDAP groups to permissions (`homelab-admin`, `homelab-operator`, `homelab-viewer`).
-* **Telemetry & Append-Only Audit Log**: Every operation records an append-only audit entry distinguishing four orthogonal dimensions:
-  * `Principal`: Human username (e.g. `fabian`) or service account (`gitops-bot`).
-  * `Action` & `Target`: The requested operation and workload.
-  * `Transport`: `unix_socket` vs. `http`.
-  * `Network Origin`: `local`, `internal_network`, `external_network`.
-  * `Client`: `local_cli`, `remote_cli`, `web_ui`, `gitops`.
-  * `Timestamp`, `Duration`, and `Result`.
-* Filesystem permissions on `audit.jsonl` are restricted (`0600`), daemon-only writeable, with optional cryptographic hash chaining (`prev_hash`) for tamper evidence.
+  * *SOPS-Projected Bearer Tokens (P4 Baseline)*: Validated via constant-time SHA-256 comparison (`hmac.compare_digest`) against `/run/secrets/appctl/tokens.json` (`0400`). Required for all mutations, sensitive reads, and HTTP requests.
+  * *Local UDS `SO_PEERCRED` Viewer Fallback (`DEC-02`)*: Tokenless local Unix socket connections extract kernel peer credentials (`SO_PEERCRED`) and fall back strictly to `homelab-viewer` read-only privileges (`list`, `get`, `resolve`, `ssl`, `health`), preserving zero-friction CLI inspection and shell tab-completion while blocking all mutations (`401`/`403`).
+  * *GitOps Ingress & Worker (`DEC-04`)*: `gitops_dispatcher.py` verifies Gitea webhook HMAC-SHA256 signatures, enforces `config/deployments.yaml` admission, and delegates `workload.update` over `/run/homelab/appctl.sock` using its `homelab-operator` Bearer token.
+  * *Interactive Web / LLDAP Directory Integration (P5)*: Expands the P4 gate with LLDAP user-scoped token lifecycle and authenticated Traefik/Authelia ForwardAuth headers (`Remote-User`, `Remote-Groups`).
+* **Role-Based Access Control (RBAC)**: Enforces three tiers: `homelab-admin` (all targets including `core`/`core_service`), `homelab-operator` (restricted strictly to workloads in `config/deployments.yaml`), and `homelab-viewer` (non-sensitive reads only).
+* **Dedicated Service Identity (`DEC-03`)**: The daemon runs as `homelab-appctl` (`Group = "homelab-operators"`), isolating `/run/secrets/appctl/tokens.json` (`0400`) and `/var/log/homelab/appctl/audit.jsonl` (`0600`) from unprivileged processes and AI coding sessions running under the operator's SSH UID.
+* **Telemetry & Fail-Closed Append-Only Audit Log (`/var/log/homelab/appctl/audit.jsonl`)**: Every mutating operation, sensitive read, and denied request records structured JSONL lifecycle events (`DISPATCHED`, `COMPLETED`, `FAILED`, `DENIED`) capturing:
+  * `Principal`: Identity, role, token ID, and auth method (`bearer_token` vs. `unix_peercred`).
+  * `Action` & `Target`: The requested canonical operation and workload.
+  * `Transport` & `Origin`: `unix_socket` (`peer_uid_<uid>`) vs. `http` (`client_ip`).
+  * `Client`, `Timestamp`, `Duration`, `Commit SHA`, and secret-redacted `Parameters`/`Result`.
+  * **Fail-Closed Disk Guard**: Mutating operations must write and flush a `DISPATCHED` record before any Docker or Git subprocess executes; if the write fails, the operation aborts immediately with `500 ERR_EXECUTION_FAILED`.
 
 #### 3. Declarative Git Truth as Authoritative Deployment State
 * **Git is the Authoritative Source of Deployment State**:
@@ -144,7 +144,7 @@ Chosen option: **Option 3: Homelab Operational Control Plane with Stable Deploym
   * The AI analyzes repositories and drafts `DeploymentProposal` candidates.
   * The operator edits, selects, and approves the proposal into a `DeploymentModel`.
   * **After human approval, the AI is completely out of the loop.**
-  * The control plane API exposes standard endpoints (`POST /models/validate`, `POST /operations/deploy`), giving the AI zero special administrative endpoints.
+  * The control plane API exposes only standard authenticated operations (`POST /v1/operations`), giving the AI zero special administrative endpoints or ambient host privileges.
 
 #### 6. Platform Capability Model & Architectural Invariants
 Authoring workflows reason against an explicit platform contract:
@@ -222,5 +222,5 @@ Authoring workflows reason against an explicit platform contract:
 ## More Information
 
 * **Companion Architecture Decision**: [`homelab-3tier-architecture-and-provenance.md`](homelab-3tier-architecture-and-provenance.md)
-* **Governed Implementation Roadmap**: [`01-plans/homelab/consolidation/architecture-consolidation-roadmap-v5.md`](../../01-plans/homelab/consolidation/architecture-consolidation-roadmap-v5.md)
+* **Governed Implementation Roadmap**: [`01-plans/homelab/consolidation/architecture-consolidation-roadmap-v6.md`](../../01-plans/homelab/consolidation/architecture-consolidation-roadmap-v6.md)
 * **Project Hub**: [`06-projects/homelab/README.md`](../../06-projects/homelab/README.md)

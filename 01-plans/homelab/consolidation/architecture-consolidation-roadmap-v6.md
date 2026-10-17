@@ -24,8 +24,9 @@ tags:
 > - Core Roadmap Projection: `~/Homelab/Core/ROADMAP.md`
 >
 > **Architectural Decision Records**:
-> - [`homelab-appctl-control-plane-architecture.md`](../../../03-records/decisions/homelab-appctl-control-plane-architecture.md)
-> - [`homelab-3tier-architecture-and-provenance.md`](../../../03-records/decisions/homelab-3tier-architecture-and-provenance.md)
+> - [`homelab-appctl-control-plane-architecture.md`](../../../03-records/decisions/homelab-appctl-control-plane-architecture.md) (`~/Homelab/Core/docs/decisions/0002-appctl-control-plane-architecture.md`)
+> - [`homelab-3tier-architecture-and-provenance.md`](../../../03-records/decisions/homelab-3tier-architecture-and-provenance.md) (`~/Homelab/Core/docs/decisions/0001-3tier-architecture-and-provenance.md`)
+> - `~/Homelab/Core/docs/decisions/0003-pydantic-v2-runtime-validation.md`
 >
 > **Evolutionary History**:
 > - [`homelab-control-plane-evolution-v1-to-v6.md`](../../../04-learning/knowledge/methods/homelab-control-plane-evolution-v1-to-v6.md)
@@ -68,7 +69,7 @@ flowchart TB
             HTTP_IN["HTTP Listener (127.0.0.1:9001)<br/>Strictly loopback in P4"]
         end
 
-        API_ROUTER["Single Command-Oriented Operational Router<br/>• POST /v1/operations (12 Canonical Operations)<br/>• GET /v1/health (Liveness Probe)"]
+        API_ROUTER["Single Command-Oriented Operational Router<br/>• POST /v1/operations (13 Canonical Operations)<br/>• GET /v1/health (Liveness Probe)"]
         
         subgraph PIPELINE["Unified Fail-Closed Pipeline"]
             direction TB
@@ -135,14 +136,18 @@ flowchart TB
    - Mutating operations append a `DISPATCHED` record before touching Docker or Git. If the disk write fails, the request immediately terminates with `500 ERR_EXECUTION_FAILED`.
 7. **Git is the Authoritative Source of Deployment State**:
    - Approved `DeploymentModels` are committed to Git. `appctl` reconciles desired Git state into running containers.
-8. **AI Authoring Boundary**:
+8. **Five-Stage Model Lifecycle (Intent vs. Implementation)**:
+   - $\text{Repository} \xrightarrow{\text{Investigation}} \text{Application Profile} \xrightarrow{\text{Proposal}} \text{DeploymentProposal} \xrightarrow{\text{Human Selection}} \text{DeploymentModel (Git)} \xrightarrow{\text{appctl Materialize}} \text{Deployment Definition} \xrightarrow{\text{Reconcile}} \text{Containers}$.
+9. **AI Authoring Boundary**:
    - AI agents are strictly upstream proposal generators (`DeploymentProposal`) with zero execution authority. Human operators approve the intent.
-9. **KISS Primitives & Linear Control Paths**:
-   - Control flow remains strictly linear and local. No message brokers (RabbitMQ/Kafka) or deployment databases are introduced.
+10. **Secret Reference Invariant & Clean Persistent State Root**:
+    - Deployment definitions store secret references (`secretKeyRef`) resolved at runtime via `SecretProvider`, never plaintext credentials; mutable runtime data resides strictly under `~/var/lib/homelab/<app>/`, isolated from Git repositories.
+11. **KISS Primitives & Linear Control Paths**:
+    - Control flow remains strictly linear and local. No message brokers (RabbitMQ/Kafka) or deployment databases are introduced.
 
 ---
 
-## 3. The 12 Canonical Domain Operations
+## 3. The 13 Canonical Domain Operations
 
 | Domain Operation | Type | Required Role (`Sites` / `Core`) | Timeout | Subprocess / Engine |
 | :--- | :--- | :--- | :--- | :--- |

@@ -176,7 +176,7 @@ To eliminate ambiguity, five binding architectural decisions were codified:
 
 #### 1. Single Command-Oriented Operational Router (`DEC-01`)
 Instead of dozens of disparate REST endpoints, the daemon exposes **one canonical endpoint**:
-- `POST /v1/operations`: Dispatches all 12 canonical domain operations (both read-only and mutating) using strict Pydantic v2 schemas (`extra="forbid"`, `strict=True`).
+- `POST /v1/operations`: Dispatches all 13 canonical domain operations (both read-only and mutating) using strict Pydantic v2 schemas (`extra="forbid"`, `strict=True`).
 - `GET /v1/health`: A simple convenience probe for orchestrator liveness.
 - Logs are strictly bounded (`tail: 1..1000`, max 256 KiB output buffer); live SSE streaming is deferred to Milestone P7.
 
