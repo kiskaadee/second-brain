@@ -1,6 +1,7 @@
 ---
 type: plan
-status: active
+status: superseded
+superseded_by: architecture-consolidation-roadmap-v6.md
 project: homelab
 tags:
   - architecture
@@ -17,6 +18,9 @@ tags:
 
 # Architecture Consolidation & Control Plane Roadmap v5
 
+> [!WARNING]
+> **SUPERSEDED**: This roadmap has been superseded by [**Architecture Consolidation & Control Plane Roadmap v6**](architecture-consolidation-roadmap-v6.md), which codifies locked architectural decisions DEC-01 through DEC-05, the single typed `POST /v1/operations` dispatcher, mandatory token-gated authorization, and `homelab-appctl` systemd isolation.
+>
 > **Supersedes**: [Architecture Consolidation Roadmap v4](architecture-consolidation-roadmap-v4.md) and [appctl Engine V2 Refactoring Plan](../appctl/appctl-engine-v2-refactoring.md)
 >
 > **Current Platform Baseline**: Consolidated Git baseline combining NixOS appliance (`Core/`), modernized type-safe metadata engine (`appctl-v2`), and validated provenance domain models.

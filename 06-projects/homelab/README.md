@@ -61,10 +61,10 @@ Architectural inquiries and problem statements currently under evaluation that h
 
 Implementation roadmaps currently in progress (`status: active`) that are actively being executed or scheduled for deployment:
 
-1. 🟡 [**Architecture Consolidation & Hardening Roadmap & Execution Plan v4**](../../01-plans/homelab/consolidation/architecture-consolidation-roadmap-v4.md) `[Active]`
-   - Unified roadmap and execution blueprint: 3-tier architecture (Software vs. Deployment vs. Platform), OCI provenance model, two workload deployment classes, authoritative Core registry, Stalwart vs. SnappyMail zero-data-loss relocation, workload Compose security policy, unified typed manifest engine, linear control path (KISS), and two operational inspection axes with three revision identities.
-   - 🏛️ *Architectural Decision Record*: [**Homelab 3-Tier Architecture & Provenance**](../../03-records/decisions/homelab-3tier-architecture-and-provenance.md)
-   - 💬 *Architectural Discussion*: [**Legacy Multirepo to 3-Tier Migration Rationale**](../../02-discussions/homelab/architecture-migration-v3-to-v4.md)
+1. 🟡 [**Architecture Consolidation & Control Plane Roadmap v6**](../../01-plans/homelab/consolidation/architecture-consolidation-roadmap-v6.md) `[Active]`
+   - Unified roadmap codifying locked decisions DEC-01 through DEC-05: single typed `POST /v1/operations` dispatcher, dual transports (UDS + HTTP), mandatory token-gated authorization, dedicated `homelab-appctl` systemd isolation, unified pre-flight Compose security checks, and append-only audit telemetry with fail-closed disk guard.
+   - 🏛️ *Architectural Decision Records*: [**Homelab appctl Control Plane Architecture**](../../03-records/decisions/homelab-appctl-control-plane-architecture.md) & [**Homelab 3-Tier Architecture & Provenance**](../../03-records/decisions/homelab-3tier-architecture-and-provenance.md)
+   - 📖 *Evolutionary History*: [**Homelab Control Plane Evolution (v1 to v6)**](../../04-learning/knowledge/methods/homelab-control-plane-evolution-v1-to-v6.md)
 2. 🟡 [**Rust Daemon Migration Plan: Standalone `dynu-monitor`**](../../01-plans/homelab/dynu-monitor-rust-daemon.md) `[Active]`
    - Implementing a standalone Rust daemon with 30-second polling and round-robin public DNS resolution across 5 independent providers (Cloudflare, Quad9, Google, OpenDNS, Dynu).
 3. 🟡 [**Custom API Security Hardening & Threat Analysis**](../../01-plans/homelab/api-security-hardening.md) `[Active]`
@@ -121,6 +121,8 @@ Archived and foundational documentation for completed milestones:
 * [**Migrating from Legacy Multirepo (v3) to 3-Tier Provenance Architecture (v4)**](../../02-discussions/homelab/architecture-migration-v3-to-v4.md) — Evaluated multirepo friction (source pollution, repo inflation, state co-location) vs 3-tier decoupling; resolved via Roadmap v4 adoption.
 
 ### Completed Plans
+* 🟢 [**Architecture Consolidation & Control Plane Roadmap v5**](../../01-plans/homelab/consolidation/architecture-consolidation-roadmap-v5.md) (Superseded by v6; established 5-stage DeploymentModel lifecycle and control-plane architecture)
+* 🟢 [**Architecture Consolidation & Hardening Roadmap & Execution Plan v4**](../../01-plans/homelab/consolidation/architecture-consolidation-roadmap-v4.md) (Superseded by v5; established 3-tier architecture, OCI provenance model, and execution guide unification)
 * 🟢 [**Homelab Architecture Consolidation Documents Reorganization**](../../01-plans/homelab/architecture-docs-reorganization.md) — Reorganized consolidation documentation across the epistemic triad (ADR MADR 4.0, narrative Discussion, authoritative Plan) and created `01-plans/homelab/consolidation/` lineage directory.
 * 🟢 [**Architecture Consolidation & Hardening Roadmap v3**](../../01-plans/homelab/consolidation/architecture-consolidation-roadmap-v3.md) (Superseded by v4; established controller authority, mail relocation plan, and manifest convergence)
 * 🟢 [**Architecture Consolidation Implementation Guide v3**](../../01-plans/homelab/consolidation/architecture-consolidation-implementation-guide-v3.md) (Superseded by v4)
