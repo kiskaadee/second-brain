@@ -35,12 +35,13 @@ The motivation for this pilot originated from a concrete failure in the initial 
 
 - **Original Scope**: Milestone M4 was defined in Gitea issue [`armonia-dashboard#1`](https://gitea.roadtotech.me/armonia-del-ser/armonia-dashboard/issues/1) (*"M4: Mobile-First Admin Dashboard for Jasmin & Assistant"*). It requested operational views for booking reviews, 48-hour pending payment follow-ups, payment acknowledgments, delayed-payment authorizations, and package/roster controls.
 - **Implementation Sequence**: Anne Droid was delegated the frontend implementation under her existing persona instructions (`profile/agents/anne-droid.md`). In commit [`4e50f7c58606`](https://gitea.roadtotech.me/armonia-del-ser/armonia-dashboard/commit/4e50f7c58606709dbc9e95e7ad557869fb4dea78) (merged via PR [#4](https://gitea.roadtotech.me/armonia-del-ser/armonia-dashboard/pulls/4)), Anne scaffolded the dashboard with `FollowUpQueue.ts`, `PaymentModal.ts`, `DailyAgenda.ts`, and `AllBookings.ts`.
-- **The Defect**: While the delivered code was modular, typed, accessible, and tested with passing unit tests, the dashboard was **operationally incomplete**: an operator had no capability to create new client appointments from the interface. Furthermore, the workshop roster and package tracker were omitted.
-- **The Root Cause**: Anne evaluated her work using Dual-Viewport Visual Capture (`desktop.png` and `mobile.png`) and verified the five visual states (*Empty, Loading, Error, Partial, Success*). Because existing views looked aesthetically sound and passed local unit checks, Anne concluded the task was complete. Self-review against code and visual presence could not detect what was structurally absent.
+- **The Observed Defect**: While the delivered code was modular, typed, accessible, and tested with passing unit tests, the dashboard was **operationally incomplete**: an operator had no capability to create new client appointments from the interface. Furthermore, the workshop roster and package tracker were omitted.
 - **The Corrective Rework**: The missing appointment-creation workflow had to be addressed in subsequent rework across separate issues ([`armonia-dashboard#6`](https://gitea.roadtotech.me/armonia-del-ser/armonia-dashboard/issues/6) and [`armonia-dashboard#7`](https://gitea.roadtotech.me/armonia-del-ser/armonia-dashboard/issues/7)), merged in PR [#8](https://gitea.roadtotech.me/armonia-del-ser/armonia-dashboard/pulls/8) ([`7f56fe019a0a`](https://gitea.roadtotech.me/armonia-del-ser/armonia-dashboard/commit/7f56fe019a0a0be96ffeb999e5f15549880816a7)).
+- **Causal Interpretation (Inferred Hypothesis)**: The working explanation is that Anne's self-review procedure evaluated visual presence, component rendering, and isolated unit tests rather than structural workflow completeness against explicit acceptance criteria. Because existing views looked aesthetically sound and passed local unit checks, Anne concluded the task was complete. This diagnosis is plausible, but remains an *inference* to be tested by the pilot's interventions rather than an established historical fact.
 
 ### 1.2 Epistemic Label
-**Verified**: The commit messages, issue descriptions, PR diffs, and roadmap entries confirm this exact failure and rework chain.
+**Verified (Observed Defect & Rework Chain)**: The commit messages, issue descriptions, PR diffs, and roadmap entries confirm the omission and subsequent rework.  
+**Inferred (Causal Diagnosis)**: The claim that the omission was caused specifically by a lack of requirement-informed workflow verification in Anne's review protocol is an inference to be tested, not a proven historical fact.
 
 ---
 
@@ -91,17 +92,18 @@ The pilot explores whether introducing structured, pre-implementation specificat
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                           The Pilot Hypotheses                          │
 ├─────────────────────────────────────────────────────────────────────────┤
-│ Hypothesis 1: Specification Completeness Prevents Workflow Omissions    │
-│   Separating requirements (intent + acceptance criteria) from UX        │
-│   (interaction flows + states) prevents implementers from omitting       │
-│   essential operational capabilities.                                   │
+│ Hypothesis 1: Specification Completeness Reduces Workflow Omissions     │
+│   An explicit, owner-approved specification of required operator        │
+│   workflows and observable acceptance criteria reduces ambiguity and    │
+│   prevents essential capabilities from being omitted during coding.     │
+│   (Separating Requirements from UX is an evaluated design choice).      │
 ├─────────────────────────────────────────────────────────────────────────┤
 │ Hypothesis 2: Bounded Engineering Autonomy Is Workable in Practice      │
 │   Anne can exercise local design judgment (components, state handling,  │
 │   ergonomics) without silently drifting into product scope changes or   │
 │   unauthorized architectural commitments.                               │
 ├─────────────────────────────────────────────────────────────────────────┤
-│ Hypothesis 3: Implementation-Blind QA Detects Functional Gaps           │
+│ Hypothesis 3: Implementation-Blind QA Detects Incremental Defects       │
 │   A reviewer who evaluates the running build using a Verification Packet│
 │   — blind to implementation code and self-audit claims — detects defects│
 │   and omissions that self-verification misses.                          │
@@ -112,10 +114,11 @@ The pilot explores whether introducing structured, pre-implementation specificat
 
 #### Hypothesis 1: Specification Completeness
 - **Evidence Motivating It**: In M4, high-level view names failed to convey the essential operator journeys, causing the appointment-creation action to be missed.
-- **What Remains Unknown**: Whether authoring separate Requirements and UX sections adds unacceptable coordination latency for small tasks.
+- **Narrowed Claim**: An explicit, owner-approved specification of required operator workflows and observable acceptance criteria reduces ambiguity and prevents essential capabilities from being omitted during implementation.
+- **Evaluated Design Choice**: The separation between Requirements (what/why + AC) and UX Design (how/flows/states) is introduced as an architectural design choice. The pilot observes whether this separation adds tangible clarity or unnecessary overhead, without assuming persona separation is mandatory.
 - **Observation That Would Strengthen**: Anne delivers all required workflows without halting for basic scope clarification or omitting actions.
 - **Observation That Would Weaken**: Anne still misses essential actions despite the contract, or the specification requires extensive rework before coding begins.
-- **Limitation**: A single pilot cannot prove that separate personas are necessary to author the specification.
+- **Limitation**: A single pilot cannot prove that separate personas are necessary to author the specification; it only tests the value of the explicit specification contract.
 
 #### Hypothesis 2: Bounded Engineering Autonomy
 - **Evidence Motivating It**: Current Anne instructions permit branch and PR autonomy, but lack clear rules on when API friction must be escalated versus worked around.
@@ -126,10 +129,14 @@ The pilot explores whether introducing structured, pre-implementation specificat
 
 #### Hypothesis 3: Implementation-Blind QA
 - **Evidence Motivating It**: The `awwwards` skill demonstrates that an agent who knows the implementation plan evaluates intent rather than rendered reality.
-- **What Remains Unknown**: Whether headless browser verification inside the Nix development shell is reproducible and operationally smooth.
-- **Observation That Would Strengthen**: Independent QA identifies a functional bug, state mismatch, or accessibility flaw that Anne’s self-audit passed.
+- **Methodological Requirement (Falsifiability)**: To ensure valid comparison, Anne's self-audit (her own AC evaluation and visual evidence) must be captured and frozen *before* independent QA executes.
+- **Evaluated Outcomes**:
+  1. *QA finds confirmed defects missed by Anne*: Evidence that independent verification contributed incremental detection value.
+  2. *QA confirms the same findings Anne identified*: Validates test reproducibility, but does not demonstrate incremental defect detection.
+  3. *QA reports false positives or blocked tests*: Reflects on the verification setup/tooling, not necessarily the implementation.
+- **Observation That Would Strengthen**: Independent QA identifies a confirmed functional bug, broken state transition, or accessibility flaw that Anne’s self-audit passed.
 - **Observation That Would Weaken**: Independent QA fails due to missing context that was obvious in the code, or produces high false-positive defect reports.
-- **Limitation**: Cannot prove that independent QA is cost-effective for trivial UI updates.
+- **Limitation**: A pilot where QA finds zero defects is inconclusive regarding the comparative advantage of independence; it does not prove independent QA is unnecessary.
 
 ---
 
@@ -151,23 +158,25 @@ The pilot explores whether introducing structured, pre-implementation specificat
 │   • Gate: Human Project Owner approves the Acceptance Criteria (AC).    │
 │                                │                                        │
 │                                ▼                                        │
-│   Phase 3: Isolated Implementation (Anne Droid)                         │
+│   Phase 3: Isolated Implementation & Frozen Self-Audit (Anne Droid)     │
 │   • Input: Approved specification contract + API contracts.             │
 │   • Workspace: Isolated worktree ../armonia-dashboard-anne-roster       │
 │   • Output: feat/anne/workshop-roster, code, unit tests, PR on Gitea.   │
+│   • Invariant: Anne executes and FROZES her own AC evaluation & visual  │
+│     evidence before Independent QA begins.                              │
 │   • Rule: Escalate contract friction; no silent scope modification.     │
 │                                │                                        │
 │                                ▼                                        │
 │   Phase 4: Independent QA Pass (QA Specialist / Subagent)               │
 │   • Input: Running URL + Verification Packet (AC + Seed Data).          │
 │   • Blind To: Anne's PR text, source code, and self-audit claims.       │
-│   • Output: Evidence Scorecard (Pass/Fail per AC + screenshots/logs).   │
+│   • Output: Independent Evidence Scorecard (Pass/Fail per AC + shots).  │
 │                                │                                        │
 │                                ▼                                        │
 │   Phase 5: Owner Review & Pilot Post-Mortem                             │
-│   • Input: PR diff + QA Evidence Scorecard.                             │
-│   • Decision: Approve merge or route specific defects to owners.        │
-│   • Post-Mortem: Evaluate process overhead, friction, and findings.     │
+│   • Input: PR diff + Anne Frozen Audit + QA Evidence Scorecard.         │
+│   • Evaluation: Adjudicate discrepancies and decide on merge.           │
+│   • Post-Mortem: Evaluate operational metrics, friction, and findings.  │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -194,18 +203,24 @@ If any stage encounters a blocking condition, work halts and routes strictly acc
 ### 6.1 Required Minimum Outcomes
 - [ ] Essential operator workflows and acceptance criteria are approved before code is written.
 - [ ] Anne raises contract friction notices rather than silently resolving missing backend data.
+- [ ] Anne's self-audit is captured and frozen before independent QA evaluates the running application.
 - [ ] QA evaluates every acceptance criterion using reproducible evidence (screenshots, console logs, network responses).
-- [ ] Defect findings route back to the role responsible for resolving them.
+- [ ] Discrepancies between Anne's self-audit and independent QA findings are explicitly adjudicated.
 - [ ] Consequential product and architectural decisions remain strictly under Project Owner authority.
 - [ ] The workflow executes successfully inside the existing NixOS development environment.
 
 ### 6.2 Evaluated Process Observations
-During and after the pilot, the following metrics will be recorded:
-1. **Pre-Implementation vs. Post-Implementation Ambiguities**: How many questions were resolved during specification versus discovered during coding?
-2. **Defect Delta**: Did independent QA detect any functional omissions or bugs that Anne’s self-audit missed?
-3. **Loop Count**: How many times did work return to a previous stage, and what triggered each return?
-4. **Coordination Overhead**: How much token latency and time was consumed by creating contracts and handoffs compared to direct coding?
-5. **Artifact Traceability**: Did the specification contract remain useful as documentation after PR completion?
+During and after the pilot, the following operational metrics will be recorded:
+1. **Ambiguity Resolution Timing**: Count of ambiguities identified before coding (during specification) versus during implementation.
+2. **Defect Delta & Detection Profile**:
+   - Defect count found by independent QA that Anne's self-audit missed (incremental detection).
+   - Defect count confirmed by both Anne and QA (reproducible verification).
+   - Defect reports that were false positives or blocked tests due to verification environment issues.
+3. **Return Loops**: Number and root cause of workflow reversions to earlier stages.
+4. **Owner Interventions**: Number of escalations requiring consequential human decisions.
+5. **Setup & Tooling Friction**: Material setup failures, devShell library issues, or blocked browser runs.
+6. **Elapsed Stage Duration**: Rough duration per stage to assess practical overhead.
+7. **Artifact Utility**: Whether the specification and verification packet remain durable documentation post-merge.
 
 ---
 
@@ -232,4 +247,4 @@ During and after the pilot, the following metrics will be recorded:
 During the pre-experiment inspection, the following gaps and limits were identified:
 1. **Cloudflare Pages Production Parity**: Local testing occurs via `vp dev` / `vp preview`. Behavior under actual Cloudflare Pages edge runtime routing was not tested during baseline inspection.
 2. **Gitea Issue Detail for Roster**: In `armonia-dashboard#1`, the workshop roster is mentioned in a single summary line without detailed UX wireframes. This confirms that the specification must be authored in Phase 2 before implementation can proceed.
-3. **Database Seed Automation**: `armonia-api` has pytest fixtures for group workshops, but does not yet possess a standalone CLI seed script to populate a local development SQLite database for manual browser inspection. This must be addressed as part of the Verification Packet formulation in Phase 2.
+3. **Pragmatic Test-Data Setup**: While `armonia-api` lacks a standalone CLI seed script, it possesses existing initialization logic (`init_schema_and_seed()`) and proven integration test helpers (`_book()`). To avoid turning test preparation into an unplanned infrastructure project, the Verification Packet will reuse these existing routines to instantiate a disposable local SQLite test database with known workshop attendees.
