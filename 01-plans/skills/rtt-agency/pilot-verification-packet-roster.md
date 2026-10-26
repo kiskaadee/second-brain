@@ -45,7 +45,7 @@ if abs_db_path.exists():
 os.environ['DATABASE_URL'] = f'file:{abs_db_path}'
 
 from app.core.config import settings
-settings.database_url = f'file:{db_filename}'
+settings.database_url = f'file:{abs_db_path}'
 from app.db.init_db import init_schema_and_seed
 from app.db.database import get_db
 from fastapi.testclient import TestClient
