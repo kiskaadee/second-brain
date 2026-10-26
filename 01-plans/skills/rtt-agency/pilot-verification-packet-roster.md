@@ -20,7 +20,7 @@ Prior to executing test scenarios, verify that both services are running on the 
 
 | Component | Target Directory | Verified Commit Hash | Start Command | Active Port |
 | :--- | :--- | :--- | :--- | :--- |
-| **Backend API** | `armonia/armonia-api` | `d9c86e27d926bab3287857ccc9b53ec4fbcec91b` | `DATABASE_URL=file:test_armonia.db uv run uvicorn app.main:app --port 8000` | `http://localhost:8000` |
+| **Backend API** | `armonia/armonia-api` | `d9c86e27d926bab3287857ccc9b53ec4fbcec91b` | `DATABASE_URL=file:test_armonia.db uv run python -m uvicorn app.main:app --port 8000` | `http://localhost:8000` |
 | **Frontend UI** | `armonia/armonia-dashboard` | PR Branch (`feat/anne/workshop-roster`) | `pnpm exec vp dev --port 5173` | `http://localhost:5173` |
 
 ---
@@ -36,11 +36,13 @@ from datetime import datetime, UTC
 from zoneinfo import ZoneInfo
 from pathlib import Path
 
-db_filename = 'test_armonia.db'
-if Path(db_filename).exists():
-    Path(db_filename).unlink()
+# Deterministic absolute path anchoring
+abs_db_path = (Path.cwd() / 'test_armonia.db').resolve()
+assert abs_db_path.name.startswith('test_') and abs_db_path.name != 'local.db', 'Safety failure: refusal to touch non-test database'
+if abs_db_path.exists():
+    abs_db_path.unlink()
 
-os.environ['DATABASE_URL'] = f'file:{db_filename}'
+os.environ['DATABASE_URL'] = f'file:{abs_db_path}'
 
 from app.core.config import settings
 settings.database_url = f'file:{db_filename}'
@@ -105,10 +107,9 @@ async def seed_and_verify():
     assert codes == {'ADS-1001', 'ADS-1002'}, f'Preflight 3 Failed: Missing expected codes {codes}'
     
     # Preflight 4: File existence & non-empty database target
-    p = Path(db_filename)
-    assert p.exists() and p.stat().st_size > 0, 'Preflight 4 Failed: Database file missing or empty'
+    assert abs_db_path.exists() and abs_db_path.stat().st_size > 0, 'Preflight 4 Failed: Database file missing or empty'
     
-    print('✅ Preflight assertions passed: 100% verified test database ready at', p.resolve())
+    print('✅ Preflight assertions passed: 100% verified test database ready at', abs_db_path)
 
 asyncio.run(seed_and_verify())
 "

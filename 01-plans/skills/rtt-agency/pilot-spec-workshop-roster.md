@@ -55,10 +55,11 @@ On the day of the workshop, Jasmin or her assistant stands at reception. As part
 
 - **Capacity Display**: Formatted as `Ocupación: {occupied_count} / {max_capacity} ({attended_count} presentes)`.
 - **409 Conflict Disambiguation & Reconciliation Contract**:
-  The backend issues `HTTP 409 Conflict` in two distinct business scenarios, which the client must differentiate by inspecting `response.detail`:
-  1. *Already Checked-In Conflict (`detail` indicates attendee already checked in)*: Indicates an idempotent duplicate submission. The client must reconcile by updating the attendee row to `ASISTIÓ`, disabling the check-in button, and showing an informative status toast (*"El asistente ya contaba con asistencia registrada"*). The client must never crash or treat this as a failed/unregistered state.
-  2. *Capacity Exceeded Conflict (`detail` indicates cupo máximo / capacity reached)*: Occurs during walk-in registration when `occupied_count >= max_capacity`. The client must display an explicit capacity error alert (*"El taller ha alcanzado su cupo máximo (X)"*), keep the modal form state intact for operator decision, and **never** optimistically increment attendance or report success.
+  The backend issues `HTTP 409 Conflict` in two distinct business scenarios, verified against pinned backend commit `d9c86e27d926` in `armonia-api/app/routers/rosters.py`. The client must inspect `response.detail` (or error payload):
+  1. *Already Checked-In Conflict (`detail: "This attendee has already checked in."`)* (`app/routers/rosters.py#L196`): Indicates an idempotent duplicate submission. The client must reconcile by updating the attendee row to `ASISTIÓ`, disabling the check-in button, and showing an informative status toast (*"El asistente ya contaba con asistencia registrada"*). The client must never crash or treat this as a failed/unregistered state.
+  2. *Capacity Exceeded Conflict (`detail: "El taller ha alcanzado su cupo máximo ({max_cap}) para esta sesión."`)* (`app/routers/rosters.py#L332`): Occurs during walk-in registration when `occupied_count >= max_capacity`. The client must detect the capacity message (e.g. matching `cupo máximo`), display an explicit capacity error alert (*"El taller ha alcanzado su cupo máximo (15) para esta sesión"*), keep the modal form state intact for operator decision, and **never** optimistically increment attendance or report success.
 - **Ordinary Network / 500 Failure**: Preserve the current UI state, do not change attendee status, and allow the operator to retry.
+- **Technical Debt & Future Contract Note**: String matching on `response.detail` is a pilot accommodation to preserve backend immutability on `armonia-api`. A future M5 ADR will introduce structured machine-readable error codes (e.g. `{"error_code": "ATTENDEE_ALREADY_CHECKED_IN"}`).
 
 ### 2.2 Status Terminology Mapping Table
 

@@ -237,9 +237,11 @@ During and after the pilot, the following operational metrics will be recorded:
 - **Gitea Port & Auth**: Remote operations use port `2223` with scoped SSH keys (`anneux` for Anne; `kiskaadee` for Owner).
 - **Branch Protection**: No direct commits to `main` in `armonia-dashboard`. All work occurs in ephemeral worktrees.
 
-### 7.2 Preconditions Before Pilot Execution
-1. Owner review and explicit approval of this baseline document.
-2. Formulation and approval of the `workshop-roster` Specification Contract and Verification Packet.
+### 7.2 Explicit Multi-Stage Approval Sequence Before Pilot Execution
+Committed drafts in the vault establish documentation readiness and version control, not binding project authorization. Formal progression requires three distinct Project Owner approvals:
+1. **Approval of Operating Model & Scope Boundaries (`COLLABORATION-PLAN.md`)**: Confirms role authorities, scope containment, commit discipline, escalation paths, and decision reservations.
+2. **Approval of Specification & Verification Contracts (`SPEC-WORKSHOP-ROSTER.md` & `VERIFICATION-PACKET-ROSTER.md`)**: Confirms acceptance criteria, exact API error contracts (409 disambiguation), status mappings, seed data, and pass/fail scenarios.
+3. **Formal Authorization for Implementation**: Explicit owner greenlight to spawn the isolated worktree (`feat/anne/workshop-roster`) and delegate Phase 3 execution to Anne Droid.
 
 ### 7.3 Deferred Decisions (Explicitly Postponed)
 - **Repository Architecture**: Whether to create `rtt-agency` or maintain personas within `skills`.
