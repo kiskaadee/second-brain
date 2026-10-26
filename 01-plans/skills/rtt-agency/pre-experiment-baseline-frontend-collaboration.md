@@ -221,6 +221,12 @@ During and after the pilot, the following operational metrics will be recorded:
 5. **Setup & Tooling Friction**: Material setup failures, devShell library issues, or blocked browser runs.
 6. **Elapsed Stage Duration**: Rough duration per stage to assess practical overhead.
 7. **Artifact Utility**: Whether the specification and verification packet remain durable documentation post-merge.
+8. **Commit Discipline & Decomposition Quality**:
+   - Number of implementation commits and whether each has a clear, reviewable purpose.
+   - Whether each commit is coherent and passes relevant intermediate checks.
+   - Whether reviewers can connect individual commits to specific acceptance criteria.
+   - Whether any defect identified in verification can be localized to a particular increment.
+   - Whether commit discipline added material overhead or encouraged unnecessary fragmentation.
 
 ---
 
