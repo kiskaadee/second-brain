@@ -256,3 +256,71 @@ During the pre-experiment inspection, the following gaps and limits were identif
 1. **Cloudflare Pages Production Parity**: Local testing occurs via `vp dev` / `vp preview`. Behavior under actual Cloudflare Pages edge runtime routing was not tested during baseline inspection.
 2. **Gitea Issue Detail for Roster**: In `armonia-dashboard#1`, the workshop roster is mentioned in a single summary line without detailed UX wireframes. This confirms that the specification must be authored in Phase 2 before implementation can proceed.
 3. **Pragmatic Test-Data Setup**: While `armonia-api` lacks a standalone CLI seed script, it possesses existing initialization logic (`init_schema_and_seed()`) and proven integration test helpers (`_book()`). To avoid turning test preparation into an unplanned infrastructure project, the Verification Packet will reuse these existing routines to instantiate a disposable local SQLite test database with known workshop attendees.
+
+---
+
+## 9. Post-Experiment Empirical Postmortem (2026-10-27)
+
+> **Postmortem Scope:** Recorded after Phase 3 implementation, Phase 4 initial QA, and Phases 4.1–4.2 owner-prompted repair and re-verification cycles, prior to worktree teardown. Sections 1–8 above remain frozen as the pre-experiment snapshot.
+
+### 9.1 Execution Timeline & Stage Durations
+
+Timestamps are derived directly from Git commit metadata on `feat/anne/workshop-roster` ([`armonia-dashboard#9`](https://gitea.roadtotech.me/armonia-del-ser/armonia-dashboard/pulls/9)) and subagent execution logs. Pre-implementation specification drafting occurred across multiple interactive review sessions; exact human authoring wall-clock time was not instrumented and is marked unavailable.
+
+| Stage | Window (UTC-5) | Active Duration | Observed Output |
+| :--- | :--- | :--- | :--- |
+| **Phase 1 & 2: Contracts & Preflight** | 2026-10-25 to 2026-10-26 09:33 | Multi-session (uninstrumented wall-clock) | Ratified `COLLABORATION-PLAN.md`, `SPEC-WORKSHOP-ROSTER.md`, `VERIFICATION-PACKET-ROSTER.md` in `armonia/docs/pilot/`. |
+| **Phase 3: Initial Implementation (Anne)** | 2026-10-26 09:36 $\rightarrow$ 09:56 | ~20 min | 5 commits (`0ff27a2` $\rightarrow$ `d672065`), 29 passing unit tests, frozen `docs/evidence/anne-self-audit.md`, PR #9 opened. |
+| **Phase 4.0: Initial Independent QA** | 2026-10-27 00:06 $\rightarrow$ 00:24 | ~18 min | 8/8 scenarios marked `PASS` (`0 FAIL`, `0 BLOCKED`), 15 screenshots in `armonia/docs/evidence/qa/`, frozen `qa-evidence-scorecard.md`. |
+| **Phase 5.0: Code-Level Owner Review** | 2026-10-27 07:18 $\rightarrow$ 07:25 | ~7 min | Identified Finding A (`escapeHtml` omission) and Finding B (409 out-of-band counter desync) in Commit 3 (`6ba0bbe`). |
+| **Repair Loop 1 & Phase 4.1 Retest** | 2026-10-27 07:26 $\rightarrow$ 07:44 | ~18 min | Commit `9191899` (local `+1` counter & `escapeHtml`); QA Test 1 (XSS) `PASS`, Case 2A `PASS`, Case 2B (multi-attendee OOB) `FAIL` (`1 presentes` vs. server `2`). |
+| **Repair Loop 2 & Phase 4.2 Retest** | 2026-10-27 07:45 $\rightarrow$ 07:52 | ~7 min | Commit `4e1e7f2` (authoritative server refresh on 409); QA Case 2B strict re-verification `PASS` (`2 presentes`, both rows `ASISTIÓ`); 34/34 unit tests passing. |
+
+---
+
+### 9.2 Verification Provenance & Defect Ledger
+
+To distinguish defects caught autonomously by the multi-agent workflow from defects that required human/owner intervention, every technical finding from the pilot is classified by provenance:
+
+| Finding ID & Description | Detection Source | First Detection Point | Required Intervention | Repair Verification | Outcome |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **PF-1: Imaginary `bookings.attended` SQL column in draft seed script** | Owner review + Preflight execution | Pre-Phase 3 Contract Preflight | Owner challenged unverified seed claim; preflight run exposed `SQLITE_ERROR`. | Live SQLite seed + external Uvicorn HTTP 200 check | **Confirmed Verification Defect** (Fixed before Phase 3) |
+| **PF-2: Undefined `db_filename` after path refactor in Verification Packet** | Owner diff review | Pre-Gate 3 Contract Review | Owner identified `NameError` directly in packet diff before Gate 3 authorization. | Seed script re-run (`exit 0`) + HTTP preflight | **Confirmed Verification Defect** (Fixed before Gate 3) |
+| **PF-3: Missing `escapeHtml()` on dynamic interpolations in `WorkshopRoster.ts`** | Orchestrator / Owner code review | Post-Phase 4.0 PR Diff Inspection | Owner required code-level diff review prior to merge; neither Anne's self-audit nor Phase 4.0 black-box QA caught it. | Unit tests (`tests/roster.test.ts`) + Phase 4.1 Live DOM XSS Walk-in (`scenario_9_xss_sanitization.png`) | **Confirmed Implementation Defect** (Fixed in `9191899`) |
+| **PF-4: Stale header capacity counter on single out-of-band `409 ALREADY_CHECKED_IN`** | Orchestrator / Owner code review | Post-Phase 4.0 PR Diff Inspection | Spec & Scenario 6A only required row-level `ASISTIÓ` update; code review spotted missing header counter update. | Unit test + Phase 4.1 Live Case 2A (`scenario_6a_regression_single_oob.png`) | **Confirmed Spec & Implementation Gap** (Fixed in `9191899`) |
+| **PF-5: Multi-attendee out-of-band `409` staleness (local `+1` vs. server truth)** | Owner architectural review | Review of Commit `9191899` | Owner identified that local `+1` fails when $>1$ attendee changed out-of-band and mandated Case 2B live test. | Unit test (`Case 2B`) + Phase 4.2 Live DOM (`scenario_6a_regression_multi_oob_v2.png`) | **Confirmed Architectural Defect** (Fixed in `4e1e7f2`) |
+| **PF-6: QA rationalization of Case 2B divergence on `9191899`** | Owner / Orchestrator review of QA scorecard | Phase 4.1 Scorecard Review | QA observed `1 presentes` vs. server `2`, but rationalized it as a "targeted reconciliation trade-off" (`PASS`) because the prompt lacked a hard failure threshold. | Re-dispatched in Phase 4.2 with explicit falsifiable assertions (`FAIL` if $\neq 2$) | **Confirmed QA Process Failure Mode** (Corrected in Phase 4.2) |
+
+---
+
+### 9.3 Commit Ledger & Fault Localization Assessment (`H4`)
+
+Final branch history on `feat/anne/workshop-roster` (8 commits):
+
+1. [`0ff27a2`](https://gitea.roadtotech.me/armonia-del-ser/armonia-dashboard/commit/0ff27a2): `feat(roster): define API types and client methods for workshop rosters` (`src/api.ts`, `src/types.ts`, +111 lines)
+2. [`c09f6c6`](https://gitea.roadtotech.me/armonia-del-ser/armonia-dashboard/commit/c09f6c6): `feat(roster): add status badges, capacity formatting, and unit tests` (`WorkshopRoster.ts`, `tests/roster.test.ts`, +166 lines)
+3. [`6ba0bbe`](https://gitea.roadtotech.me/armonia-del-ser/armonia-dashboard/commit/6ba0bbe): `feat(roster): implement session cards, attendee list, and check-in workflows` (`WorkshopRoster.ts`, +789/-1 lines)
+4. [`191a02d`](https://gitea.roadtotech.me/armonia-del-ser/armonia-dashboard/commit/191a02d): `feat(roster): integrate talleres tab in navigation and add responsive styles` (`src/main.ts`, `src/style.css`, +452/-2 lines)
+5. [`d672065`](https://gitea.roadtotech.me/armonia-del-ser/armonia-dashboard/commit/d672065): `docs(roster): record dual-viewport evidence and freeze anne self-audit`
+6. [`faa2d34`](https://gitea.roadtotech.me/armonia-del-ser/armonia-dashboard/commit/faa2d34): `docs(roster): update worktree path reference in self-audit`
+7. [`9191899`](https://gitea.roadtotech.me/armonia-del-ser/armonia-dashboard/commit/9191899): `fix(roster): escape HTML interpolations and sync capacity counter on 409 reconciliation`
+8. [`4e1e7f2`](https://gitea.roadtotech.me/armonia-del-ser/armonia-dashboard/commit/4e1e7f2): `fix(roster): reconcile session state from server on 409 conflict`
+
+**Evaluation of `H4`:**
+- **What worked**: Unlike the baseline 1-commit dump (`4e50f7c586`), separating contract types (`0ff27a2`), pure helpers/tests (`c09f6c6`), UI component (`6ba0bbe`), and shell wiring (`191a02d`) made it trivial to verify Scope Containment in `src/main.ts` (+16/-2 lines) and localize both PF-3 and PF-4/PF-5 exclusively to `6ba0bbe`. Furthermore, the repair progression (`9191899` $\rightarrow$ `4e1e7f2`) created an auditable trail of how the 409 reconciliation strategy evolved.
+- **Limitation observed**: Commit 3 (`6ba0bbe`, +789 lines) bundled session rendering, existing check-in, and the walk-in modal into a single commit. Engineer-owned decomposition prevented micro-management, but future prompts should encourage splitting read/list views from modal/mutation flows (`~200–350` lines per commit).
+
+---
+
+### 9.4 Evaluation of Hypotheses & Process Controls
+
+1. **`H1` (Specification Completeness)**: **Supported, with a boundary condition.**
+   - Unlike the M4 initial delivery that omitted appointment creation entirely, all required operator workflows (session overview, prepaid check-in, cash check-in, walk-in registration, 409 conflict handling, network retry, mobile ergonomics) were delivered and verified on the first pass.
+   - *Boundary condition*: Where the specification simplified an invariant (stating in Section 2.1 that a 409 duplicate check-in should "update the attendee row to `ASISTIÓ`" rather than "reconcile the session from server state"), both Anne and QA implemented and certified the literal clause, missing the multi-operator counter staleness until owner review (PF-4, PF-5).
+2. **`H2` (Bounded Engineering Autonomy & Scope Containment)**: **Supported.**
+   - Anne operated inside `.worktrees/armonia-dashboard-anne-roster`, preserved all 17 existing tests, touched only 18 lines in `src/main.ts`, and surfaced the HTTP 409 string-matching constraint in her self-audit rather than inventing mock backend endpoints.
+3. **`H3` (Independent Black-Box QA)**: **Inconclusive for autonomous defect discovery; high value for execution proof, subject to prompt falsifiability.**
+   - In Phase 4.0, Independent QA scored 8/8 `PASS` (`0` QA-only defects). While this proved that the happy-path and specified error states worked against a live SQLite database, it did **not** catch PF-3 (`escapeHtml` omission) or PF-4/PF-5 (out-of-band counter staleness) because neither adversarial HTML payloads nor multi-attendee out-of-band mutations were in the initial Verification Packet.
+   - Crucially, PF-6 demonstrated that when a QA prompt asks an agent to *observe* behavior without a strict pass/fail invariant, the agent tends to rationalize discrepancies as "architectural trade-offs." Once given a hard falsifiable assertion in Phase 4.2, Independent QA reliably verified the fix.
+4. **Role of Project Owner Review**: **Decisive.**
+   - All five defects (PF-1 through PF-5) and the QA rationalization flaw (PF-6) were caught through human owner governance and code-level diff review, not by autonomous agent-to-agent handoffs alone. The structured artifacts (`SPEC`, `VERIFICATION-PACKET`, incremental commits) made owner review significantly faster and sharper, but did **not** replace it.
