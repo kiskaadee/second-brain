@@ -200,6 +200,15 @@ In this repository, commit types directly reflect the Brain's semantic taxonomy 
 
 ---
 
+### Branching & Direct Commits to `main`
+
+In this repository, direct edits and commits on `main` are permitted for knowledge curation, documentation updates, and vault maintenance (overriding the global branch-before-editing rule). However, **all commits to `main` strictly require explicit human approval**. Every proposed commit must:
+1. Pass `python scripts/validate-brain.py` and `python scripts/test_validator.py`.
+2. Stage explicit files only (no blanket `git add -A`).
+3. Present the diff, semantic message, and rationale to the user for explicit confirmation before executing `git commit`.
+
+---
+
 ## Structural Validator & Tests
 
 Run before committing changes:
